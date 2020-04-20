@@ -1,0 +1,41 @@
+- name: Copying over quarkus-cafe-customermock application 
+  template:
+    src: templates/quarkus-cafe-customermock.yaml.j2
+    dest:  "{{ config_location }}/quarkus-cafe-customermock.yaml"
+    owner: root
+    group: root
+    mode: 0666
+  when: not skip_quarkus_cafe_customermock
+
+- name: Create quarkus-cafe-customermock instance
+  command: "oc create -f {{ config_location }}/quarkus-cafe-customermock.yaml"
+  when: not delete_deployment  
+
+- name: Start quarkus-cafe-customermock build
+  command: "oc start-build bc/quarkus-cafe-customermock"
+  ignore_errors: yes
+  when: not delete_deployment  
+
+- name: Waiting for quarkus-cafe-customermock build to complete
+  shell: |
+    oc get pods  | grep Completed | grep quarkus-cafe-customermock | wc -l
+  register: install_status
+  when: not delete_deployment 
+  until: "'2' in install_status.stdout"
+  retries: 120
+  delay: 15
+
+- name: Waiting for quarkus-cafe-customermock deployment
+  shell: |
+    oc get pods  | grep Running | grep quarkus-cafe-customermock | wc -l
+  register: install_status
+  when: not delete_deployment 
+  until: "'1' in install_status.stdout"
+  retries: 60
+  delay: 15
+
+- name: Delete quarkus-cafe-customermock instance
+  command: "oc delete -f {{ config_location }}/quarkus-cafe-customermock.yaml"
+  ignore_errors: yes
+  when: delete_deployment 
+

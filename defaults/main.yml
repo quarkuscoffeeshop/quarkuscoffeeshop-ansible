@@ -1,0 +1,23 @@
+---
+# defaults file for quarkus-cafe-demo-role
+openshift_token: 1234567890
+openshift_url: https://api.ocp4.example.com:6443
+insecure_skip_tls_verify: true
+project_namespace: quarkus-cafe-demo
+git_url: https://github.com/jeremyrdavis/quarkus-cafe-demo.git
+delete_deployment: false  
+amqstartingCSV: amqstreams.v1.4.0
+config_location: "/tmp/"
+kafka_cluster_name: cafe-cluster
+skip_amq_install: false
+skip_quarkus_cafe_barista: false
+skip_quarkus_cafe_core: false 
+skip_quarkus_cafe_kitchen: false
+skip_quarkus_cafe_web: false
+skip_quarkus_cafe_customermock: false
+quarkus_build_memory_limit: 6Gi # Default 6Gi
+quarkus_build_cpu_limit: 1 # Default 1
+quarkus_core_build_memory_limit:  8Gi # Default 6Gi
+quarkus_image_stream_name: ubi-quarkus-native-s2i:20.0.0-java11
+domain: ocp4.example.com
+kafka_stream_url: http://quarkus-cafe-web-{{ project_namespace}}.apps.{{ domain }}/dashboard/stream

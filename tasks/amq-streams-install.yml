@@ -1,4 +1,4 @@
-- name: Copying over AMQ Subscription 
+- name: Copying over AMQ Subscription
   template:
     src: templates/amq-sub.yaml.j2
     dest:  "{{ config_location }}/amq-sub.yaml"
@@ -57,7 +57,7 @@
   command: "oc delete -f {{ config_location }}/amq-kafka-topics.yaml"
   ignore_errors: yes
   when: delete_deployment
-  
+
 - name: Remove kafka instance
   command: "oc delete -f {{ config_location }}/amq-kafka-instance.yaml"
   ignore_errors: yes
@@ -77,8 +77,7 @@
   ignore_errors: yes
   when: delete_deployment
 
-- name: Remove AMQ 
-  command: "oc delete csv {{ amqstartingCSV }}"
+- name: Remove AMQ
+  command: "oc delete csv {{ amqstartingCSV }} -n {{project_namespace}}"
   ignore_errors: yes
   when: delete_deployment
- 

@@ -5,13 +5,13 @@ openshift_url: https://api.ocp4.example.com:6443
 insecure_skip_tls_verify: true
 project_namespace: quarkus-cafe-demo
 git_url: https://github.com/jeremyrdavis/quarkus-cafe-demo.git
-delete_deployment: false  
-amqstartingCSV: amqstreams.v1.4.0
+delete_deployment: false
+amqstartingCSV: amqstreams.v1.4.1
 config_location: "/tmp/"
 kafka_cluster_name: cafe-cluster
 skip_amq_install: false
 skip_quarkus_cafe_barista: false
-skip_quarkus_cafe_core: false 
+skip_quarkus_cafe_core: false
 skip_quarkus_cafe_kitchen: false
 skip_quarkus_cafe_web: false
 skip_quarkus_cafe_customermock: false

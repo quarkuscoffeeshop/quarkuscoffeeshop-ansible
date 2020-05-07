@@ -9,7 +9,7 @@ Requirements
 * OpenShift 4.x Cluster installed
 * Ansible should be installed on machine
 
-ScreenShots 
+ScreenShots
 ------------------------------------------------
 ![quarkus cafe topology](images/quarkus-cafe-applications.png "quarkus cafe topology")
 
@@ -22,11 +22,11 @@ http://quarkus-cafe-web-quarkus-cafe-demo.apps.example.com/cafe example
 
 Usage
 ----------------
-* Default web page 
+* Default web page
 http://quarkus-cafe-web-quarkus-cafe-demo.apps.example.com/cafe
 this endpoint is used to view the events coming into the cluster
 * If you deploy skip_quarkus_cafe_customermock this will automatically push events to the quarkus cafe dashboard.
-* If you would like to manally push events ti AMQ use the command below. 
+* If you would like to manally push events to AMQ use the command below.
 ```shell
 export ENDPOINT="quarkus-cafe-web-quarkus-cafe-demo.apps.ocp4.example.com"
 curl  --request POST http://${ENDPOINT}/order \
@@ -104,21 +104,29 @@ Including an example of how to use your role (for instance, with variables passe
         delete_deployment: false  
         skip_amq_install: false
         skip_quarkus_cafe_barista: false
-        skip_quarkus_cafe_core: false 
+        skip_quarkus_cafe_core: false
         skip_quarkus_cafe_kitchen: false
         skip_quarkus_cafe_web: false
         skip_quarkus_cafe_customermock: false
         quarkus_build_memory_limit: 6Gi
         quarkus_build_cpu_limit: 1
-        quarkus_core_build_memory_limit:  
+        quarkus_core_build_memory_limit: 6Gi
         domain: ocp4.example.com
       roles:
       - quarkus-cafe-demo-role
 ```
 
+
+Troubleshooting
+---------------
+Force delete kafka crds after bad install
+```
+oc get crds -o name | grep '.*\.strimzi\.io' | xargs -r -n 1 oc delete
+```
+
 To-Do
 -------
-* Deployment vs Deployment Config Option 
+* Deployment vs Deployment Config Option
 * Need to test against Openshift 4.4
 
 License

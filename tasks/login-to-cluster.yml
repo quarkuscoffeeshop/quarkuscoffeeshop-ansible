@@ -1,5 +1,5 @@
 - name: login as super user with token on OpenShift 4
-  shell: "oc login --token={{ openshift_token }}  --server={{ openshift_url }} --insecure-skip-tls-verify={{ insecure_skip_tls_verify }}"
+  command: "oc login --token={{ openshift_token }}  --server={{ openshift_url }} --insecure-skip-tls-verify={{ insecure_skip_tls_verify }}"
   when:
    - openshift_token is defined
    - openshift_token is not none
@@ -14,4 +14,3 @@
 
 - name: Switch to project for quarkus-cafe
   command:  "oc project {{ project_namespace }}"
-  register: switch_project_result

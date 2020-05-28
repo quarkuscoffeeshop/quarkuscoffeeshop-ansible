@@ -1,4 +1,4 @@
-- name: Copying over quarkus-cafe-web application 
+- name: Copying over quarkus-cafe-web application
   template:
     src: templates/quarkus-cafe-web.yaml.j2
     dest:  "{{ config_location }}/quarkus-cafe-web.yaml"
@@ -9,22 +9,24 @@
 
 - name: Create quarkus-cafe-web instance
   command: "oc create -f {{ config_location }}/quarkus-cafe-web.yaml"
-  when: not delete_deployment  
+  when: not delete_deployment
 
 - name: Waiting for quarkus-cafe-web build to complete
   shell: |
-    oc get pods  | grep Completed | grep quarkus-cafe-web | wc -l
+    set -o pipefail && oc get pods  | grep Completed | grep quarkus-cafe-web | wc -l
   register: install_status
-  when: not delete_deployment 
+  when: not delete_deployment
   until: "'2' in install_status.stdout"
   retries: 120
   delay: 15
+  args:
+    executable: /bin/bash
 
 - name: Waiting for quarkus-cafe-web deployment
   shell: |
-    oc get pods  | grep Running | grep quarkus-cafe-web | wc -l
+    set -o pipefail && oc get pods  | grep Running | grep quarkus-cafe-web | wc -l
   register: install_status
-  when: not delete_deployment 
+  when: not delete_deployment
   until: "'1' in install_status.stdout"
   retries: 60
   delay: 15
@@ -32,5 +34,7 @@
 - name: Delete quarkus-cafe-web instance
   command: "oc delete -f {{ config_location }}/quarkus-cafe-web.yaml"
   ignore_errors: yes
-  when: delete_deployment 
+  when: delete_deployment
+  args:
+    executable: /bin/bash
 

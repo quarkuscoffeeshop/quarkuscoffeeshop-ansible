@@ -95,3 +95,17 @@ spec:
   config:
     retention.ms: 604800000
     segment.bytes: 1073741824
+---
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: web-updates-order-up
+  labels:
+    strimzi.io/cluster:  cafe-cluster
+  namespace: {{ project_namespace }}
+spec:
+  partitions: 10
+  replicas: 3
+  config:
+    retention.ms: 604800000
+    segment.bytes: 1073741824

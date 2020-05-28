@@ -1,7 +1,8 @@
 Quarkus Cafe Role
 =========
 
-quarkus-cafe role will deploy the [quarkus-cafe-demo](https://github.com/jeremyrdavis/quarkus-cafe-demo) application found  [here](https://github.com/jeremyrdavis/quarkus-cafe-demo).
+The Quarkus Cafe Role will deploy an event-driven demo application built with Quarkus, AMQ Streams (Kafka), and MongoDB. The application deploys to OpenShift (Kubernetes.)
+The source code for the  [quarkus-cafe-demo](https://github.com/jeremyrdavis/quarkus-cafe-demo) application can be found  [here](https://github.com/jeremyrdavis/quarkus-cafe-demo).
 
 Requirements
 ------------
@@ -77,7 +78,7 @@ config_location  | default location for application templates  | "/tmp/"
 git_url  | Default git url of quarkus-cafe-demo application  | https://github.com/jeremyrdavis/quarkus-cafe-demo.git
 quarkus_build_memory_limit  |  quarkus S2I memory build limit | 6Gi
 quarkus_build_cpu_limit  |  quarkus S2I cpu build limit | 1
-quarkus_core_build_memory_limit  |  quarkus-cafde-core S2I memory build limite  | 6Gi
+quarkus_core_build_memory_limit  |  quarkus-cafde-core S2I memory build limite  | 8Gi
 quarkus_image_stream_name  |  quarkus s2i image version  | ubi-quarkus-native-s2i:20.0.0-java11
 domain  |  OpenShift domain endpoint  | ocp4.example.com
 kafka_stream_url  |  Kafka stream url | http://quarkus-cafe-web-{{ project_namespace}}.apps.{{ domain }}/dashboard/stream
@@ -94,26 +95,26 @@ Example Playbook
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 ```
-    - hosts: localhost
-      become: yes
-      vars:
-        openshift_token: 123456789
-        openshift_url: https://api.ocp4.example.com:6443
-        insecure_skip_tls_verify: true
-        project_namespace: quarkus-cafe-demo
-        delete_deployment: false  
-        skip_amq_install: false
-        skip_quarkus_cafe_barista: false
-        skip_quarkus_cafe_core: false
-        skip_quarkus_cafe_kitchen: false
-        skip_quarkus_cafe_web: false
-        skip_quarkus_cafe_customermock: false
-        quarkus_build_memory_limit: 6Gi
-        quarkus_build_cpu_limit: 1
-        quarkus_core_build_memory_limit: 6Gi
-        domain: ocp4.example.com
-      roles:
-      - quarkus-cafe-demo-role
+- hosts: localhost
+  become: yes
+  vars:
+    openshift_token: 123456789
+    openshift_url: https://api.ocp4.example.com:6443
+    insecure_skip_tls_verify: true
+    project_namespace: quarkus-cafe-demo
+    delete_deployment: false
+    skip_amq_install: false
+    skip_quarkus_cafe_barista: false
+    skip_quarkus_cafe_core: false
+    skip_quarkus_cafe_kitchen: false
+    skip_quarkus_cafe_web: false
+    skip_quarkus_cafe_customermock: false
+    quarkus_build_memory_limit: 6Gi
+    quarkus_build_cpu_limit: 1
+    quarkus_core_build_memory_limit: 8Gi
+    domain: ocp4.example.com
+  roles:
+    - quarkus-cafe-demo-role
 ```
 
 

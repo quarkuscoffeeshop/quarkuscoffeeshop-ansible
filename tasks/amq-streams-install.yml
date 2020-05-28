@@ -75,6 +75,7 @@
   until: "'No resources found' in install_status.stderr or '0' in install_status.stdout"
   retries: 60
   delay: 15
+  ignore_errors: yes
   args:
     executable: /bin/bash
 

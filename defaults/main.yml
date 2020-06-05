@@ -2,6 +2,7 @@
 # defaults file for quarkus-cafe-demo-role
 openshift_token: 1234567890
 openshift_url: https://api.ocp4.example.com:6443
+deployment_method: docker #s2i or from docker
 insecure_skip_tls_verify: true
 project_namespace: quarkus-cafe-demo
 git_url: https://github.com/jeremyrdavis/quarkus-cafe-demo.git

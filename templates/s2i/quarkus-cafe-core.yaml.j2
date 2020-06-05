@@ -6,29 +6,30 @@ items:
     annotations:
       openshift.io/generated-by: OpenShiftNewApp
     labels:
-      app: quarkus-cafe-web
-      app.kubernetes.io/component: quarkus-cafe-web
-      app.kubernetes.io/instance: quarkus-cafe-web
-    name: quarkus-cafe-web
+      app: quarkus-cafe-core
+      app.kubernetes.io/component: quarkus-cafe-core
+      app.kubernetes.io/instance: quarkus-cafe-core
+    name: quarkus-cafe-core
     namespace: {{ project_namespace }}
   spec:
     failedBuildsHistoryLimit: 5
+    completionDeadlineSeconds: 1800
     nodeSelector: null
     output:
       to:
         kind: ImageStreamTag
-        name: quarkus-cafe-web:latest
+        name: quarkus-cafe-core:latest
     postCommit: {}
     resources:
       limits:
         cpu: "{{ quarkus_build_cpu_limit }}"
-        memory: {{ quarkus_build_memory_limit }}
+        memory: {{ quarkus_core_build_memory_limit }} 
       requests:
         cpu: "{{ quarkus_build_cpu_limit }}"
-        memory: {{ quarkus_build_memory_limit }}
+        memory: {{ quarkus_core_build_memory_limit }} 
     runPolicy: Serial
     source:
-      contextDir: quarkus-cafe-web
+      contextDir: quarkus-cafe-core
       git:
         uri: {{ git_url }}
       type: Git
@@ -36,15 +37,15 @@ items:
       sourceStrategy:
         from:
           kind: ImageStreamTag
-          name: {{ quarkus_image_stream_name }}
+          name:  {{ quarkus_image_stream_name }}
       type: Source
     successfulBuildsHistoryLimit: 5
     triggers:
     - github:
-        secret: im_q5SVY3MxC28Km7RZx
+        secret: QRyCyCTic7V3Ccuam4hA
       type: GitHub
     - generic:
-        secret: DzpubXIPisZxrqjnkQRZ
+        secret: qkYCJYOsg80PYiYOMKlB
       type: Generic
     - type: ConfigChange
     - imageChange:
@@ -57,10 +58,10 @@ items:
       openshift.io/generated-by: OpenShiftNewApp
     generation: 1
     labels:
-      app: quarkus-cafe-web
-      app.kubernetes.io/component: quarkus-cafe-web
-      app.kubernetes.io/instance: quarkus-cafe-web
-    name: quarkus-cafe-web
+      app: quarkus-cafe-core
+      app.kubernetes.io/component: quarkus-cafe-core
+      app.kubernetes.io/instance: quarkus-cafe-core
+    name: quarkus-cafe-core
     namespace: {{ project_namespace }}
   spec:
     lookupPolicy:
@@ -70,18 +71,18 @@ items:
   metadata:
     annotations:
       openshift.io/generated-by: OpenShiftNewApp
-    generation: 3
+    generation: 4
     labels:
-      app: quarkus-cafe-web
-      app.kubernetes.io/component: quarkus-cafe-web
-      app.kubernetes.io/instance: quarkus-cafe-web
-    name: quarkus-cafe-web
+      app: quarkus-cafe-core
+      app.kubernetes.io/component: quarkus-cafe-core
+      app.kubernetes.io/instance: quarkus-cafe-core
+    name: quarkus-cafe-core
     namespace: {{ project_namespace }}
   spec:
     replicas: 1
     revisionHistoryLimit: 10
     selector:
-      deploymentconfig: quarkus-cafe-web
+      deploymentconfig: quarkus-cafe-core
     strategy:
       activeDeadlineSeconds: 21600
       resources: {}
@@ -96,18 +97,25 @@ items:
       metadata:
         annotations:
           openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
         labels:
-          deploymentconfig: quarkus-cafe-web
+          deploymentconfig: quarkus-cafe-core
       spec:
         containers:
         - env:
-          - name: STREAM_URL
-            value: {{ kafka_stream_url }}
-          - name: KAFKA_BOOTSTRAP_SERVERS
+          - name: KAFKA_BOOTSTRAP_URLS
             value: {{ kafka_cluster_name }}-kafka-bootstrap:9092
-          image: image-registry.openshift-image-registry.svc:5000/{{ project_namespace }}/quarkus-cafe-web@sha256:331e77d27b246846ebac62451e27042bf0cadd0af4792ad4b0fafbece45b293f
+          - name: MONGO_DB
+            value: cafedb
+          - name: MONGO_URL
+            value: mongodb://mongodb:mongodb@mongodb:27017/cafedb
+          - name: MONGO_USERNAME
+            value: mongodb
+          - name: MONGO_PASSWORD
+            value: mongodb
+          image: image-registry.openshift-image-registry.svc:5000/{{ project_namespace }}/quarkus-cafe-core@sha256:dce6b5be7c172046099e2a753c852180fc103878a9fc65002267eb23b8c6f77f
           imagePullPolicy: Always
-          name: quarkus-cafe-web
+          name: quarkus-cafe-core
           ports:
           - containerPort: 8080
             protocol: TCP
@@ -125,54 +133,32 @@ items:
     - imageChangeParams:
         automatic: true
         containerNames:
-        - quarkus-cafe-web
+        - quarkus-cafe-core
         from:
           kind: ImageStreamTag
-          name: quarkus-cafe-web:latest
+          name: quarkus-cafe-core:latest
           namespace: {{ project_namespace }}
-        lastTriggeredImage: image-registry.openshift-image-registry.svc:5000/{{ project_namespace }}/quarkus-cafe-web@sha256:331e77d27b246846ebac62451e27042bf0cadd0af4792ad4b0fafbece45b293f
+        lastTriggeredImage: image-registry.openshift-image-registry.svc:5000/{{ project_namespace }}/quarkus-cafe-core@sha256:dce6b5be7c172046099e2a753c852180fc103878a9fc65002267eb23b8c6f77f
       type: ImageChange
-- apiVersion: route.openshift.io/v1
-  kind: Route
-  metadata:
-    annotations:
-      openshift.io/host.generated: "true"
-    labels:
-      app: quarkus-cafe-web
-      app.kubernetes.io/component: quarkus-cafe-web
-      app.kubernetes.io/instance: quarkus-cafe-web
-    name: quarkus-cafe-web
-    namespace: {{ project_namespace }}
-  spec:
-    host: quarkus-cafe-web-{{ project_namespace }}.apps.{{ domain }}
-    port:
-      targetPort: 8080-tcp
-    subdomain: ""
-    to:
-      kind: Service
-      name: quarkus-cafe-web
-      weight: 100
-    wildcardPolicy: None
 - apiVersion: v1
   kind: Service
   metadata:
     annotations:
       openshift.io/generated-by: OpenShiftNewApp
     labels:
-      app: quarkus-cafe-web
-      app.kubernetes.io/component: quarkus-cafe-web
-      app.kubernetes.io/instance: quarkus-cafe-web
-    name: quarkus-cafe-web
+      app: quarkus-cafe-core
+      app.kubernetes.io/component: quarkus-cafe-core
+      app.kubernetes.io/instance: quarkus-cafe-core
+    name: quarkus-cafe-core
     namespace: {{ project_namespace }}
   spec:
-    clusterIP: 172.30.31.19
     ports:
     - name: 8080-tcp
       port: 8080
       protocol: TCP
       targetPort: 8080
     selector:
-      deploymentconfig: quarkus-cafe-web
+      deploymentconfig: quarkus-cafe-core
     sessionAffinity: None
     type: ClusterIP
   status:

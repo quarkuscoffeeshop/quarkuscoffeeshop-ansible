@@ -62,6 +62,7 @@ Role Variables
 --------------
 Type  | Description  | Default Value
 --|---|--
+deployment_method | docker or s2i build | docker
 skip_amq_install |  Skip Red Hat AMQ Install  |  false
 skip_quarkus_cafe_barista |  Skip quarkus-cafe-barista install  |  false
 skip_quarkus_cafe_core |  Skip quarkus-cafe-core install  |  false
@@ -98,6 +99,7 @@ Including an example of how to use your role (for instance, with variables passe
 - hosts: localhost
   become: yes
   vars:
+    deployment_method: docker
     openshift_token: 123456789
     openshift_url: https://api.ocp4.example.com:6443
     insecure_skip_tls_verify: true

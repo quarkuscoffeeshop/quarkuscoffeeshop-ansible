@@ -9,13 +9,13 @@
 - name: Create Subscription to AMQ
   command: "oc create -f {{ config_location }}/amq-sub.yaml"
   register: rbac_result
-  when: not delete_deployment
+  when: not delete_deployment|bool
 
 - name: Waiting for  AMQ Subscription to complete
   shell: |
     set -o pipefail && oc get csv | grep {{ amqstartingCSV }}
   register: install_status
-  when: not delete_deployment
+  when: not delete_deployment|bool
   until: "'Succeeded' in install_status.stdout"
   retries: 60
   delay: 15
@@ -32,13 +32,13 @@
 
 - name: Create kafka instance
   command: "oc create -f {{ config_location }}/amq-kafka-instance.yaml"
-  when: not delete_deployment
+  when: not delete_deployment|bool
 
 - name: Waiting for  kafka instances to be deployed
   shell: |
     set -o pipefail && oc get pods | grep Running | grep {{ kafka_cluster_name }} |  wc -l
   register: install_status
-  when: not delete_deployment
+  when: not delete_deployment|bool
   until: "'7' in install_status.stdout"
   retries: 60
   delay: 15
@@ -55,23 +55,23 @@
 
 - name: Create kafka topics
   command: "oc create -f {{ config_location }}/amq-kafka-topics.yaml"
-  when: not delete_deployment
+  when: not delete_deployment|bool
 
 - name: Remove kafka topics
   command: "oc delete -f {{ config_location }}/amq-kafka-topics.yaml"
   ignore_errors: yes
-  when: delete_deployment
+  when: delete_deployment|bool
 
 - name: Remove kafka instance
   command: "oc delete -f {{ config_location }}/amq-kafka-instance.yaml"
   ignore_errors: yes
-  when: delete_deployment
+  when: delete_deployment|bool
 
 - name: Waiting for  kafka instances to be deleted
   shell: |
     set -o pipefail && oc get pods | grep Running | grep {{ kafka_cluster_name }} | wc -l
   register: install_status
-  when: delete_deployment
+  when: delete_deployment|bool
   until: "'No resources found' in install_status.stderr or '0' in install_status.stdout"
   retries: 60
   delay: 15
@@ -82,9 +82,9 @@
 - name: Remove AMQ Subscription
   command: "oc delete -f {{ config_location }}/amq-sub.yaml"
   ignore_errors: yes
-  when: delete_deployment
+  when: delete_deployment|bool
 
 - name: Remove AMQ
   command: "oc delete csv {{ amqstartingCSV }} -n {{ project_namespace }}"
   ignore_errors: yes
-  when: delete_deployment
+  when: delete_deployment|bool

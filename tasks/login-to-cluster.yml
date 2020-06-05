@@ -10,7 +10,7 @@
   command: "oc new-project {{ project_namespace }}"
   register: create_project_result
   ignore_errors: yes
-  when: not delete_deployment
+  when: not delete_deployment|bool
 
 - name: Switch to project for quarkus-cafe
   command:  "oc project {{ project_namespace }}"

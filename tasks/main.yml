@@ -21,8 +21,8 @@
 
 - name: Configure quarkus-cafe-web Application
   include_tasks: quarkus-cafe-web.yaml
-  when: not skip_quarkus_cafe_web and deployment_method == "s2i"
+  when: not skip_quarkus_cafe_web
 
 - name: Configure quarkus-cafe-customermock Application
   include_tasks: quarkus-cafe-customermock.yaml
-  when: not skip_quarkus_cafe_customermock and deployment_method == "s2i"
+  when: not skip_quarkus_cafe_customermock

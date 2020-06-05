@@ -1,11 +1,20 @@
 - name: Copying over quarkus-cafe-customermock application
   template:
-    src: templates/quarkus-cafe-customermock.yaml.j2
+    src: templates/s2i/quarkus-cafe-customermock.yaml.j2
     dest:  "{{ config_location }}/quarkus-cafe-customermock.yaml"
     owner: root
     group: root
     mode: 0666
-  when: not skip_quarkus_cafe_customermock
+  when: not skip_quarkus_cafe_customermock and deployment_method == "s2i"
+
+- name: Copying over quarkus-cafe-customermock application
+  template:
+    src: templates/docker/quarkus-cafe-customermock.yaml.j2
+    dest:  "{{ config_location }}/quarkus-cafe-customermock.yaml"
+    owner: root
+    group: root
+    mode: 0666
+  when: not skip_quarkus_cafe_customermock and deployment_method == "docker"
 
 - name: Create quarkus-cafe-customermock instance
   command: "oc create -f {{ config_location }}/quarkus-cafe-customermock.yaml"
@@ -20,7 +29,7 @@
   shell: |
     set -o pipefail && oc get pods  | grep Completed | grep quarkus-cafe-customermock | wc -l
   register: install_status
-  when: not delete_deployment|bool
+  when: not delete_deployment|bool and deployment_method == "s2i"
   until: "'2' in install_status.stdout"
   retries: 120
   delay: 15

@@ -4,6 +4,7 @@
    - openshift_token is defined
    - openshift_token is not none
    - openshift_token|trim() != ""
+   - skip_ocp_login|bool
   ignore_errors: no
 
 - name: Create new project for quarkus-cafe

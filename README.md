@@ -103,6 +103,7 @@ Including an example of how to use your role (for instance, with variables passe
     openshift_token: 123456789
     openshift_url: https://api.ocp4.example.com:6443
     insecure_skip_tls_verify: true
+    skip_ocp_login: false
     project_namespace: quarkus-cafe-demo
     delete_deployment: false
     skip_amq_install: false

@@ -75,5 +75,4 @@
       when: not skip_quarkus_cafe_customermock
       environment:
         KUBECONFIG: "{{ kubeconfig_path }}"
-
   when: use_kubeconfig | bool 

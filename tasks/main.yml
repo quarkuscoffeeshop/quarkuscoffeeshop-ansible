@@ -2,6 +2,10 @@
 # tasks file for quarkus-cafe-demo-role
 - name: Login Cluster
   include_tasks: login-to-cluster.yml
+  when: "not {{ lookup('env','KUBECONFIG') }}"
+
+- name: Create Quarkus project 
+  include_tasks: create-project.yml
 
 - name: AMQ Streams installation
   include_tasks: amq-streams-install.yml

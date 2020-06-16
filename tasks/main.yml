@@ -1,11 +1,12 @@
 ---
 # tasks file for quarkus-cafe-demo-role
-- name: checking kubeconfig state
-  set_fact: kubeconfig="{{ lookup('env','KUBECONFIG') }}"
-
 - name: Login Cluster
   include_tasks: login-to-cluster.yml
-  when: kubeconfig == ""
+  when: not use_kubeconfig | bool
+
+- name: Source the KUBECONFIG file
+  shell: source {{ kubeconfig_path }}
+  when: use_kubeconfig | bool
 
 - name: Create Quarkus project 
   include_tasks: create-project.yml

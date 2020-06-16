@@ -17,17 +17,17 @@
   when: not skip_quarkus_cafe_customermock and deployment_method == "docker"
 
 - name: Create quarkus-cafe-customermock instance
-  command: "oc create -f {{ config_location }}/quarkus-cafe-customermock.yaml"
+  command: "/usr/local/bin/oc create -f {{ config_location }}/quarkus-cafe-customermock.yaml"
   when: not delete_deployment|bool
 
 - name: Start quarkus-cafe-customermock build
-  command: "oc start-build bc/quarkus-cafe-customermock"
+  command: "/usr/local/bin/oc start-build bc/quarkus-cafe-customermock"
   ignore_errors: yes
   when: not delete_deployment|bool
 
 - name: Waiting for quarkus-cafe-customermock build to complete
   shell: |
-    set -o pipefail && oc get pods  | grep Completed | grep quarkus-cafe-customermock | wc -l
+    set -o pipefail && /usr/local/bin/oc get pods  | grep Completed | grep quarkus-cafe-customermock | wc -l
   register: install_status
   when: not delete_deployment|bool and deployment_method == "s2i"
   until: "'2' in install_status.stdout"
@@ -38,7 +38,7 @@
 
 - name: Waiting for quarkus-cafe-customermock deployment
   shell: |
-    set -o pipefail && oc get pods  | grep Running | grep quarkus-cafe-customermock | wc -l
+    set -o pipefail && /usr/local/bin/oc get pods  | grep Running | grep quarkus-cafe-customermock | wc -l
   register: install_status
   when: not delete_deployment|bool
   until: "'1' in install_status.stdout"
@@ -48,6 +48,6 @@
     executable: /bin/bash
 
 - name: Delete quarkus-cafe-customermock instance
-  command: "oc delete -f {{ config_location }}/quarkus-cafe-customermock.yaml"
+  command: "/usr/local/bin/oc delete -f {{ config_location }}/quarkus-cafe-customermock.yaml"
   ignore_errors: yes
   when: delete_deployment|bool

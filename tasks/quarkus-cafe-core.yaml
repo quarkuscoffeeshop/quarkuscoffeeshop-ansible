@@ -1,10 +1,10 @@
 - name: Create mongodb instance
-  command: "oc new-app --name=mongodb --template=mongodb-ephemeral -e MONGODB_USER=mongodb -e MONGODB_PASSWORD=mongodb -e MONGODB_DATABASE=cafedb -e MONGODB_ADMIN_PASSWORD=mongodb"
+  command: "/usr/local/bin/oc new-app --name=mongodb --template=mongodb-ephemeral -e MONGODB_USER=mongodb -e MONGODB_PASSWORD=mongodb -e MONGODB_DATABASE=cafedb -e MONGODB_ADMIN_PASSWORD=mongodb"
   when: not delete_deployment|bool
 
 - name: Waiting for mongodb build to complete
   shell: |
-   set -o pipefail &&  oc get pods  | grep Completed | grep mongodb | wc -l
+   set -o pipefail &&  /usr/local/bin/oc get pods  | grep Completed | grep mongodb | wc -l
   register: install_status
   when: not delete_deployment|bool
   until: "'1' in install_status.stdout"
@@ -15,7 +15,7 @@
 
 - name: Waiting for mongodb deployment
   shell: |
-    set -o pipefail && oc get pods  | grep Running | grep mongodb | wc -l
+    set -o pipefail && /usr/local/bin/oc get pods  | grep Running | grep mongodb | wc -l
   register: install_status
   when: not delete_deployment|bool
   until: "'1' in install_status.stdout"
@@ -25,12 +25,12 @@
     executable: /bin/bash
 
 - name: Delete mongodb instance
-  command: "oc delete all --selector app=mongodb"
+  command: "/usr/local/bin/oc delete all --selector app=mongodb"
   ignore_errors: yes
   when: delete_deployment|bool
 
 - name: Delete mongodb instance
-  command: "oc delete secret mongodb"
+  command: "/usr/local/bin/oc delete secret mongodb"
   ignore_errors: yes
   when: delete_deployment|bool
 
@@ -53,12 +53,12 @@
   when: not skip_quarkus_cafe_core  and  deployment_method == "docker"
 
 - name: Create quarkus-cafe-core instance
-  command: "oc create -f {{ config_location }}/quarkus-cafe-core.yaml"
+  command: "/usr/local/bin/oc create -f {{ config_location }}/quarkus-cafe-core.yaml"
   when: not delete_deployment|bool
 
 - name: Waiting for quarkus-cafe-core build to complete
   shell: |
-    set -o pipefail && oc get pods  | grep Completed | grep quarkus-cafe-core | wc -l
+    set -o pipefail && /usr/local/bin/oc get pods  | grep Completed | grep quarkus-cafe-core | wc -l
   register: install_status
   when: not delete_deployment|bool  and  deployment_method == "s2i"
   until: "'2' in install_status.stdout"
@@ -69,7 +69,7 @@
 
 - name: Waiting for quarkus-cafe-core deployment
   shell: |
-    set -o pipefail && oc get pods  | grep Running | grep quarkus-cafe-core | wc -l
+    set -o pipefail && /usr/local/bin/oc get pods  | grep Running | grep quarkus-cafe-core | wc -l
   register: install_status
   when: not delete_deployment|bool
   until: "'1' in install_status.stdout"
@@ -79,6 +79,6 @@
     executable: /bin/bash
 
 - name: Delete quarkus-cafe-core instance
-  command: "oc delete -f {{ config_location }}/quarkus-cafe-core.yaml"
+  command: "/usr/local/bin/oc delete -f {{ config_location }}/quarkus-cafe-core.yaml"
   ignore_errors: yes
   when: delete_deployment|bool

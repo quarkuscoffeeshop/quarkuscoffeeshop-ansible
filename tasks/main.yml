@@ -37,42 +37,30 @@
   block:
     - name: Create Quarkus project 
       include_tasks: create-project.yml
-      environment:
-        KUBECONFIG: "{{ kubeconfig_path }}"
 
     - name: AMQ Streams installation
       include_tasks: amq-streams-install.yml
       when: not skip_amq_install
-      environment:
-        KUBECONFIG: "{{ kubeconfig_path }}"
 
     - name: Configure quarkus-cafe-barista Application
       include_tasks: quarkus-cafe-barista.yml
       when: not skip_quarkus_cafe_barista
-      environment:
-        KUBECONFIG: "{{ kubeconfig_path }}"
 
     - name: Configure quarkus-cafe-core Application
       include_tasks: quarkus-cafe-core.yaml
       when: not skip_quarkus_cafe_core
-      environment:
-        KUBECONFIG: "{{ kubeconfig_path }}"
 
     - name: Configure quarkus-cafe-kitchen Application
       include_tasks: quarkus-cafe-kitchen.yaml
       when: not skip_quarkus_cafe_kitchen
-      environment:
-        KUBECONFIG: "{{ kubeconfig_path }}"
 
     - name: Configure quarkus-cafe-web Application
       include_tasks: quarkus-cafe-web.yaml
       when: not skip_quarkus_cafe_web
-      environment:
-        KUBECONFIG: "{{ kubeconfig_path }}"
 
     - name: Configure quarkus-cafe-customermock Application
       include_tasks: quarkus-cafe-customermock.yaml
       when: not skip_quarkus_cafe_customermock
-      environment:
-        KUBECONFIG: "{{ kubeconfig_path }}"
-  when: use_kubeconfig | bool 
+  when: use_kubeconfig | bool
+  environment:
+    KUBECONFIG: "{{ kubeconfig_path }}"

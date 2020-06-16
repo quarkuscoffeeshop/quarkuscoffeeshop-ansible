@@ -2,8 +2,8 @@
   template:
     src: template/s2i/quarkus-cafe-web.yaml.j2
     dest:  "{{ config_location }}/quarkus-cafe-web.yaml"
-    owner: root
-    group: root
+    owner: "{{ default_owner }}"
+    group: "{{ default_owner }}"
     mode: 0666
   when: not skip_quarkus_cafe_web and deployment_method == "s2i"
 
@@ -11,8 +11,8 @@
   template:
     src: templates/docker/quarkus-cafe-web.yaml.j2
     dest:  "{{ config_location }}/quarkus-cafe-web.yaml"
-    owner: root
-    group: root
+    owner: "{{ default_owner }}"
+    group: "{{ default_owner }}"
     mode: 0666
   when: not skip_quarkus_cafe_web  and  deployment_method == "docker"
 

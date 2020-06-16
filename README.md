@@ -73,6 +73,7 @@ openshift_token | OpenShift login token  | 123456789
 openshift_url | OpenShift target url  | https://master.example.com
 project_namespace | OpenShift Project name for the quarkus-cafe | quarkus-cafe-demo
 insecure_skip_tls_verify  |  Skip insecure tls verify  |  true
+default_owner | Default owner of template files. | root
 delete_deployment  | delete the deployment and project for quarkus-cafe-demo  | false
 amqstartingCSV  | Red Hat AMQ csv version  |  amqstreams.v1.4.0
 config_location  | default location for application templates  | "/tmp/"
@@ -103,6 +104,7 @@ Including an example of how to use your role (for instance, with variables passe
     openshift_token: 123456789
     openshift_url: https://api.ocp4.example.com:6443
     insecure_skip_tls_verify: true
+    default_owner: root
     project_namespace: quarkus-cafe-demo
     delete_deployment: false
     skip_amq_install: false

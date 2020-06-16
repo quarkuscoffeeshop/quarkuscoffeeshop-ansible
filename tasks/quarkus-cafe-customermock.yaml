@@ -2,8 +2,8 @@
   template:
     src: templates/s2i/quarkus-cafe-customermock.yaml.j2
     dest:  "{{ config_location }}/quarkus-cafe-customermock.yaml"
-    owner: root
-    group: root
+    owner: "{{ default_owner }}"
+    group: "{{ default_owner }}"
     mode: 0666
   when: not skip_quarkus_cafe_customermock and deployment_method == "s2i"
 
@@ -11,8 +11,8 @@
   template:
     src: templates/docker/quarkus-cafe-customermock.yaml.j2
     dest:  "{{ config_location }}/quarkus-cafe-customermock.yaml"
-    owner: root
-    group: root
+    owner: "{{ default_owner }}"
+    group: "{{ default_owner }}"
     mode: 0666
   when: not skip_quarkus_cafe_customermock and deployment_method == "docker"
 

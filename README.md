@@ -160,8 +160,9 @@ oc get crds -o name | grep '.*\.strimzi\.io' | xargs -r -n 1 oc delete
 
 To-Do
 -------
-* Deployment vs Deployment Config Option
-* Need to test against Openshift 4.4
+* ACM deployment 
+* Ansible k8s – Manage Kubernetes (K8s) objects deployment example
+
 
 License
 -------

@@ -9,6 +9,7 @@ Requirements
 
 * OpenShift 4.x Cluster installed
 * Ansible should be installed on machine
+* oc cli must be installed under `/usr/local/bin/oc`
 
 ScreenShots
 ------------------------------------------------
@@ -71,6 +72,8 @@ skip_quarkus_cafe_web |  Skip quarkus-cafe-web install  |  false
 skip_quarkus_cafe_customermock |  Skip quarkus-cafe-customermock install  |  false
 openshift_token | OpenShift login token  | 123456789
 openshift_url | OpenShift target url  | https://master.example.com
+use_kubeconfig | use the kubeconfig file to authenticate to OpenShift  | true
+kubeconfig_path | This defines the path to your kubeconfig folder| /home/username/ocp4folder/auth/kubeconfig
 project_namespace | OpenShift Project name for the quarkus-cafe | quarkus-cafe-demo
 insecure_skip_tls_verify  |  Skip insecure tls verify  |  true
 default_owner | Default owner of template files. | root
@@ -92,10 +95,8 @@ Dependencies
 * Ansible
 * OpenShift cli
 
-Example Playbook
+Example Playbook using OpenShift Token 
 ----------------
-
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 ```
 - hosts: localhost
   become: yes
@@ -103,6 +104,34 @@ Including an example of how to use your role (for instance, with variables passe
     deployment_method: docker
     openshift_token: 123456789
     openshift_url: https://api.ocp4.example.com:6443
+    use_kubeconfig: true
+    insecure_skip_tls_verify: true
+    default_owner: root
+    project_namespace: quarkus-cafe-demo
+    delete_deployment: false
+    skip_amq_install: false
+    skip_quarkus_cafe_barista: false
+    skip_quarkus_cafe_core: false
+    skip_quarkus_cafe_kitchen: false
+    skip_quarkus_cafe_web: false
+    skip_quarkus_cafe_customermock: false
+    quarkus_build_memory_limit: 6Gi
+    quarkus_build_cpu_limit: 1
+    quarkus_core_build_memory_limit: 8Gi
+    domain: ocp4.example.com
+  roles:
+    - quarkus-cafe-demo-role
+```
+
+Example Playbook using KUBEADMIN config file
+----------------
+```
+- hosts: localhost
+  become: yes
+  vars:
+    deployment_method: docker
+    use_kubeconfig: true
+    kubeconfig_path: /home/username/ocp4folder/auth/kubeconfig
     insecure_skip_tls_verify: true
     default_owner: root
     project_namespace: quarkus-cafe-demo

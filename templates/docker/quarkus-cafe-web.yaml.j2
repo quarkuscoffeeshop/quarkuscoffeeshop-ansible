@@ -76,7 +76,7 @@ items:
             value: {{ kafka_stream_url }}
           - name: KAFKA_BOOTSTRAP_SERVERS
             value: {{ kafka_cluster_name }}-kafka-bootstrap:9092
-          image: jeremydavis/quarkus-cafe-web@sha256:c5c1a38613185840bf30efa2be79c01732496bafa2145596e53d95fcdffcb834
+          image: jeremydavis/quarkus-cafe-web
           imagePullPolicy: Always
           name: quarkus-cafe-web
           ports:

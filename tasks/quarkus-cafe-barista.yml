@@ -3,7 +3,7 @@
     src: templates/s2i/quarkus-cafe-barista.yaml.j2
     dest:  "{{ config_location }}/quarkus-cafe-barista.yaml"
     owner: "{{ default_owner }}"
-    group: "{{ default_owner }}"
+    group: "{{ default_group }}"
     mode: 0666
   when: not skip_quarkus_cafe_barista and deployment_method == "s2i"
 
@@ -12,7 +12,7 @@
     src: templates/docker/quarkus-cafe-barista.yaml.j2
     dest:  "{{ config_location }}/quarkus-cafe-barista.yaml"
     owner: "{{ default_owner }}"
-    group: "{{ default_owner }}"
+    group: "{{ default_group }}"
     mode: 0666
   when: not skip_quarkus_cafe_barista and deployment_method == "docker"
 

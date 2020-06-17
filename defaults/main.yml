@@ -4,6 +4,7 @@ openshift_token: 1234567890
 openshift_url: https://api.ocp4.example.com:6443
 deployment_method: docker #s2i or from docker
 default_owner: root
+default_group: root
 use_kubeconfig: false
 kubeconfig_path: /home/username/ocp4folder/auth/kubeconfig
 insecure_skip_tls_verify: true

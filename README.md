@@ -77,6 +77,7 @@ kubeconfig_path | This defines the path to your kubeconfig folder| /home/usernam
 project_namespace | OpenShift Project name for the quarkus-cafe | quarkus-cafe-demo
 insecure_skip_tls_verify  |  Skip insecure tls verify  |  true
 default_owner | Default owner of template files. | root
+default_group | Default group of template files. |  root
 delete_deployment  | delete the deployment and project for quarkus-cafe-demo  | false
 amqstartingCSV  | Red Hat AMQ csv version  |  amqstreams.v1.4.0
 config_location  | default location for application templates  | "/tmp/"
@@ -107,6 +108,7 @@ Example Playbook using OpenShift Token
     use_kubeconfig: false
     insecure_skip_tls_verify: true
     default_owner: root
+    default_group: root
     project_namespace: quarkus-cafe-demo
     delete_deployment: false
     skip_amq_install: false
@@ -134,6 +136,7 @@ Example Playbook using KUBEADMIN config file
     kubeconfig_path: /home/username/ocp4folder/auth/kubeconfig
     insecure_skip_tls_verify: true
     default_owner: root
+    default_group: root
     project_namespace: quarkus-cafe-demo
     delete_deployment: false
     skip_amq_install: false

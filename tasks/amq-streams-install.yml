@@ -3,7 +3,7 @@
     src: templates/amq-sub.yaml.j2
     dest:  "{{ config_location }}/amq-sub.yaml"
     owner: "{{ default_owner }}"
-    group: "{{ default_owner }}"
+    group: "{{ default_group }}"
     mode: 0666
 
 - name: Create Subscription to AMQ
@@ -27,7 +27,7 @@
     src: templates/amq-kafka-instance.yaml.j2
     dest:  "{{ config_location }}/amq-kafka-instance.yaml"
     owner: "{{ default_owner }}"
-    group: "{{ default_owner }}"
+    group: "{{ default_group }}"
     mode: 0666
 
 - name: Create kafka instance
@@ -50,7 +50,7 @@
     src: templates/amq-kafka-topics.yaml.j2
     dest:  "{{ config_location }}/amq-kafka-topics.yaml"
     owner: "{{ default_owner }}"
-    group: "{{ default_owner }}"
+    group: "{{ default_group }}"
     mode: 0666
 
 - name: Create kafka topics

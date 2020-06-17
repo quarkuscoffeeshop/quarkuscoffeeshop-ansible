@@ -104,7 +104,7 @@ Example Playbook using OpenShift Token
     deployment_method: docker
     openshift_token: 123456789
     openshift_url: https://api.ocp4.example.com:6443
-    use_kubeconfig: true
+    use_kubeconfig: false
     insecure_skip_tls_verify: true
     default_owner: root
     project_namespace: quarkus-cafe-demo

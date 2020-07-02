@@ -11,7 +11,7 @@ insecure_skip_tls_verify: true
 project_namespace: quarkus-cafe-demo
 git_url: https://github.com/jeremyrdavis/quarkus-cafe-demo.git
 delete_deployment: false
-amqstartingCSV: amqstreams.v1.4.1
+amqstartingCSV: amqstreams.v1.5.0
 config_location: "/tmp/"
 kafka_cluster_name: cafe-cluster
 skip_amq_install: false

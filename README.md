@@ -79,7 +79,7 @@ insecure_skip_tls_verify  |  Skip insecure tls verify  |  true
 default_owner | Default owner of template files. | root
 default_group | Default group of template files. |  root
 delete_deployment  | delete the deployment and project for quarkus-cafe-demo  | false
-amqstartingCSV  | Red Hat AMQ csv version  |  amqstreams.v1.4.0
+amqstartingCSV  | Red Hat AMQ csv version  |  amqstreams.v1.5.0
 config_location  | default location for application templates  | "/tmp/"
 git_url  | Default git url of quarkus-cafe-demo application  | https://github.com/jeremyrdavis/quarkus-cafe-demo.git
 quarkus_build_memory_limit  |  quarkus S2I memory build limit | 6Gi

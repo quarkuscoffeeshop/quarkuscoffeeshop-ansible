@@ -88,6 +88,7 @@ quarkus_core_build_memory_limit  |  quarkus-cafde-core S2I memory build limite  
 quarkus_image_stream_name  |  quarkus s2i image version  | ubi-quarkus-native-s2i:20.0.0-java11
 domain  |  OpenShift domain endpoint  | ocp4.example.com
 kafka_stream_url  |  Kafka stream url | http://quarkus-cafe-web-{{ project_namespace}}.apps.{{ domain }}/dashboard/stream
+version_tag  |  Default container version tag | 2.1
 
 
 Dependencies
@@ -109,6 +110,7 @@ Example Playbook using OpenShift Token
     insecure_skip_tls_verify: true
     default_owner: root
     default_group: root
+    version_tag: 2.1
     project_namespace: quarkus-cafe-demo
     delete_deployment: false
     skip_amq_install: false
@@ -137,6 +139,7 @@ Example Playbook using KUBEADMIN config file
     insecure_skip_tls_verify: true
     default_owner: root
     default_group: root
+    version_tag: 2.1
     project_namespace: quarkus-cafe-demo
     delete_deployment: false
     skip_amq_install: false

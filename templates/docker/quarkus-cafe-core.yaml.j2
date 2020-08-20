@@ -24,7 +24,7 @@ items:
         openshift.io/imported-from: jeremydavis/quarkus-cafe-core
       from:
         kind: DockerImage
-        name: jeremydavis/quarkus-cafe-core
+        name: jeremydavis/quarkus-cafe-core:{{ version_tag }}
       generation: 2
       importPolicy: {}
       name: latest
@@ -83,7 +83,7 @@ items:
             value: mongodb
           - name: MONGO_PASSWORD
             value: mongodb
-          image: jeremydavis/quarkus-cafe-core
+          image: jeremydavis/quarkus-cafe-core:{{ version_tag }}
           imagePullPolicy: Always
           name: quarkus-cafe-core
           ports:

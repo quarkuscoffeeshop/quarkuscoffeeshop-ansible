@@ -22,7 +22,7 @@ items:
         openshift.io/imported-from: jeremydavis/quarkus-cafe-kitchen
       from:
         kind: DockerImage
-        name: jeremydavis/quarkus-cafe-kitchen
+        name: jeremydavis/quarkus-cafe-kitchen:{{ version_tag }}
       importPolicy: {}
       name: latest
       referencePolicy:
@@ -70,7 +70,7 @@ items:
         - env:
           - name: KAFKA_BOOTSTRAP_URLS
             value: {{ kafka_cluster_name }}-kafka-bootstrap:9092
-          image: jeremydavis/quarkus-cafe-kitchen
+          image: jeremydavis/quarkus-cafe-kitchen:{{ version_tag }}
           imagePullPolicy: Always
           name: quarkus-cafe-kitchen
           ports:

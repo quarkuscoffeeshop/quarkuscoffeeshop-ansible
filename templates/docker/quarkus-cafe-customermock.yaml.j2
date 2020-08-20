@@ -23,7 +23,7 @@ items:
         openshift.io/imported-from: jeremydavis/quarkus-cafe-customermocker
       from:
         kind: DockerImage
-        name: jeremydavis/quarkus-cafe-customermocker
+        name: jeremydavis/quarkus-cafe-customermocker:{{ version_tag }}
       generation: 2
       importPolicy: {}
       name: latest
@@ -72,7 +72,7 @@ items:
         - env:
           - name: REST_URL
             value: http://quarkus-cafe-web-{{ project_namespace}}.apps.{{ domain }}
-          image: jeremydavis/quarkus-cafe-customermocker
+          image: jeremydavis/quarkus-cafe-customermocker:{{ version_tag }}
           imagePullPolicy: Always
           name: quarkus-cafe-customermocker
           ports:

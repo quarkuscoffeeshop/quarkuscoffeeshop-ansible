@@ -23,7 +23,7 @@ items:
         openshift.io/imported-from: jeremydavis/quarkus-cafe-web
       from:
         kind: DockerImage
-        name: jeremydavis/quarkus-cafe-web
+        name: jeremydavis/quarkus-cafe-web:{{ version_tag }}
       generation: 2
       importPolicy: {}
       name: latest
@@ -76,7 +76,7 @@ items:
             value: {{ kafka_stream_url }}
           - name: KAFKA_BOOTSTRAP_SERVERS
             value: {{ kafka_cluster_name }}-kafka-bootstrap:9092
-          image: jeremydavis/quarkus-cafe-web
+          image: jeremydavis/quarkus-cafe-web:{{ version_tag }}
           imagePullPolicy: Always
           name: quarkus-cafe-web
           ports:

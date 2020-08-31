@@ -23,7 +23,7 @@ items:
         openshift.io/imported-from: jeremydavis/quarkus-cafe-barista
       from:
         kind: DockerImage
-        name: jeremydavis/quarkus-cafe-barista:{{ version_tag }}
+        name: jeremydavis/quarkus-cafe-barista:{{ version_barista }}
       generation: 2
       importPolicy: {}
       name: latest
@@ -32,7 +32,7 @@ items:
 - apiVersion: apps/v1
   kind: Deployment
   metadata:
-    name: quarkus-cafe-barista-deployment
+    name: quarkus-cafe-barista
     labels:
       app: quarkus-cafe-barista
       app.kubernetes.io/component: quarkus-cafe-barista
@@ -57,7 +57,7 @@ items:
       spec:
         containers:
         - name: quarkus-cafe-barista
-          image: jeremydavis/quarkus-cafe-barista:{{ version_tag }}
+          image: jeremydavis/quarkus-cafe-barista:{{ version_barista }}
           ports:
           - containerPort: 8778
             protocol: TCP

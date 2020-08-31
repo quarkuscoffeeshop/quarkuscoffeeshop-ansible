@@ -5,7 +5,6 @@ openshift_url: https://api.ocp4.example.com:6443
 deployment_method: docker #s2i or from docker
 default_owner: root
 default_group: root
-version_tag: 2.1
 use_kubeconfig: false
 kubeconfig_path: /home/username/ocp4folder/auth/kubeconfig
 insecure_skip_tls_verify: true
@@ -27,3 +26,4 @@ quarkus_core_build_memory_limit:  8Gi # Default 8Gi
 quarkus_image_stream_name: ubi-quarkus-native-s2i:20.0.0-java11
 domain: ocp4.example.com
 kafka_stream_url: http://quarkus-cafe-web-{{ project_namespace}}.apps.{{ domain }}/dashboard/stream
+cors_origin: http://quarkus-cafe-web-quarkus-cafe.apps.cluster-lou-8d2b.lou-8d2b.sandbox74.opentlc.com

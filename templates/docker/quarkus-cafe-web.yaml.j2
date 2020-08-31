@@ -18,51 +18,35 @@ items:
     lookupPolicy:
       local: false
     tags:
-    - annotations:
+    - name: {{ version_web }}
+      annotations:
         openshift.io/generated-by: OpenShiftWebConsole
-        openshift.io/imported-from: jeremydavis/quarkus-cafe-web
+        openshift.io/imported-from: 'jeremydavis/quarkus-cafe-web:{{ version_web }}'
       from:
         kind: DockerImage
-        name: jeremydavis/quarkus-cafe-web:{{ version_tag }}
-      generation: 2
+        name: 'jeremydavis/quarkus-cafe-web:{{ version_web }}'
+      generation: 
       importPolicy: {}
-      name: latest
       referencePolicy:
         type: Source
 - apiVersion: apps/v1
   kind: Deployment
   metadata:
-    annotations:
-      alpha.image.policy.openshift.io/resolve-names: '*'
-      deployment.kubernetes.io/revision: "5"
-      image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"quarkus-cafe-web:latest","namespace":"quarkus-cafe-demo"},"fieldPath":"spec.template.spec.containers[?(@.name==\"quarkus-cafe-web\")].image"}]'
-      openshift.io/generated-by: OpenShiftWebConsole
-    generation: 5
+    name: quarkus-cafe-web
+    namespace: {{ project_namespace }}
     labels:
       app: quarkus-cafe-web
       app.kubernetes.io/component: quarkus-cafe-web
       app.kubernetes.io/instance: quarkus-cafe-web
       app.kubernetes.io/part-of: quarkus-cafe
       app.openshift.io/runtime-namespace: {{ project_namespace }}
-      jeremydavis/quarkus-cafe-web: ""
-    name: quarkus-cafe-web
-    namespace: {{ project_namespace }}
   spec:
-    progressDeadlineSeconds: 600
     replicas: 1
-    revisionHistoryLimit: 10
     selector:
       matchLabels:
         app: quarkus-cafe-web
-    strategy:
-      rollingUpdate:
-        maxSurge: 25%
-        maxUnavailable: 25%
-      type: RollingUpdate
     template:
       metadata:
-        annotations:
-          openshift.io/generated-by: OpenShiftWebConsole
         labels:
           app: quarkus-cafe-web
           deploymentconfig: quarkus-cafe-web
@@ -74,9 +58,11 @@ items:
             value: http://quarkus-cafe-web-{{ project_namespace}}.apps.{{ domain }}
           - name: STREAM_URL
             value: {{ kafka_stream_url }}
+          - name: CORS_ORIGINS
+            value: {{ cors_origin }}
           - name: KAFKA_BOOTSTRAP_SERVERS
             value: {{ kafka_cluster_name }}-kafka-bootstrap:9092
-          image: jeremydavis/quarkus-cafe-web:{{ version_tag }}
+          image: jeremydavis/quarkus-cafe-web:{{ version_web }}
           imagePullPolicy: Always
           name: quarkus-cafe-web
           ports:

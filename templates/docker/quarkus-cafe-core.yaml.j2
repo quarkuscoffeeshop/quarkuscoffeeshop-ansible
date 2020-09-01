@@ -5,8 +5,6 @@ items:
   metadata:
     annotations:
       openshift.io/image.dockerRepositoryCheck: "2020-05-28T19:40:38Z"
-    creationTimestamp: "2020-05-28T19:40:36Z"
-    generation: 2
     labels:
       app: quarkus-cafe-core
       app.kubernetes.io/component: quarkus-cafe-core
@@ -24,7 +22,7 @@ items:
         openshift.io/imported-from: jeremydavis/quarkus-cafe-core
       from:
         kind: DockerImage
-        name: jeremydavis/quarkus-cafe-core:{{ version_tag }}
+        name: jeremydavis/quarkus-cafe-core:{{ version_core }}
       generation: 2
       importPolicy: {}
       name: latest
@@ -33,26 +31,16 @@ items:
 - apiVersion: apps/v1
   kind: Deployment
   metadata:
-    annotations:
-      alpha.image.policy.openshift.io/resolve-names: '*'
-      deployment.kubernetes.io/revision: "2"
-      image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"quarkus-cafe-core:latest","namespace":"quarkus-cafe-demo"},"fieldPath":"spec.template.spec.containers[?(@.name==\"quarkus-cafe-core\")].image"}]'
-      openshift.io/generated-by: OpenShiftWebConsole
-    creationTimestamp: "2020-05-28T19:40:36Z"
-    generation: 2
+    name: quarkus-cafe-core
     labels:
       app: quarkus-cafe-core
       app.kubernetes.io/component: quarkus-cafe-core
       app.kubernetes.io/instance: quarkus-cafe-core
       app.kubernetes.io/part-of: quarkus-cafe
       app.openshift.io/runtime-namespace: {{ project_namespace }}
-      quarkus-cafe-core: ""
-    name: quarkus-cafe-core
-    namespace: {{ project_namespace }}
+      quarkus-cafe: ""
   spec:
-    progressDeadlineSeconds: 600
     replicas: 1
-    revisionHistoryLimit: 10
     selector:
       matchLabels:
         app: quarkus-cafe-core
@@ -63,40 +51,27 @@ items:
       type: RollingUpdate
     template:
       metadata:
-        annotations:
-          openshift.io/generated-by: OpenShiftWebConsole
-        creationTimestamp: null
         labels:
           app: quarkus-cafe-core
-          deploymentconfig: quarkus-cafe-core
-          quarkus-cafe-core: ""
       spec:
         containers:
-        - env:
-          - name: KAFKA_BOOTSTRAP_URLS
-            value: {{ kafka_cluster_name }}-kafka-bootstrap:9092
-          - name: MONGO_DB
-            value: cafedb
-          - name: MONGO_URL
-            value: mongodb://mongodb:mongodb@mongodb:27017/cafedb
-          - name: MONGO_USERNAME
-            value: mongodb
-          - name: MONGO_PASSWORD
-            value: mongodb
-          image: jeremydavis/quarkus-cafe-core:{{ version_tag }}
-          imagePullPolicy: Always
-          name: quarkus-cafe-core
-          ports:
-          - containerPort: 8080
-            protocol: TCP
-          resources: {}
-          terminationMessagePath: /dev/termination-log
-          terminationMessagePolicy: File
-        dnsPolicy: ClusterFirst
-        restartPolicy: Always
-        schedulerName: default-scheduler
-        securityContext: {}
-        terminationGracePeriodSeconds: 30
+          - env:
+            - name: KAFKA_BOOTSTRAP_URLS
+              value: {{ kafka_cluster_name }}-kafka-bootstrap:9092
+            - name: MONGO_DB
+              value: cafedb
+            - name: MONGO_URL
+              value: mongodb://mongodb:mongodb@mongodb:27017/cafedb
+            - name: MONGO_USERNAME
+              value: mongodb
+            - name: MONGO_PASSWORD
+              value: mongodb
+            image: jeremydavis/quarkus-cafe-core:{{ version_core }}
+            name: quarkus-cafe-core
+            ports:
+            - containerPort: 8080
+              protocol: TCP
+            resources: {}
 - apiVersion: v1
   kind: Service
   metadata:
@@ -111,7 +86,7 @@ items:
       app.kubernetes.io/part-of: quarkus-cafe
       app.openshift.io/runtime: ""
       app.openshift.io/runtime-version: latest
-      quarkus-cafe-core: ""
+      quarkus-cafe: ""
     name: quarkus-cafe-core
     namespace: {{ project_namespace }}
   spec:

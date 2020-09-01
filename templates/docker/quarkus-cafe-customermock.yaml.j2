@@ -23,7 +23,7 @@ items:
         openshift.io/imported-from: jeremydavis/quarkus-cafe-customermocker
       from:
         kind: DockerImage
-        name: jeremydavis/quarkus-cafe-customermocker:{{ version_tag }}
+        name: jeremydavis/quarkus-cafe-customermocker:{{ version_customermocker }}
       generation: 2
       importPolicy: {}
       name: latest
@@ -32,11 +32,6 @@ items:
 - apiVersion: apps/v1
   kind: Deployment
   metadata:
-    annotations:
-      alpha.image.policy.openshift.io/resolve-names: '*'
-      deployment.kubernetes.io/revision: "2"
-      image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"quarkus-cafe-customermocker:latest","namespace":"quarkus-cafe-demo"},"fieldPath":"spec.template.spec.containers[?(@.name==\"quarkus-cafe-customermocker\")].image"}]'
-      openshift.io/generated-by: OpenShiftWebConsole
     generation: 2
     labels:
       app: quarkus-cafe-customermocker
@@ -72,7 +67,7 @@ items:
         - env:
           - name: REST_URL
             value: http://quarkus-cafe-web-{{ project_namespace}}.apps.{{ domain }}
-          image: jeremydavis/quarkus-cafe-customermocker:{{ version_tag }}
+          image: jeremydavis/quarkus-cafe-customermocker:{{ version_customermocker }}
           imagePullPolicy: Always
           name: quarkus-cafe-customermocker
           ports:

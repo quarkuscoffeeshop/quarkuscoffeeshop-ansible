@@ -113,7 +113,11 @@ Example Playbook using OpenShift Token
     insecure_skip_tls_verify: true
     default_owner: root
     default_group: root
-    version_tag: 2.1
+    version_barista: 2.3.0
+    version_core: 2.3.0
+    version_customermocker: 2.3.0
+    version_kitchen: 2.3.0
+    version_web: 2.3.0
     project_namespace: quarkus-cafe-demo
     delete_deployment: false
     skip_amq_install: false
@@ -142,7 +146,11 @@ Example Playbook using KUBEADMIN config file
     insecure_skip_tls_verify: true
     default_owner: root
     default_group: root
-    version_tag: 2.1
+    version_barista: 2.3.0
+    version_core: 2.3.0
+    version_customermocker: 2.3.0
+    version_kitchen: 2.3.0
+    version_web: 2.3.0
     project_namespace: quarkus-cafe-demo
     delete_deployment: false
     skip_amq_install: false

@@ -33,13 +33,13 @@ items:
   apiVersion: apps/v1
   metadata:
     name: quarkus-cafe-kitchen
-    namespace: quarkus-cafe
+    namespace: {{ project_namespace }}
     labels:
       app: quarkus-cafe-kitchen
       app.kubernetes.io/component: quarkus-cafe-kitchen
       app.kubernetes.io/instance: quarkus-cafe-kitchen
       app.kubernetes.io/part-of: quarkus-cafe
-      app.openshift.io/runtime-namespace: quarkus-cafe
+      app.openshift.io/runtime-namespace: {{ project_namespace }}
   spec:
     replicas: 1
     selector:

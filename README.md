@@ -100,7 +100,50 @@ Dependencies
 * Ansible
 * OpenShift cli
 
-Example Playbook using OpenShift Token 
+Quick Start
+-----------
+```
+ansible-galaxy install tosin2013.quarkus_cafe_demo_role
+```
+
+Docker Deployment Quick Start
+-----------------------------
+```
+$ export DOMAIN=ocp4.example.com
+$ export OCP_TOKEN=123456789
+$ cat >deploy-quarkus-cafe.yml<<YAML
+- hosts: localhost
+  become: yes
+  vars:
+    deployment_method: docker
+    openshift_token: ${OCP_TOKEN}
+    openshift_url: https://api.${DOMAIN}:6443
+    use_kubeconfig: false
+    insecure_skip_tls_verify: true
+    default_owner: ${USER}
+    default_group: ${USER}
+    version_barista: 2.3.0
+    version_core: 2.3.0
+    version_customermocker: 2.3.0
+    version_kitchen: 2.3.0
+    version_web: 2.3.0
+    project_namespace: quarkus-cafe-demo
+    delete_deployment: false
+    skip_amq_install: false
+    skip_quarkus_cafe_barista: false
+    skip_quarkus_cafe_core: false
+    skip_quarkus_cafe_kitchen: false
+    skip_quarkus_cafe_web: false
+    skip_quarkus_cafe_customermock: false
+    domain: ${DOMAIN}
+  roles:
+    - tosin2013.quarkus_cafe_demo_role
+YAML
+$ ansible-playbook  deploy-quarkus-cafe.yml
+```
+
+
+Example Playbook using docker 
 ----------------
 ```
 - hosts: localhost
@@ -126,15 +169,12 @@ Example Playbook using OpenShift Token
     skip_quarkus_cafe_kitchen: false
     skip_quarkus_cafe_web: false
     skip_quarkus_cafe_customermock: false
-    quarkus_build_memory_limit: 6Gi
-    quarkus_build_cpu_limit: 1
-    quarkus_core_build_memory_limit: 8Gi
     domain: ocp4.example.com
   roles:
     - quarkus-cafe-demo-role
 ```
 
-Example Playbook using KUBEADMIN config file
+Example Playbook s2i
 ----------------
 ```
 - hosts: localhost

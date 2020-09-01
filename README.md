@@ -88,8 +88,11 @@ quarkus_core_build_memory_limit  |  quarkus-cafde-core S2I memory build limite  
 quarkus_image_stream_name  |  quarkus s2i image version  | ubi-quarkus-native-s2i:20.0.0-java11
 domain  |  OpenShift domain endpoint  | ocp4.example.com
 kafka_stream_url  |  Kafka stream url | http://quarkus-cafe-web-{{ project_namespace}}.apps.{{ domain }}/dashboard/stream
-version_tag  |  Default container version tag | 2.1
-
+version_barista | Default container barista tag | 2.3.0
+version_core | Default container core tag | 2.3.0
+version_customermocker | Default container customermocker tag | 2.3.0
+version_kitchen | Default container kitchen tag | 2.3.0
+version_web | Default container web tag | 2.3.0
 
 Dependencies
 ------------

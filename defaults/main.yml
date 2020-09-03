@@ -29,8 +29,8 @@ kafka_stream_url: http://quarkus-cafe-web-{{ project_namespace}}.apps.{{ domain 
 cors_origin: http://quarkus-cafe-web-quarkus-cafe.apps.cluster-lou-8d2b.lou-8d2b.sandbox74.opentlc.com
 
 # Application Versions 
-version_barista: 2.3.0
-version_core: 2.3.0
+version_barista: 2.4.0
+version_core: 2.4.0
 version_customermocker: 2.3.0
-version_kitchen: 2.3.0
-version_web: 2.3.0
+version_kitchen: 2.4.0
+version_web: 2.4.0

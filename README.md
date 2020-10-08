@@ -105,10 +105,10 @@ Quick Start
 -----------
 ```
 ansible-galaxy collection install community.kubernetes
-ansible-galaxy install tosin2013.quarkus_cafe_demo_role
 ```
 
 Docker Deployment Quick Start with MongoDB Operator testing.
+-----------------------------------------------------------
 ```
 git clone https://github.com/tosin2013/quarkus-cafe-demo-role.git
 cd quarkus-cafe-demo-role
@@ -144,6 +144,7 @@ $ ansible-playbook  deploy-quarkus-cafe.yml
 Docker Deployment Quick Start
 -----------------------------
 ```
+$ ansible-galaxy install tosin2013.quarkus_cafe_demo_role
 $ export DOMAIN=ocp4.example.com
 $ export OCP_TOKEN=123456789
 $ cat >deploy-quarkus-cafe.yml<<YAML

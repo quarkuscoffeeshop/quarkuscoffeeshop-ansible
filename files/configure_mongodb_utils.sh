@@ -1,7 +1,7 @@
 #!/bin/bash 
 set -xe
 
-cat > /etc/yum.repos.d/mongodb.repo &lt;&lt;EOF
+cat > /etc/yum.repos.d/mongodb.repo<<EOF
 [mongodb-upstream]
 name=MongoDB Upstream Repository
 baseurl=https://repo.mongodb.org/yum/redhat/8Server/mongodb-org/4.2/x86_64/
@@ -12,7 +12,7 @@ EOF
 
 dnf update -y
 
-dnf install -y  python3-pip nc wget curl cyrus-sasl cyrus-sasl-gssapi cyrus-sasl-plain mongodb vim
+dnf install -y  python3-pip nc cyrus-sasl cyrus-sasl-gssapi cyrus-sasl-plain mongodb vim
 
 curl -OL https://fastdl.mongodb.org/tools/db/mongodb-database-tools-rhel80-x86_64-100.1.1.rpm  \
   && rpm -ivh mongodb-database-tools-rhel80-x86_64-100.1.1.rpm \

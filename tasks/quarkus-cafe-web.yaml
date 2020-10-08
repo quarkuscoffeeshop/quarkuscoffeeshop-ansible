@@ -17,12 +17,12 @@
   when: not skip_quarkus_cafe_web  and  deployment_method == "docker"
 
 - name: Create quarkus-cafe-web instance
-  command: "/usr/local/bin/oc create -f {{ config_location }}/quarkus-cafe-web.yaml"
+  command: "{{ oc_location }}  create -f {{ config_location }}/quarkus-cafe-web.yaml"
   when: not delete_deployment|bool
 
 - name: Waiting for quarkus-cafe-web build to complete
   shell: |
-    set -o pipefail && /usr/local/bin/oc get pods  | grep Completed | grep quarkus-cafe-web | wc -l
+    set -o pipefail && {{ oc_location }}  get pods  | grep Completed | grep quarkus-cafe-web | wc -l
   register: install_status
   when: not delete_deployment|bool and deployment_method == "s2i"
   until: "'2' in install_status.stdout"
@@ -33,7 +33,7 @@
 
 - name: Waiting for quarkus-cafe-web deployment
   shell: |
-    set -o pipefail && /usr/local/bin/oc get pods  | grep Running | grep quarkus-cafe-web | wc -l
+    set -o pipefail && {{ oc_location }}  get pods  | grep Running | grep quarkus-cafe-web | wc -l
   register: install_status
   when: not delete_deployment|bool
   until: "'1' in install_status.stdout"
@@ -41,7 +41,7 @@
   delay: 15
 
 - name: Delete quarkus-cafe-web instance
-  command: "/usr/local/bin/oc delete -f {{ config_location }}/quarkus-cafe-web.yaml"
+  command: "{{ oc_location }}  delete -f {{ config_location }}/quarkus-cafe-web.yaml"
   ignore_errors: yes
   when: delete_deployment|bool
   args:

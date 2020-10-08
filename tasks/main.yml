@@ -12,55 +12,7 @@
       include_tasks: amq-streams-install.yml
       when: not skip_amq_install
 
-    - name: Configure quarkus-cafe-barista Application
-      include_tasks: quarkus-cafe-barista.yml
-      when: not skip_quarkus_cafe_barista
-
-    - name: Configure quarkus-cafe-core Application
-      include_tasks: quarkus-cafe-core.yaml
-      when: not skip_quarkus_cafe_core
-
-    - name: Configure quarkus-cafe-kitchen Application
-      include_tasks: quarkus-cafe-kitchen.yaml
-      when: not skip_quarkus_cafe_kitchen
-
-    - name: Configure quarkus-cafe-web Application
-      include_tasks: quarkus-cafe-web.yaml
-      when: not skip_quarkus_cafe_web
-
-    - name: Configure quarkus-cafe-customermock Application
-      include_tasks: quarkus-cafe-customermock.yaml
-      when: not skip_quarkus_cafe_customermock
+    - name: MongoDB Operator installation
+      include_tasks: mongodb-operator-install.yml
+      when: not skip_mongodb_operator_install
   when: not use_kubeconfig | bool
-
-- name: Configure settings environment using OpenShift KUBECONFIG
-  block:
-    - name: Create Quarkus project 
-      include_tasks: create-project.yml
-
-    - name: AMQ Streams installation
-      include_tasks: amq-streams-install.yml
-      when: not skip_amq_install
-
-    - name: Configure quarkus-cafe-barista Application
-      include_tasks: quarkus-cafe-barista.yml
-      when: not skip_quarkus_cafe_barista
-
-    - name: Configure quarkus-cafe-core Application
-      include_tasks: quarkus-cafe-core.yaml
-      when: not skip_quarkus_cafe_core
-
-    - name: Configure quarkus-cafe-kitchen Application
-      include_tasks: quarkus-cafe-kitchen.yaml
-      when: not skip_quarkus_cafe_kitchen
-
-    - name: Configure quarkus-cafe-web Application
-      include_tasks: quarkus-cafe-web.yaml
-      when: not skip_quarkus_cafe_web
-
-    - name: Configure quarkus-cafe-customermock Application
-      include_tasks: quarkus-cafe-customermock.yaml
-      when: not skip_quarkus_cafe_customermock
-  when: use_kubeconfig | bool
-  environment:
-    KUBECONFIG: "{{ kubeconfig_path }}"

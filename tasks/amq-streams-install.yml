@@ -6,14 +6,23 @@
     group: "{{ default_group }}"
     mode: 0666
 
+- name: Copying over AMQ Configuration
+  template:
+    src: templates/amq-sub.yaml.j2
+    dest:  "{{ config_location }}/amqstreams.v1.5.3.yaml.j2"
+    owner: "{{ default_owner }}"
+    group: "{{ default_group }}"
+    mode: 0666
+  when: delete_deployment|bool
+
+
 - name: Create Subscription to AMQ
-  command: "/usr/local/bin/oc create -f {{ config_location }}/amq-sub.yaml"
-  register: rbac_result
+  command: "{{ oc_location }}  create -f {{ config_location }}/amq-sub.yaml"
   when: not delete_deployment|bool
 
 - name: Waiting for  AMQ Subscription to complete
   shell: |
-    set -o pipefail && /usr/local/bin/oc get csv | grep {{ amqstartingCSV }}
+    set -o pipefail && {{ oc_location }}  get csv | grep {{ amqstartingCSV }}
   register: install_status
   when: not delete_deployment|bool
   until: "'Succeeded' in install_status.stdout"
@@ -31,12 +40,12 @@
     mode: 0666
 
 - name: Create kafka instance
-  command: "/usr/local/bin/oc create -f {{ config_location }}/amq-kafka-instance.yaml"
+  command: "{{ oc_location }}  create -f {{ config_location }}/amq-kafka-instance.yaml"
   when: not delete_deployment|bool
 
 - name: Waiting for  kafka instances to be deployed
   shell: |
-    set -o pipefail && /usr/local/bin/oc get pods | grep Running | grep {{ kafka_cluster_name }} |  wc -l
+    set -o pipefail && {{ oc_location }}  get pods | grep Running | grep {{ kafka_cluster_name }} |  wc -l
   register: install_status
   when: not delete_deployment|bool
   until: "'7' in install_status.stdout"
@@ -54,22 +63,22 @@
     mode: 0666
 
 - name: Create kafka topics
-  command: "/usr/local/bin/oc create -f {{ config_location }}/amq-kafka-topics.yaml"
+  command: "{{ oc_location }}  create -f {{ config_location }}/amq-kafka-topics.yaml"
   when: not delete_deployment|bool
 
 - name: Remove kafka topics
-  command: "/usr/local/bin/oc delete -f {{ config_location }}/amq-kafka-topics.yaml"
+  command: "{{ oc_location }}  delete -f {{ config_location }}/amq-kafka-topics.yaml"
   ignore_errors: yes
   when: delete_deployment|bool
 
 - name: Remove kafka instance
-  command: "/usr/local/bin/oc delete -f {{ config_location }}/amq-kafka-instance.yaml"
+  command: "{{ oc_location }}  delete -f {{ config_location }}/amq-kafka-instance.yaml"
   ignore_errors: yes
   when: delete_deployment|bool
 
 - name: Waiting for  kafka instances to be deleted
   shell: |
-    set -o pipefail && /usr/local/bin/oc get pods | grep Running | grep {{ kafka_cluster_name }} | wc -l
+    set -o pipefail && {{ oc_location }}  get pods | grep Running | grep {{ kafka_cluster_name }} | wc -l
   register: install_status
   when: delete_deployment|bool
   until: "'No resources found' in install_status.stderr or '0' in install_status.stdout"
@@ -80,11 +89,16 @@
     executable: /bin/bash
 
 - name: Remove AMQ Subscription
-  command: "/usr/local/bin/oc delete -f {{ config_location }}/amq-sub.yaml"
+  command: "{{ oc_location }}  delete -f {{ config_location }}/amq-sub.yaml"
+  ignore_errors: yes
+  when: delete_deployment|bool
+
+- name: Remove AMQ Subscription
+  command: "{{ oc_location }}  delete -f {{ config_location }}/amqstreams.v1.5.3.yaml"
   ignore_errors: yes
   when: delete_deployment|bool
 
 - name: Remove AMQ
-  command: "/usr/local/bin/oc delete csv {{ amqstartingCSV }} -n {{ project_namespace }}"
+  command: "{{ oc_location }}  delete csv {{ amqstartingCSV }} -n {{ project_namespace }}"
   ignore_errors: yes
   when: delete_deployment|bool

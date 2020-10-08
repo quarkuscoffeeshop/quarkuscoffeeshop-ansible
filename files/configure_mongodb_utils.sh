@@ -24,3 +24,6 @@ curl -OL https://raw.githubusercontent.com/tosin2013/quarkus-cafe-demo-role/dev/
 
 curl -OL https://raw.githubusercontent.com/tosin2013/quarkus-cafe-demo-role/dev/files/load_database.sh \
   && chmod +x load_database.sh && mv load_database.sh /bin/load_database
+
+curl -OL   https://raw.githubusercontent.com/tosin2013/quarkus-cafe-demo-role/dev/files/configure_mongodb_user.sh \
+  && chmod +x configure_mongodb_user.sh && mv load_database.sh /bin/configure_mongodb_user

@@ -132,6 +132,7 @@ $ cat >deploy-quarkus-cafe.yml<<YAML
     delete_deployment: false
     skip_amq_install: false
     skip_mongodb_operator_install: false 
+    skip_quarkuscoffeeshop_helm_install: false
     domain: ${DOMAIN}
     mongodb_admin: jane.doe@example.com
     mongodb_password: Passw0rd.

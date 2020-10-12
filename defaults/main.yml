@@ -17,16 +17,17 @@ config_location: "/tmp/"
 kafka_cluster_name: cafe-cluster
 skip_amq_install: false
 skip_mongodb_operator_install: false
+skip_quarkuscoffeeshop_helm_install: false
 domain: ocp4.example.com
 kafka_stream_url: http://quarkus-cafe-web-{{ project_namespace}}.apps.{{ domain }}/dashboard/stream
 cors_origin: http://quarkus-cafe-web-quarkus-cafe.apps.cluster-lou-8d2b.lou-8d2b.sandbox74.opentlc.com
 
 # Application Versions 
-version_barista: 2.4.0
-version_core: 2.4.0
-version_customermocker: 2.3.0
-version_kitchen: 2.4.0
-version_web: 2.4.0
+version_barista: 3.1.0
+version_counter: 3.1.0
+version_customermocker: 3.1.0
+version_kitchen: 3.1.0
+version_web: 3.1.0
 
 # mongo DB user information 
 mongodb_admin: jane.doe@example.com

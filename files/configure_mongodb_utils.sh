@@ -16,7 +16,7 @@ dnf install -y  python3-pip nc cyrus-sasl cyrus-sasl-gssapi cyrus-sasl-plain mon
 
 curl -OL https://fastdl.mongodb.org/tools/db/mongodb-database-tools-rhel80-x86_64-100.1.1.rpm  \
   && rpm -ivh mongodb-database-tools-rhel80-x86_64-100.1.1.rpm \
-  && rm mongodb-database-tools-rhel80-x86_64-100.1.1.rpm
+  && rm -rf mongodb-database-tools-rhel80-x86_64-100.1.1.rpm
 
 curl -OL https://raw.githubusercontent.com/tosin2013/quarkus-cafe-demo-role/dev/files/sample_mongo_data.json \
   && mkdir -p /data/  \

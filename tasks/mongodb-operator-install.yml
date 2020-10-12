@@ -6,6 +6,14 @@
     group: "{{ default_group }}"
     mode: 0666
 
+- name: Copying over MongoDB Service Accounts
+  template:
+    src: templates/mongodb-service-accounts.yaml.j2
+    dest:  "{{ config_location }}/mongodb-service-accounts.yaml"
+    owner: "{{ default_owner }}"
+    group: "{{ default_group }}"
+    mode: 0666
+
 - name: Copying over MongoDB Configuration
   template:
     src: templates/mongodb-ops-manger.yaml.j2
@@ -46,6 +54,10 @@
 
 - name: Create  username and password for MongoOps dashboard
   command: "{{ oc_location }} -n {{ project_namespace }} create secret generic ops-manager-admin  --from-literal=Username='{{ mongodb_admin }}' --from-literal=Password='{{ mongodb_password }}'  --from-literal=FirstName='Jane' --from-literal=LastName='Doe'"
+  when: not delete_deployment|bool
+
+- name: Create MongoDB Service Accounts
+  command: "{{ oc_location }}  create -f {{ config_location }}/mongodb-service-accounts.yaml"
   when: not delete_deployment|bool
 
 - name: Start MongoDB Ops Deployment
@@ -193,7 +205,12 @@
   ignore_errors: yes
   when: delete_deployment|bool
 
-- name:  delete mongodb config
+- name: Delete MongoDB Service Accounts
+  command: "{{ oc_location }}  delete -f {{ config_location }}/mongodb-service-accounts.yaml"
+  when: delete_deployment|bool
+
+
+- name:  Delete mongodb config
   command: "{{ oc_location }}  delete -f {{ config_location }}mongodb-config.yaml"
   ignore_errors: yes
   when: delete_deployment|bool

@@ -98,6 +98,7 @@
 
 - name: Get API Key for MongoDB Ops Dashboard
   shell: "{{ oc_location }} get secrets -n {{ project_namespace }} ops-manager-admin-key -o jsonpath='{.data.publicApiKey}' | base64 -d"
+  ignore_errors: no 
   register: publicApiKey
   args:
     executable: /bin/bash
@@ -207,6 +208,7 @@
 
 - name: Delete MongoDB Service Accounts
   command: "{{ oc_location }}  delete -f {{ config_location }}/mongodb-service-accounts.yaml"
+  ignore_errors: yes
   when: delete_deployment|bool
 
 
@@ -231,6 +233,7 @@
 
 - name: Delete MongoDB utils
   command: "{{ oc_location }}  delete -f {{ config_location }}/mongodb-utils.yaml"
+  ignore_errors: yes
   when: delete_deployment|bool
 
 - name: Remove MongoDB Subscription

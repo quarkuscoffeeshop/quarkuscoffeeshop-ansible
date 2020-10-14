@@ -12,7 +12,14 @@
       include_tasks: amq-streams-install.yml
       when: not skip_amq_install
 
+    - name: Installing Single mongodb database
+      include_tasks: mongodb.yml
+      when: skip_mongodb_operator_install
+
     - name: MongoDB Operator installation
       include_tasks: mongodb-operator-install.yml
       when: not skip_mongodb_operator_install
-  when: not use_kubeconfig | bool
+
+    - name: Deploy Quarkus Cafe Helm Chart
+      include_tasks: helm-chart.yml
+      when: not skip_quarkuscoffeeshop_helm_install

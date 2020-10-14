@@ -19,19 +19,19 @@ ScreenShots
 ![quarkus cafe kafka topics](images/ams-topics.png "quarkus cafe  kafka topics")
 
 
-http://quarkus-cafe-web-quarkus-cafe-demo.apps.example.com/cafe example
+http://quarkuscoffeeshop-web-quarkus-cafe-demo.apps.example.com/cafe example
 ![quarkus cafe application](images/webpage-example.png "quarkus appliation")
 
 
 Usage
 ----------------
 * Default web page
-http://quarkus-cafe-web-quarkus-cafe-demo.apps.example.com/cafe
+http://quarkuscoffeeshop-web-quarkus-cafe-demo.apps.example.com/cafe
 this endpoint is used to view the events coming into the cluster
 * If you deploy skip_quarkus_cafe_customermock this will automatically push events to the quarkus cafe dashboard.
 * If you would like to manally push events to AMQ use the command below.
 ```shell
-export ENDPOINT="quarkus-cafe-web-quarkus-cafe-demo.apps.ocp4.example.com"
+export ENDPOINT="quarkuscoffeeshop-web-quarkus-cafe-demo.apps.ocp4.example.com"
 curl  --request POST http://${ENDPOINT}/order \
 --header 'Content-Type: application/json' \
 --header 'Accept: application/json' \
@@ -69,7 +69,7 @@ skip_amq_install |  Skip Red Hat AMQ Install  |  false
 skip_quarkus_cafe_barista |  Skip quarkus-cafe-barista install  |  false
 skip_quarkus_cafe_core |  Skip quarkus-cafe-core install  |  false
 skip_quarkus_cafe_kitchen |  Skip quarkus-cafe-kitchen install  |  false
-skip_quarkus_cafe_web |  Skip quarkus-cafe-web install  |  false
+skip_quarkus_cafe_web |  Skip quarkuscoffeeshop-web install  |  false
 skip_quarkus_cafe_customermock |  Skip quarkus-cafe-customermock install  |  false
 openshift_token | OpenShift login token  | 123456789
 openshift_url | OpenShift target url  | https://master.example.com
@@ -88,7 +88,7 @@ quarkus_build_cpu_limit  |  quarkus S2I cpu build limit | 1
 quarkus_core_build_memory_limit  |  quarkus-cafde-core S2I memory build limite  | 8Gi
 quarkus_image_stream_name  |  quarkus s2i image version  | ubi-quarkus-native-s2i:20.0.0-java11
 domain  |  OpenShift domain endpoint  | ocp4.example.com
-kafka_stream_url  |  Kafka stream url | http://quarkus-cafe-web-{{ project_namespace}}.apps.{{ domain }}/dashboard/stream
+kafka_stream_url  |  Kafka stream url | http://quarkuscoffeeshop-web-{{ project_namespace}}.apps.{{ domain }}/dashboard/stream
 version_barista | Default container barista tag | 2.4.0
 version_core | Default container core tag | 2.4.0
 version_customermocker | Default container customermocker tag | 2.3.0
@@ -105,6 +105,11 @@ Quick Start
 -----------
 ```
 ansible-galaxy collection install community.kubernetes
+
+# Install Helm 
+$ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+$ chmod 700 get_helm.sh
+$ ./get_helm.sh
 ```
 
 Docker Deployment Quick Start with MongoDB Operator testing.

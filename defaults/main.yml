@@ -23,11 +23,11 @@ kafka_stream_url: http://quarkus-cafe-web-{{ project_namespace}}.apps.{{ domain 
 cors_origin: http://quarkus-cafe-web-quarkus-cafe.apps.cluster-lou-8d2b.lou-8d2b.sandbox74.opentlc.com
 
 # Application Versions 
-version_barista: 3.1.0
-version_counter: 3.1.0
-version_customermocker: 3.1.0
-version_kitchen: 3.1.0
-version_web: 3.1.0
+version_barista: 3.0.0
+version_counter: 3.0.0
+version_customermocker: 3.0.1
+version_kitchen: 3.0.0
+version_web: 3.0.0
 
 # mongo DB user information 
 mongodb_admin: jane.doe@example.com

@@ -76,9 +76,9 @@
   args:
     executable: /bin/bash
 
-- name: Pause for 60 seconds for mongodb ops manager
+- name: Pause for 180 seconds for mongodb ops manager
   pause:
-    seconds: 60
+    seconds: 180
   when: not delete_deployment|bool
 
 - name: Expose MongoDB Ops Dashboard
@@ -112,7 +112,7 @@
   when: not delete_deployment|bool
 
 - name: Create quarkuscoffeeshop ops-manager-admin-key in  project
-  shell: "{{ oc_location }} -n quarkus-cafe-demo create secret generic ops-manager-admin-key --from-literal=\"user={{ mongodb_admin }}\" --from-literal=\"publicApiKey={{ public_apikey }}\""
+  shell: "{{ oc_location }} -n {{ project_namespace }} create secret generic ops-manager-admin-key --from-literal=\"user={{ mongodb_admin }}\" --from-literal=\"publicApiKey={{ public_apikey }}\""
   when: not delete_deployment|bool
   args:
     executable: /bin/bash

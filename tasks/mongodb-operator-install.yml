@@ -97,54 +97,9 @@
     mongodb_url: "{{ mongodburl.stdout }}"
   when: not delete_deployment|bool
 
-- name: Create API Key
-  debug:
-    msg: "Please access the MongoDB Dashboard and create a Gloabl API key http://{{ mongodb_url }}"
-  when: not delete_deployment|bool
-
-- name: Instructions 
-  debug:
-    msg: "Please give user Global Owner Access"
-  when: not delete_deployment|bool
-
-- pause:
-    prompt: "Enter the Public Key from the MongoOps UI"
-    echo: yes
-  register: publicKey
-  when: not delete_deployment|bool
-
-- set_fact:
-    public_key: "{{ publicKey.user_input }}"
-  when: not delete_deployment|bool
-
-- debug:
-    var: public_key
-  when: not delete_deployment|bool
- 
-- pause:
-    prompt:  "Enter the private key from the MongoOps UI"
-    echo: yes
-  register: privateapikey
-  when: not delete_deployment|bool
-
-- set_fact:
-    private_key: "{{ privateapikey.user_input }}"
-  when: not delete_deployment|bool
-
-- debug:
-    var: private_key
-  when: not delete_deployment|bool
-
-
-- name: Create quarkuscoffeeshop organization
-  shell: "{{ oc_location }} -n quarkus-cafe-demo create secret generic ops-manager-admin-key --from-literal=\"user={{ public_key }}\" --from-literal=\"publicApiKey={{ private_key }}\""
-  register: publicApiKey
-  when: not delete_deployment|bool
-  args:
-    executable: /bin/bash
 
 - name: Get API Key for MongoDB Ops Dashboard
-  shell: "{{ oc_location }} get secrets -n {{ project_namespace }} ops-manager-admin-key -o jsonpath='{.data.publicApiKey}' | base64 -d"
+  shell: "{{ oc_location }} get secrets -n openshift-operators ops-manager-admin-key -o jsonpath='{.data.publicApiKey}' | base64 -d"
   ignore_errors: no 
   register: publicApiKey
   args:
@@ -157,14 +112,14 @@
   when: not delete_deployment|bool
 
 - name: Create quarkuscoffeeshop organization
-  shell: " curl --user {{ public_key }}:{{ public_apikey }} --digest  --header 'Accept: application/json'  --header 'Content-Type: application/json'  --include  --request POST \"http://{{ mongodb_url }}/api/public/v1.0/orgs\"  --data '{ \"name\" : \"quarkuscoffeeshop\" }'"
+  shell: " curl --user {{ mongodb_admin }}:{{ public_apikey }} --digest  --header 'Accept: application/json'  --header 'Content-Type: application/json'  --include  --request POST \"http://{{ mongodb_url }}/api/public/v1.0/orgs\"  --data '{ \"name\" : \"quarkuscoffeeshop\" }'"
   register: publicApiKey
   when: not delete_deployment|bool
   args:
     executable: /bin/bash
 
 - name: Get quarkuscoffeeshop organization
-  shell: "curl -s  --user {{ public_key }}:{{ public_apikey }} --digest  --header 'Accept: application/json'  --header 'Content-Type: application/json'   --request GET http://{{ mongodb_url }}/api/public/v1.0/orgs |  jq '.results[] | select(  .name == \"quarkuscoffeeshop\" ) |.id' | xargs"
+  shell: "curl -s  --user {{ mongodb_admin }}:{{ public_apikey }} --digest  --header 'Accept: application/json'  --header 'Content-Type: application/json'   --request GET http://{{ mongodb_url }}/api/public/v1.0/orgs |  jq '.results[] | select(  .name == \"quarkuscoffeeshop\" ) |.id' | xargs"
   register: get_org_id
   ignore_errors: yes
   args:

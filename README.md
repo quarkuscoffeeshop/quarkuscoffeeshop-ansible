@@ -7,7 +7,7 @@ The source code for the  [quarkus-cafe-demo](https://github.com/jeremyrdavis/qua
 Requirements
 ------------
 
-* OpenShift 4.x Cluster installed
+* OpenShift 4.5 an up Cluster installed
 * Ansible should be installed on machine
 * oc cli must be installed
 * Ansible community.kubernetes module must be installed `ansible-galaxy collection install community.kubernetes`

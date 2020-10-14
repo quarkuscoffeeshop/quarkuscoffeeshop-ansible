@@ -1,7 +1,7 @@
 - name: Copying over AMQ Subscription
   template:
     src: templates/amq-sub.yaml.j2
-    dest:  "{{ config_location }}/amq-sub.yaml"
+    dest:  "{{ config_location }}amq-sub.yaml"
     owner: "{{ default_owner }}"
     group: "{{ default_group }}"
     mode: 0666
@@ -9,7 +9,7 @@
 - name: Copying over AMQ Configuration
   template:
     src: templates/amq-sub.yaml.j2
-    dest:  "{{ config_location }}/amqstreams.v1.5.3.yaml.j2"
+    dest:  "{{ config_location }}amqstreams.v1.5.3.yaml.j2"
     owner: "{{ default_owner }}"
     group: "{{ default_group }}"
     mode: 0666
@@ -34,7 +34,7 @@
 - name: Copying over kafka config
   template:
     src: templates/amq-kafka-instance.yaml.j2
-    dest:  "{{ config_location }}/amq-kafka-instance.yaml"
+    dest:  "{{ config_location }}amq-kafka-instance.yaml"
     owner: "{{ default_owner }}"
     group: "{{ default_group }}"
     mode: 0666
@@ -57,7 +57,7 @@
 - name: Copying over kafka topics
   template:
     src: templates/amq-kafka-topics.yaml.j2
-    dest:  "{{ config_location }}/amq-kafka-topics.yaml"
+    dest:  "{{ config_location }}amq-kafka-topics.yaml"
     owner: "{{ default_owner }}"
     group: "{{ default_group }}"
     mode: 0666
@@ -66,13 +66,31 @@
   command: "{{ oc_location }}  create -f {{ config_location }}/amq-kafka-topics.yaml"
   when: not delete_deployment|bool
 
+- name: Copy over kafdrop deployment config
+  template:
+    src: templates/kafdrop.yaml.j2
+    dest:  "{{ config_location }}kafdrop.yaml"
+    owner: "{{ default_owner }}"
+    group: "{{ default_group }}"
+    mode: 0666
+
+- name:  Create kafdrop
+  command: "{{ oc_location }}  create -f {{ config_location }}kafdrop.yaml"
+  ignore_errors: yes
+  when: not delete_deployment|bool
+
+- name: Remove KafDrop
+  command: "{{ oc_location }} delete -f {{ config_location }}kafdrop.yaml"
+  ignore_errors: yes
+  when: delete_deployment|bool
+
 - name: Remove kafka topics
-  command: "{{ oc_location }}  delete -f {{ config_location }}/amq-kafka-topics.yaml"
+  command: "{{ oc_location }}  delete -f {{ config_location }}amq-kafka-topics.yaml"
   ignore_errors: yes
   when: delete_deployment|bool
 
 - name: Remove kafka instance
-  command: "{{ oc_location }}  delete -f {{ config_location }}/amq-kafka-instance.yaml"
+  command: "{{ oc_location }}  delete -f {{ config_location }}amq-kafka-instance.yaml"
   ignore_errors: yes
   when: delete_deployment|bool
 
@@ -89,12 +107,12 @@
     executable: /bin/bash
 
 - name: Remove AMQ Subscription
-  command: "{{ oc_location }}  delete -f {{ config_location }}/amq-sub.yaml"
+  command: "{{ oc_location }}  delete -f {{ config_location }}amq-sub.yaml"
   ignore_errors: yes
   when: delete_deployment|bool
 
 - name: Remove AMQ Subscription
-  command: "{{ oc_location }}  delete -f {{ config_location }}/amqstreams.v1.5.3.yaml"
+  command: "{{ oc_location }}  delete -f {{ config_location }}amqstreams.v1.5.3.yaml"
   ignore_errors: yes
   when: delete_deployment|bool
 

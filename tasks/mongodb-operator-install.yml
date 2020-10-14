@@ -21,7 +21,7 @@
     owner: "{{ default_owner }}"
     group: "{{ default_group }}"
     mode: 0666
-  when: delete_deployment|bool
+  when: not delete_deployment|bool
 
 - name: Copying over MongoDB utils file
   template:
@@ -30,7 +30,7 @@
     owner: "{{ default_owner }}"
     group: "{{ default_group }}"
     mode: 0666
-  when: delete_deployment|bool
+  when: not delete_deployment|bool
 
 - name: Deploy MongoDB utils
   command: "{{ oc_location }}  create -f {{ config_location }}/mongodb-utils.yaml"
@@ -203,6 +203,23 @@
 - name:  Create and load MongoDB database
   command: "{{ oc_location }}  exec -it {{ mongo_utils_pod }} -- /bin/load_database"
   when: not delete_deployment|bool
+
+- name: Copy mongoku deployment config
+  template:
+    src: templates/mongoku.yaml.j2
+    dest:  "{{ config_location }}/mongoku.yaml"
+    owner: "{{ default_owner }}"
+    group: "{{ default_group }}"
+    mode: 0666
+
+- name:  Create mongoku
+  command: "{{ oc_location }}  create -f {{ config_location }}/mongoku.yaml"
+  when: not delete_deployment|bool
+
+- name: Remove mongoku
+  command: "{{ oc_location }} delete -f {{ config_location }}mongoku.yaml"
+  ignore_errors: yes
+  when: delete_deployment|bool
 
 - name: delete username and password for MongoOps dashboard
   command: "{{ oc_location }} -n {{ project_namespace }} delete secret  ops-manager-admin"

@@ -111,6 +111,13 @@
     public_apikey: "{{ publicApiKey.stdout }}"
   when: not delete_deployment|bool
 
+- name: Create quarkuscoffeeshop ops-manager-admin-key in  project
+  shell: "{{ oc_location }} -n quarkus-cafe-demo create secret generic ops-manager-admin-key --from-literal=\"user={{ mongodb_admin }}\" --from-literal=\"publicApiKey={{ public_apikey }}\""
+  when: not delete_deployment|bool
+  args:
+    executable: /bin/bash
+
+
 - name: Create quarkuscoffeeshop organization
   shell: " curl --user {{ mongodb_admin }}:{{ public_apikey }} --digest  --header 'Accept: application/json'  --header 'Content-Type: application/json'  --include  --request POST \"http://{{ mongodb_url }}/api/public/v1.0/orgs\"  --data '{ \"name\" : \"quarkuscoffeeshop\" }'"
   register: publicApiKey
@@ -217,6 +224,10 @@
   ignore_errors: yes
   when: delete_deployment|bool
 
+- name: Delete MongoDB ops-manager-admin-key Secret 
+  command: "{{ oc_location }} delete secret ops-manager-admin-key -n {{ project_namespace }}"
+  ignore_errors: yes
+  when: delete_deployment|bool
 
 - name:  Delete mongodb config
   command: "{{ oc_location }}  delete -f {{ config_location }}mongodb-config.yaml"

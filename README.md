@@ -67,6 +67,7 @@ Type  | Description  | Default Value
 deployment_method | docker or s2i build | docker
 skip_amq_install |  Skip Red Hat AMQ Install  |  false
 skip_mongodb_operator_install |  Skip MongoDB Operator Install  |  false
+single_mongodb_install | Skip single instance mongodb | false
 skip_quarkuscoffeeshop_helm_install |  Skip quarkuscoffeeshop helm chart install  |  false
 openshift_token | OpenShift login token  | 123456789
 openshift_url | OpenShift target url  | https://master.example.com
@@ -83,7 +84,7 @@ version_counter | Default container counter tag | 3.0.0
 version_customermocker | Default container customermocker tag | 3.0.1
 version_kitchen | Default container kitchen tag | 3.0.0
 version_web | Default container web tag | 3.0.0
-helm_chart_version | Version of Qaurkus Cafe Helm Chart | 3.2.0
+helm_chart_version | Version of Qaurkus Cafe Helm Chart | 3.3.0
 
 Dependencies
 ------------
@@ -137,7 +138,7 @@ YAML
 $ ansible-playbook  deploy-quarkus-cafe.yml
 ```
 
-Docker Deployment Quick Start
+Default Deployment with MongoDB OPS Manager
 -----------------------------
 ```
 $ ansible-galaxy install tosin2013.quarkus_cafe_demo_role
@@ -158,7 +159,35 @@ $ cat >deploy-quarkus-cafe.yml<<YAML
     skip_amq_install: false
     skip_mongodb_operator_install: false
     skip_quarkuscoffeeshop_helm_install: false
+    domain: ${DOMAIN}
+  roles:
+    - tosin2013.quarkus_cafe_demo_role
+YAML
+$ ansible-playbook  deploy-quarkus-cafe.yml
+```
+
+Deployment with single mongoDB instance
+-----------------------------
+```
+$ ansible-galaxy install tosin2013.quarkus_cafe_demo_role
+$ export DOMAIN=ocp4.example.com
+$ export OCP_TOKEN=123456789
+$ cat >deploy-quarkus-cafe.yml<<YAML
+- hosts: localhost
+  become: yes
+  vars:
+    openshift_token: ${OCP_TOKEN}
+    openshift_url: https://api.${DOMAIN}:6443
+    use_kubeconfig: false
+    insecure_skip_tls_verify: true
+    default_owner: ${USER}
+    default_group: ${USER}
+    project_namespace: quarkuscoffeeshop-demo
+    delete_deployment: false
     skip_amq_install: false
+    skip_mongodb_operator_install: true
+    single_mongodb_install: true
+    skip_quarkuscoffeeshop_helm_install: false
     domain: ${DOMAIN}
   roles:
     - tosin2013.quarkus_cafe_demo_role

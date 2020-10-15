@@ -13,18 +13,19 @@ config_location: "/tmp/"
 kafka_cluster_name: cafe-cluster
 skip_amq_install: false
 skip_mongodb_operator_install: false
+single_mongodb_install: false
 skip_quarkuscoffeeshop_helm_install: false
 domain: ocp4.example.com
 
 # Helm Chart Version 
-helm_chart_version: 3.2.0
+helm_chart_version: 3.3.0
 
 # Application Versions 
 version_barista: 3.0.0
-version_counter: 3.0.0
+version_counter: 3.1.0
 version_customermocker: 3.0.1
-version_kitchen: 3.0.0
-version_web: 3.0.0
+version_kitchen: 3.1.0
+version_web: 3.1.0
 
 # mongo DB user information 
 mongodb_admin: jane.doe@example.com

@@ -12,11 +12,11 @@ version:
   customermocker: {{ version_customermocker }}
   kitchen: {{ version_kitchen }}
   web: {{ version_web }}
-{% if  skip_mongodb_operator_install  == False %}
+{% if  single_mongodb_install  == False %}
 mongodb_url: mongodb://mongo:mongodb@quarkus-coffeeshop-replica-set-0.quarkus-coffeeshop-replica-set-svc.{{ project_namespace }}.svc.cluster.local:27017/cafedb
 mongodb_username: {{ mongodb_username }}
 mongodb_password: {{ mongodb_password }}
-{% elif skip_mongodb_operator_install  == True %}
+{% elif single_mongodb_install == True %}
 mongodb_url: mongodb://mongodb:mongodb@mongodb:27017/cafedb
 mongodb_username: mongodb
 mongodb_password: mongodb

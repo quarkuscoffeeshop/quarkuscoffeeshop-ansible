@@ -14,7 +14,7 @@
 
     - name: Installing Single mongodb database
       include_tasks: mongodb.yml
-      when: skip_mongodb_operator_install
+      when: single_mongodb_install | bool
 
     - name: MongoDB Operator installation
       include_tasks: mongodb-operator-install.yml

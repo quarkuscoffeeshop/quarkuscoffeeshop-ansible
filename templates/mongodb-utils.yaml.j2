@@ -32,7 +32,7 @@ spec:
 
       RUN dnf install -y  curl wget  
 
-      RUN curl -OL https://raw.githubusercontent.com/tosin2013/{{ project_namespace }}-role/dev/files/configure_mongodb_utils.sh && chmod +x  configure_mongodb_utils.sh && bash configure_mongodb_utils.sh
+      RUN curl -OL https://raw.githubusercontent.com/tosin2013/quarkus-cafe-demo-role/dev/files/configure_mongodb_utils.sh && chmod +x  configure_mongodb_utils.sh && bash configure_mongodb_utils.sh
       
       CMD ["sleep", "10000"]
   triggers:

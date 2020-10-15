@@ -25,7 +25,7 @@
   community.kubernetes.helm:
     name: quarkuscoffeeshop-helm
     chart_ref: quarkuscoffeeshop-helm/quarkuscoffeeshop-charts
-    chart_version: 3.2.0
+    chart_version: "{{ helm_chart_version }}"
     release_namespace: "{{ project_namespace }}"
     values_files:
       -  "{{ config_location }}/vaules.yaml"

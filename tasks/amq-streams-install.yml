@@ -18,6 +18,8 @@
 
 - name: Create Subscription to AMQ
   command: "{{ oc_location }}  create -f {{ config_location }}/amq-sub.yaml"
+  register: rbac_result
+  ignore_errors: true
   when: not delete_deployment|bool
 
 - name: Waiting for  AMQ Subscription to complete

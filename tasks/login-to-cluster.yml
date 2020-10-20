@@ -1,5 +1,27 @@
+- name: get oc location
+  command:  "whereis oc"
+  register: oc_location_result
+  ignore_errors: false
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat' or ansible_distribution == 'Fedora'
+
+- name: set oc location
+  set_fact:
+    oc_location: "{{ oc_location_result.stdout.split(':')[1] }}"
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat' or ansible_distribution == 'Fedora'
+
+- name: get oc location
+  command:  "which oc"
+  register: oc_location_result
+  ignore_errors: false
+  when: ansible_distribution == 'MacOSX'
+
+- name: set oc location
+  set_fact:
+    oc_location: "{{ oc_location_result.stdout }}"
+  when: ansible_distribution == 'MacOSX'
+
 - name: login as super user with token on OpenShift 4
-  command: "/usr/local/bin/oc login --token={{ openshift_token }}  --server={{ openshift_url }} --insecure-skip-tls-verify={{ insecure_skip_tls_verify }}"
+  command: "{{ oc_location }} login --token={{ openshift_token }}  --server={{ openshift_url }} --insecure-skip-tls-verify={{ insecure_skip_tls_verify }}"
   when:
    - openshift_token is defined
    - openshift_token is not none

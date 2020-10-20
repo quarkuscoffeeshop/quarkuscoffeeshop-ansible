@@ -1,0 +1,290 @@
+- name: Copying over MongoDB Subscription
+  template:
+    src: templates/mongodb-sub.yaml.j2
+    dest:  "{{ config_location }}/mongodb-sub.yaml"
+    owner: "{{ default_owner }}"
+    group: "{{ default_group }}"
+    mode: 0666
+
+- name: Copying over MongoDB Service Accounts
+  template:
+    src: templates/mongodb-service-accounts.yaml.j2
+    dest:  "{{ config_location }}/mongodb-service-accounts.yaml"
+    owner: "{{ default_owner }}"
+    group: "{{ default_group }}"
+    mode: 0666
+
+- name: Copying over MongoDB Configuration
+  template:
+    src: templates/mongodb-ops-manger.yaml.j2
+    dest:  "{{ config_location }}/mongodb-ops-manger.yaml"
+    owner: "{{ default_owner }}"
+    group: "{{ default_group }}"
+    mode: 0666
+  when: not delete_deployment|bool
+
+- name: Copying over MongoDB utils file
+  template:
+    src: templates/mongodb-utils.yaml.j2
+    dest:  "{{ config_location }}/mongodb-utils.yaml"
+    owner: "{{ default_owner }}"
+    group: "{{ default_group }}"
+    mode: 0666
+  when: not delete_deployment|bool
+
+- name: Deploy MongoDB utils
+  command: "{{ oc_location }}  create -f {{ config_location }}/mongodb-utils.yaml"
+  ignore_errors: yes
+  when: not delete_deployment|bool
+
+- name: Create Subscription to MongoDB
+  command: "{{ oc_location }}  create -f {{ config_location }}/mongodb-sub.yaml"
+  ignore_errors: yes
+  when: not delete_deployment|bool
+
+- name: Create MongoDB Service Accounts
+  command: "{{ oc_location }}  create -f {{ config_location }}/mongodb-service-accounts.yaml"
+  when: not delete_deployment|bool
+
+- name: Waiting for  MongoDB Subscription to complete
+  shell: |
+    set -o pipefail && {{ oc_location }}  get csv | grep {{ mongodbstartingCSV }} | grep Succeeded
+  register: install_status
+  when: not delete_deployment|bool
+  until: "'Succeeded' in install_status.stdout"
+  retries: 60
+  delay: 15
+  args:
+    executable: /bin/bash
+
+- name: Create  username and password for MongoOps dashboard
+  command: "{{ oc_location }} -n {{ project_namespace }} create secret generic ops-manager-admin  --from-literal=Username='{{ mongodb_admin }}' --from-literal=Password='{{ mongodb_password }}'  --from-literal=FirstName='Jane' --from-literal=LastName='Doe'"
+  when: not delete_deployment|bool
+
+- name: Start MongoDB Ops Deployment
+  command: "{{ oc_location }}  create -f {{ config_location }}/mongodb-ops-manger.yaml"
+  when: not delete_deployment|bool
+
+- name: Waiting for  MongoDB OPs Manager to deploy
+  shell: |
+    set -o pipefail && {{ oc_location }} get pods | grep ops-manager-0| grep 1/1 | wc -l
+  register: mongoops_status
+  when: not delete_deployment|bool
+  until: "'1' in mongoops_status.stdout"
+  retries: 100
+  delay: 25
+  args:
+    executable: /bin/bash
+
+- name: Pause for 180 seconds for mongodb ops manager
+  pause:
+    seconds: 180
+  when: not delete_deployment|bool
+
+- name: Expose MongoDB Ops Dashboard
+  command: "{{ oc_location }} expose svc/ops-manager-svc  -n {{ project_namespace }}"
+  when: not delete_deployment|bool
+
+- name: Get URL for MongoDB Ops Dashboard
+  shell: "{{ oc_location }} get route ops-manager-svc -n {{ project_namespace }} | grep ops-manager-svc | awk '{print $2}'"
+  register: mongodburl
+  when: not delete_deployment|bool
+  args:
+    executable: /bin/bash
+
+- name: Saving  URL for MongoDB Ops Dashboard
+  set_fact:
+    mongodb_url: "{{ mongodburl.stdout }}"
+  when: not delete_deployment|bool
+
+
+- name: Get API Key for MongoDB Ops Dashboard
+  shell: "{{ oc_location }} get secrets -n openshift-operators ops-manager-admin-key -o jsonpath='{.data.publicApiKey}' | base64 -d"
+  ignore_errors: no 
+  register: publicApiKey
+  args:
+    executable: /bin/bash
+  when: not delete_deployment|bool
+
+- name: Saving publicApiKey
+  set_fact:
+    public_apikey: "{{ publicApiKey.stdout }}"
+  when: not delete_deployment|bool
+
+- name: Create quarkuscoffeeshop ops-manager-admin-key in  project
+  shell: "{{ oc_location }} -n {{ project_namespace }} create secret generic ops-manager-admin-key --from-literal=\"user={{ mongodb_admin }}\" --from-literal=\"publicApiKey={{ public_apikey }}\""
+  when: not delete_deployment|bool
+  args:
+    executable: /bin/bash
+
+
+- name: Create quarkuscoffeeshop organization
+  shell: " curl --user {{ mongodb_admin }}:{{ public_apikey }} --digest  --header 'Accept: application/json'  --header 'Content-Type: application/json'  --include  --request POST \"http://{{ mongodb_url }}/api/public/v1.0/orgs\"  --data '{ \"name\" : \"quarkuscoffeeshop\" }'"
+  register: publicApiKey
+  when: not delete_deployment|bool
+  args:
+    executable: /bin/bash
+
+- name: Get quarkuscoffeeshop organization
+  shell: "curl -s  --user {{ mongodb_admin }}:{{ public_apikey }} --digest  --header 'Accept: application/json'  --header 'Content-Type: application/json'   --request GET http://{{ mongodb_url }}/api/public/v1.0/orgs |  jq '.results[] | select(  .name == \"quarkuscoffeeshop\" ) |.id' | xargs"
+  register: get_org_id
+  ignore_errors: yes
+  args:
+    executable: /bin/bash
+
+- name: Saving orgid for database
+  set_fact:
+    org_id: "{{ get_org_id.stdout | default(0123456789) }}"
+
+
+- name: Create mongodb config file
+  template:
+    src: templates/mongodb-config.yaml.j2
+    dest:  "{{ config_location }}/mongodb-config.yaml"
+    owner: "{{ default_owner }}"
+    group: "{{ default_group }}"
+    mode: 0666
+
+- name:  Create mongodb config
+  command: "{{ oc_location }}  create -f {{ config_location }}mongodb-config.yaml"
+  when: not delete_deployment|bool
+
+- name: Copying over MongoDB Replica Set
+  template:
+    src: templates/quarkus-coffeeshop-replica-set.yaml.j2
+    dest:  "{{ config_location }}/quarkus-coffeeshop-replica-set.yaml"
+    owner: "{{ default_owner }}"
+    group: "{{ default_group }}"
+    mode: 0666
+
+- name:  Create MongoDB Replica Set
+  command: "{{ oc_location }}  create -f {{ config_location }}quarkus-coffeeshop-replica-set.yaml"
+  when: not delete_deployment|bool
+
+- name: Waiting for quarkus-coffeeshop-replica-set to deploy
+  shell: |
+    set -o pipefail && {{ oc_location }} get pods | grep quarkus-coffeeshop-replica-set | grep 1/1 | wc -l
+  register: mongoops_status
+  when: not delete_deployment|bool
+  until: "'3' in mongoops_status.stdout"
+  retries: 100
+  delay: 25
+  args:
+    executable: /bin/bash
+
+- name: Waiting for quarkus-coffeeshop-replica-set to  Reconcile
+  shell: |
+    set -o pipefail && {{ oc_location }} get MongoDB quarkus-coffeeshop-replica-set | grep Running  | wc -l
+  register: mongoops_reconcile
+  when: not delete_deployment|bool
+  until: "'1' in mongoops_reconcile.stdout"
+  retries: 100
+  delay: 25
+  args:
+    executable: /bin/bash
+
+
+- name:  Get Mongo-utils Pod name
+  shell: "{{ oc_location }} get pods  -n {{ project_namespace }} | grep -E -o 'mongodb-utils-[0-9a-z][0-9a-z].*-[0-9a-z]{5}'"
+  register: get_podname
+  when: not delete_deployment|bool
+  args:
+    executable: /bin/bash
+
+- name: Saving  Mongo-utils Pod name
+  set_fact:
+    mongo_utils_pod: "{{ get_podname.stdout }}"
+  when: not delete_deployment|bool
+
+- name:  Create MongoDB admin user
+  command: "{{ oc_location }}  exec -it {{ mongo_utils_pod }} -- /bin/configure_mongodb_user"
+  when: not delete_deployment|bool
+
+- name:  Create and load MongoDB database
+  command: "{{ oc_location }}  exec -it {{ mongo_utils_pod }} -- /bin/load_database"
+  when: not delete_deployment|bool
+
+- name: Copy mongoku deployment config
+  template:
+    src: templates/mongoku.yaml.j2
+    dest:  "{{ config_location }}/mongoku.yaml"
+    owner: "{{ default_owner }}"
+    group: "{{ default_group }}"
+    mode: 0666
+
+- name:  Create mongoku
+  command: "{{ oc_location }}  create -f {{ config_location }}/mongoku.yaml"
+  when: not delete_deployment|bool
+
+- name: Remove mongoku
+  command: "{{ oc_location }} delete -f {{ config_location }}mongoku.yaml"
+  ignore_errors: yes
+  when: delete_deployment|bool
+
+- name: delete username and password for MongoOps dashboard
+  command: "{{ oc_location }} -n {{ project_namespace }} delete secret  ops-manager-admin"
+  ignore_errors: yes
+  when: delete_deployment|bool
+
+- name: Remove MongoDB Ops Manager route
+  command: "{{ oc_location }}  delete route ops-manager-svc"
+  ignore_errors: yes
+  when: delete_deployment|bool
+
+- name: Remove MongoDB Ops Manager
+  command: "{{ oc_location }}  delete -f {{ config_location }}/mongodb-ops-manger.yaml"
+  ignore_errors: yes
+  when: delete_deployment|bool
+
+- name: Delete MongoDB Service Accounts
+  command: "{{ oc_location }}  delete -f {{ config_location }}/mongodb-service-accounts.yaml"
+  ignore_errors: yes
+  when: delete_deployment|bool
+
+- name: Delete MongoDB ops-manager-admin-key Secret 
+  command: "{{ oc_location }} delete secret ops-manager-admin-key -n {{ project_namespace }}"
+  ignore_errors: yes
+  when: delete_deployment|bool
+
+- name:  Delete mongodb config
+  command: "{{ oc_location }}  delete -f {{ config_location }}mongodb-config.yaml"
+  ignore_errors: yes
+  when: delete_deployment|bool
+
+- name:  Delete MongoDB Replica Set
+  command: "{{ oc_location }}  delete -f {{ config_location }}quarkus-coffeeshop-replica-set.yaml"
+  ignore_errors: yes
+  when: delete_deployment|bool
+
+- name: Remove MongoDB Replica Set pvc
+  command: "{{ oc_location }}  delete pvc data-quarkus-coffeeshop-replica-set-{{ item }}"
+  ignore_errors: yes
+  loop:
+    - 0
+    - 1
+    - 2
+  when: delete_deployment|bool
+
+- name: Delete MongoDB utils
+  command: "{{ oc_location }}  delete -f {{ config_location }}/mongodb-utils.yaml"
+  ignore_errors: yes
+  when: delete_deployment|bool
+
+- name: Remove MongoDB Subscription
+  command: "{{ oc_location }}  delete -f {{ config_location }}/mongodb-sub.yaml"
+  ignore_errors: yes
+  when: delete_deployment|bool
+
+- name: Remove MongoDB Ops Manager pvc
+  command: "{{ oc_location }}  delete pvc data-ops-manager-db-{{ item }}"
+  ignore_errors: yes
+  loop:
+    - 0
+    - 1
+    - 2
+  when: delete_deployment|bool
+
+- name: Remove MongoDB csv
+  command: "{{ oc_location }}  delete csv {{ mongodbstartingCSV }}"
+  ignore_errors: yes
+  when: delete_deployment|bool

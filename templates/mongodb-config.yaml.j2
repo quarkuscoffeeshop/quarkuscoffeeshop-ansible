@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongoops-info
+  namespace: {{ project_namespace }}
+data:
+  projectName: quarkuscoffeeshop # this is an optional parameter
+  orgId: "{{ org_id }}"
+  baseUrl: http://ops-manager-svc.{{ project_namespace }}.svc.cluster.local:8080

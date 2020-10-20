@@ -1,0 +1,14 @@
+apiVersion: mongodb.com/v1
+kind: MongoDB
+metadata:
+  name: quarkus-coffeeshop-replica-set
+  namespace: {{ project_namespace }}
+spec:
+  credentials: ops-manager-admin-key
+  members: 3
+  opsManager:
+    configMapRef:
+      name: mongoops-info
+  type: ReplicaSet
+  version: 4.4.0-ent
+  persistent: true

@@ -1,0 +1,7 @@
+{
+  "_id":{
+     "$oid":"5f7cde5332887d33e344b0ae"
+  },
+  "eventPayload":"{\"beverages\":[{\"item\":\"COFFEE_BLACK\",\"name\":\"Tosin Akinosho\"}],\"eventType\":\"ORDER_PLACED\",\"id\":\"22ed3c16-5049-48ee-b857-fa275b5eae6f\",\"kitchenOrders\":[],\"orderSource\":\"WEB\"}",
+  "eventType":"ORDER_PLACED"
+}

@@ -1,0 +1,25 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    openshift.io/host.generated: "true"
+  labels:
+    app: quarkuscoffeeshop-web
+    app.kubernetes.io/component: quarkuscoffeeshop-web
+    app.kubernetes.io/instance: quarkuscoffeeshop-web
+    app.kubernetes.io/name: ""
+    app.kubernetes.io/part-of: quarkus-cafe
+    app.openshift.io/runtime: ""
+    app.openshift.io/runtime-version: latest
+    jeremydavis/quarkuscoffeeshop-web: ""
+  name: quarkuscoffeeshop-web
+  namespace: {{ project_namespace }}
+spec:
+  host: quarkuscoffeeshop-web-{{ project_namespace }}.apps.{{ domain }}
+  port:
+    targetPort: 8080-tcp
+  to:
+    kind: Service
+    name: quarkuscoffeeshop-web
+    weight: 100
+  wildcardPolicy: None

@@ -58,7 +58,7 @@
     executable: /bin/bash
 
 - name: Create  username and password for MongoOps dashboard
-  command: "{{ oc_location }} -n {{ project_namespace }} create secret generic ops-manager-admin  --from-literal=Username='{{ mongodb_admin }}' --from-literal=Password='{{ mongodb_password }}'  --from-literal=FirstName='Jane' --from-literal=LastName='Doe'"
+  command: "{{ oc_location }} -n {{ project_namespace }} create secret generic ops-manager-admin  --from-literal=Username='{{ mongodbops_admin }}' --from-literal=Password='{{ mongodbops_password }}'  --from-literal=FirstName='Jane' --from-literal=LastName='Doe'"
   when: not delete_deployment|bool
 
 - name: Start MongoDB Ops Deployment
@@ -112,21 +112,21 @@
   when: not delete_deployment|bool
 
 - name: Create quarkuscoffeeshop ops-manager-admin-key in  project
-  shell: "{{ oc_location }} -n {{ project_namespace }} create secret generic ops-manager-admin-key --from-literal=\"user={{ mongodb_admin }}\" --from-literal=\"publicApiKey={{ public_apikey }}\""
+  shell: "{{ oc_location }} -n {{ project_namespace }} create secret generic ops-manager-admin-key --from-literal=\"user={{ mongodbops_admin }}\" --from-literal=\"publicApiKey={{ public_apikey }}\""
   when: not delete_deployment|bool
   args:
     executable: /bin/bash
 
 
 - name: Create quarkuscoffeeshop organization
-  shell: " curl --user {{ mongodb_admin }}:{{ public_apikey }} --digest  --header 'Accept: application/json'  --header 'Content-Type: application/json'  --include  --request POST \"http://{{ mongodb_url }}/api/public/v1.0/orgs\"  --data '{ \"name\" : \"quarkuscoffeeshop\" }'"
+  shell: " curl --user {{ mongodbops_admin }}:{{ public_apikey }} --digest  --header 'Accept: application/json'  --header 'Content-Type: application/json'  --include  --request POST \"http://{{ mongodb_url }}/api/public/v1.0/orgs\"  --data '{ \"name\" : \"quarkuscoffeeshop\" }'"
   register: publicApiKey
   when: not delete_deployment|bool
   args:
     executable: /bin/bash
 
 - name: Get quarkuscoffeeshop organization
-  shell: "curl -s  --user {{ mongodb_admin }}:{{ public_apikey }} --digest  --header 'Accept: application/json'  --header 'Content-Type: application/json'   --request GET http://{{ mongodb_url }}/api/public/v1.0/orgs |  jq '.results[] | select(  .name == \"quarkuscoffeeshop\" ) |.id' | xargs"
+  shell: "curl -s  --user {{ mongodbops_admin }}:{{ public_apikey }} --digest  --header 'Accept: application/json'  --header 'Content-Type: application/json'   --request GET http://{{ mongodb_url }}/api/public/v1.0/orgs |  jq '.results[] | select(  .name == \"quarkuscoffeeshop\" ) |.id' | xargs"
   register: get_org_id
   ignore_errors: yes
   args:

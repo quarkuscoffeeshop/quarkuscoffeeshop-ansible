@@ -28,7 +28,7 @@ version_kitchen: 3.1.0
 version_web: 3.1.0
 
 # mongo DB user information 
-mongodb_admin: jane.doe@example.com
-mongodb_password: Passw0rd.
+mongodbops_admin: jane.doe@example.com
+mongodbops_password: Passw0rd.
 mongodb_username: mongodb
 mongodb_password: 7lIHuw&#0KrE

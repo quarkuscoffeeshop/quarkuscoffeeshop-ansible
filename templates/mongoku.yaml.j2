@@ -23,6 +23,10 @@ spec:
       containers:
         - name: mongoku
           image: huggingface/mongoku
+          env:
+            - name: MONGOKU_DEFAULT_HOST
+              value: >-
+                 quarkus-coffeeshop-replica-set-0.quarkus-coffeeshop-replica-set-svc.{{ project_namespace }}.svc.cluster.local:27017
           ports:
             - containerPort: 3100
               protocol: TCP

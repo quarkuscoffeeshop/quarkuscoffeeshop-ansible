@@ -23,3 +23,5 @@
     - name: Deploy Quarkus Cafe Helm Chart
       include_tasks: helm-chart.yml
       when: not skip_quarkuscoffeeshop_helm_install
+  tags:
+    - install

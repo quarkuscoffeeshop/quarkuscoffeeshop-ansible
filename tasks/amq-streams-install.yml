@@ -114,7 +114,7 @@
   when: delete_deployment|bool
 
 - name: Remove AMQ Subscription
-  command: "{{ oc_location }}  delete -f {{ config_location }}amqstreams.v1.5.3.yaml"
+  command: "{{ oc_location }}  delete -f {{ config_location }}amqstreams.v1.6.1.yaml"
   ignore_errors: yes
   when: delete_deployment|bool
 

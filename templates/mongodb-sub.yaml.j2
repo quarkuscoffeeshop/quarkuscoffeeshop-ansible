@@ -1,13 +1,3 @@
-apiVersion: operators.coreos.com/v1alpha1 
-kind: Subscription 
-metadata: 
-  name: mongodb-enterprise 
-  namespace: openshift-operators
-spec: 
-  channel: stable 
-  name: mongodb-enterprise 
-  source: certified-operators 
-  sourceNamespace: openshift-marketplace
 ---
 apiVersion: operators.coreos.com/v1alpha1 
 kind: Subscription 
@@ -16,6 +6,9 @@ metadata:
   namespace:  {{ project_namespace }}
 spec: 
   channel: stable 
+  installPlanApproval: Manual
+  approved: true
   name: mongodb-enterprise 
   source: certified-operators 
   sourceNamespace: openshift-marketplace
+  startingCSV: {{ mongodbstartingCSV }}

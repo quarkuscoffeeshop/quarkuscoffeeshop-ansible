@@ -11,6 +11,7 @@ Requirements
 * Ansible should be installed on machine
 * oc cli must be installed
 * Ansible community.kubernetes module must be installed `ansible-galaxy collection install community.kubernetes`
+* Install [Helm](https://helm.sh/docs/intro/install/) Binary
 
 ScreenShots
 ------------------------------------------------
@@ -76,8 +77,8 @@ insecure_skip_tls_verify  |  Skip insecure tls verify  |  true
 default_owner | Default owner of template files. | root
 default_group | Default group of template files. |  root
 delete_deployment  | delete the deployment and project for quarkus-cafe-demo  | false
-amqstartingCSV  | Red Hat AMQ csv version  |  amqstreams.v1.5.0
-mongodbstartingCSV  | MongoDB Ops Manager version  |  mongodb-enterprise.v1.9.0
+amqstartingCSV  | Red Hat AMQ csv version  |  amqstreams.v1.6.1
+mongodbstartingCSV  | MongoDB Ops Manager version  |  mongodb-enterprise.v1.8.0
 config_location  | default location for application templates  | "/tmp/"
 version_barista | Default container barista tag | 3.0.0
 version_counter | Default container counter tag | 3.0.0
@@ -129,7 +130,6 @@ $ cat >deploy-quarkus-cafe.yml<<YAML
     skip_amq_install: false
     skip_mongodb_operator_install: false
     skip_quarkuscoffeeshop_helm_install: false
-    skip_postgres_operator_install: false
     domain: ${DOMAIN}
     mongodb_admin: jane.doe@example.com
     mongodb_password: Passw0rd.
@@ -160,7 +160,6 @@ $ cat >deploy-quarkus-cafe.yml<<YAML
     skip_amq_install: false
     skip_mongodb_operator_install: false
     skip_quarkuscoffeeshop_helm_install: false
-    skip_postgres_operator_install: false
     domain: ${DOMAIN}
   roles:
     - tosin2013.quarkus_cafe_demo_role
@@ -189,7 +188,6 @@ $ cat >deploy-quarkus-cafe.yml<<YAML
     skip_amq_install: false
     skip_mongodb_operator_install: true
     single_mongodb_install: true
-    skip_postgres_operator_install: false
     skip_quarkuscoffeeshop_helm_install: false
     domain: ${DOMAIN}
   roles:

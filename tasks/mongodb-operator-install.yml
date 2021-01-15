@@ -46,6 +46,28 @@
   command: "{{ oc_location }}  create -f {{ config_location }}/mongodb-service-accounts.yaml"
   when: not delete_deployment|bool
 
+- name: Pause for 30 seconds for InstallPlan
+  pause:
+    seconds: 30
+  when: not delete_deployment|bool
+
+- name: Get InstallPlan
+  shell: |
+    set -o pipefail && {{ oc_location }} get InstallPlan | grep {{ mongodbstartingCSV }} | awk '{print $1}'
+  register: install_plan
+  when: not delete_deployment|bool
+
+- name: set install_plan
+  set_fact:
+    install_plan_name: "{{ install_plan.stdout }}"
+  when: not delete_deployment|bool
+
+- name: Approve Install 
+  shell: |
+    set -o pipefail && {{ oc_location }} patch InstallPlan {{ install_plan_name }} --type='json'  -p='[{"op": "replace", "path": "/spec/approved", "value":true}]'
+  when: not delete_deployment|bool
+
+
 - name: Waiting for  MongoDB Subscription to complete
   shell: |
     set -o pipefail && {{ oc_location }}  get csv | grep {{ mongodbstartingCSV }} | grep Succeeded
@@ -114,6 +136,7 @@
 - name: Create quarkuscoffeeshop ops-manager-admin-key in  project
   shell: "{{ oc_location }} -n {{ project_namespace }} create secret generic ops-manager-admin-key --from-literal=\"user={{ mongodbops_admin }}\" --from-literal=\"publicApiKey={{ public_apikey }}\""
   when: not delete_deployment|bool
+  ignore_errors: yes
   args:
     executable: /bin/bash
 
@@ -223,6 +246,11 @@
 
 - name: delete username and password for MongoOps dashboard
   command: "{{ oc_location }} -n {{ project_namespace }} delete secret  ops-manager-admin"
+  ignore_errors: yes
+  when: delete_deployment|bool
+
+- name: delete secret for ops-manager-admin-key
+  command: "{{ oc_location }} -n {{ project_namespace }} delete secret ops-manager-admin-key"
   ignore_errors: yes
   when: delete_deployment|bool
 

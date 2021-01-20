@@ -12,6 +12,7 @@ mongodbstartingCSV: mongodb-enterprise.v1.8.0
 config_location: "/tmp/"
 kafka_cluster_name: cafe-cluster
 skip_amq_install: false
+skip_configure_postgres: false
 skip_mongodb_operator_install: false
 single_mongodb_install: false
 skip_quarkuscoffeeshop_helm_install: false
@@ -33,3 +34,7 @@ mongodbops_admin: jane.doe@example.com
 mongodbops_password: Passw0rd.
 mongodb_username: mongodb
 mongodb_password: 7lIHuw&#0KrE
+
+# Postgres database information
+postgres_username: coffeshopadmin
+postgres_password: changeme

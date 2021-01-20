@@ -1,0 +1,7 @@
+- name: Deploy Postgres utils
+  command: "{{ oc_location }}  create -f {{ config_location }}/postgres-utils.yaml"
+  ignore_errors: yes
+  when: not delete_deployment|bool
+
+
+

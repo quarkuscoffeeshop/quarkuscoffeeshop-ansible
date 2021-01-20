@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ ! -z ${PGPASSWORD} ];
+if [ -z ${PGPASSWORD} ];
 then 
   echo "postgres password not in enviornment."
   exit 1

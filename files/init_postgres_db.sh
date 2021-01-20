@@ -2,11 +2,10 @@
 
 if [ ! -z ${PGPASSWORD} ];
 then 
-  echo "postgres passeword not in enviornment."
+  echo "postgres password not in enviornment."
   exit 1
 fi 
 
-export PGPASSWORD="SXTe3;IJ@Am;)6y+p:,aY3qx"  
 psql -h coffeeshopdb -p 5432 -U coffeshopadmin coffeeshopdb  -c "CREATE SCHEMA coffeeshop AUTHORIZATION coffeshopadmin;"
 psql -h coffeeshopdb -p 5432 -U coffeshopadmin coffeeshopdb  -c "alter table if exists coffeeshop.LineItems
     drop constraint if exists FK6fhxopytha3nnbpbfmpiv4xgn;"

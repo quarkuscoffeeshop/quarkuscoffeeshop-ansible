@@ -1,3 +1,24 @@
+---
+kind: ImageStream
+apiVersion: image.openshift.io/v1
+metadata:
+  name: fedora
+  namespace: {{ project_namespace }}
+  selfLink: /apis/image.openshift.io/v1/namespaces/{{ project_namespace }}/imagestreams/fedora
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+    - name: latest
+      annotations: null
+      from:
+        kind: DockerImage
+        name: docker.io/fedora
+      generation: 1
+      importPolicy: {}
+      referencePolicy:
+        type: Source
+---
 apiVersion: v1
 items:
 - apiVersion: build.openshift.io/v1

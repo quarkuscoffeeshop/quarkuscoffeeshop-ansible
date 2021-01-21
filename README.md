@@ -25,11 +25,11 @@ http://quarkuscoffeeshop-web-quarkus-cafe-demo.apps.example.com example
 
 Usage
 ----------------
-* Default web page 5.0.1-SNAPSHOT 
-http://quarkuscoffeeshop-web-quarkus-cafe-demo.apps.example.com/cafe
+* Default web page 5.0.1-SNAPSHOT  
+  * http://quarkuscoffeeshop-web-quarkus-cafe-demo.apps.example.com/cafe
 this endpoint is used to view the events coming into the cluster
-* Default web page v3.3.1 
-http://quarkuscoffeeshop-web-quarkus-cafe-demo.apps.example.com/
+* Default web page v3.3.1  
+  * http://quarkuscoffeeshop-web-quarkus-cafe-demo.apps.example.com/
 this endpoint is used to view the events coming into the cluster
 * If you deploy skip_quarkus_cafe_customermock this will automatically push events to the quarkus cafe dashboard.
 * If you would like to manally push events to AMQ use the command below.

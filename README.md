@@ -19,8 +19,7 @@ ScreenShots
 
 ![quarkus cafe kafka topics](images/ams-topics.png "quarkus cafe  kafka topics")
 
-
-http://quarkuscoffeeshop-web-quarkus-cafe-demo.apps.example.com/cafe example
+http://quarkuscoffeeshop-web-quarkus-cafe-demo.apps.example.com example
 ![quarkus cafe application](images/webpage-example.png "quarkus appliation")
 
 

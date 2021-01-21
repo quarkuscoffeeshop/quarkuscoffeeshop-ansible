@@ -12,6 +12,7 @@ Requirements
 * oc cli must be installed
 * Ansible community.kubernetes module must be installed `ansible-galaxy collection install community.kubernetes`
 * Install [Helm](https://helm.sh/docs/intro/install/) Binary
+* [Postges Operator](https://github.com/tosin2013/postgres-operator) for Quarkus CoffeeShop 5.0.1-SNAPSHOT Deployments
 
 ScreenShots
 ------------------------------------------------

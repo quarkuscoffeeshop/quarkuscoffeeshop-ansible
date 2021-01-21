@@ -2,7 +2,7 @@ Quarkus Cafe Role
 =========
 
 The Quarkus Cafe Role will deploy an event-driven demo application built with Quarkus, AMQ Streams (Kafka), and MongoDB. The application deploys to OpenShift (Kubernetes.)
-The source code for the  [quarkus-cafe-demo](https://github.com/jeremyrdavis/quarkus-cafe-demo) application can be found  [here](https://github.com/jeremyrdavis/quarkus-cafe-demo).
+The source code for the  [quarkuscoffeeshop](https://github.com/quarkuscoffeeshop) application support doc can be found  [here](https://github.com/quarkuscoffeeshop/quarkuscoffeeshop-support).
 
 Requirements
 ------------
@@ -26,8 +26,11 @@ http://quarkuscoffeeshop-web-quarkus-cafe-demo.apps.example.com/cafe example
 
 Usage
 ----------------
-* Default web page
+* Default web page 5.0.1-SNAPSHOT 
 http://quarkuscoffeeshop-web-quarkus-cafe-demo.apps.example.com/cafe
+this endpoint is used to view the events coming into the cluster
+* Default web page v3.3.1 
+http://quarkuscoffeeshop-web-quarkus-cafe-demo.apps.example.com/
 this endpoint is used to view the events coming into the cluster
 * If you deploy skip_quarkus_cafe_customermock this will automatically push events to the quarkus cafe dashboard.
 * If you would like to manally push events to AMQ use the command below.
@@ -80,12 +83,19 @@ delete_deployment  | delete the deployment and project for quarkus-cafe-demo  | 
 amqstartingCSV  | Red Hat AMQ csv version  |  amqstreams.v1.6.1
 mongodbstartingCSV  | MongoDB Ops Manager version  |  mongodb-enterprise.v1.8.0
 config_location  | default location for application templates  | "/tmp/"
-version_barista | Default container barista tag | 3.0.0
-version_counter | Default container counter tag | 3.0.0
+version_barista | Default container barista tag | 5.0.0-SNAPSHOT
+version_counter | Default container counter tag | 5.0.1-SNAPSHOT
 version_customermocker | Default container customermocker tag | 3.0.1
-version_kitchen | Default container kitchen tag | 3.0.0
-version_web | Default container web tag | 3.0.0
-helm_chart_version | Version of Qaurkus Cafe Helm Chart | 3.3.0
+version_kitchen | Default container kitchen tag | 5.0.0-SNAPSHOT
+version_web | Default container web tag | 5.0.1-SNAPSHOT
+helm_chart_version | Version of Qaurkus Cafe Helm Chart | 3.4.4
+pgsql_username | Default postgress user  | coffeshopadmin
+postgres_password | this is the postgress password that will be used in deployment| must be changed
+pgsql_url | default postgres URL | 'jdbc:postgresql://coffeeshopdb:5432/coffeeshopdb?currentSchema=coffeeshop'
+storeid | Store id for web frontend | RALEIGH
+quarkus_log_level | Quarkus coffee shop log level |  INFO
+quarkuscoffeeshop_log_level | Microservice log level | DEBUG
+
 
 Dependencies
 ------------
@@ -93,6 +103,7 @@ Dependencies
 * Ansible
 * OpenShift cli
 * helm 
+* [Postges Operator](https://github.com/tosin2013/postgres-operator) for Quarkus CoffeeShop 5.0.1-SNAPSHOT 
 
 Quick Start
 -----------
@@ -119,7 +130,6 @@ $ cat >deploy-quarkus-cafe.yml<<YAML
   vars:
     openshift_token: ${OCP_TOKEN}
     openshift_url: https://api.${DOMAIN}:6443
-    use_kubeconfig: false
     insecure_skip_tls_verify: true
     default_owner: ${USER}
     default_group: ${USER}
@@ -150,7 +160,6 @@ $ cat >deploy-quarkus-cafe.yml<<YAML
   vars:
     openshift_token: ${OCP_TOKEN}
     openshift_url: https://api.${DOMAIN}:6443
-    use_kubeconfig: false
     insecure_skip_tls_verify: true
     default_owner: ${USER}
     default_group: ${USER}
@@ -185,7 +194,6 @@ $ cat >deploy-quarkus-cafe.yml<<YAML
   vars:
     openshift_token: ${OCP_TOKEN}
     openshift_url: https://api.${DOMAIN}:6443
-    use_kubeconfig: false
     insecure_skip_tls_verify: true
     default_owner: ${USER}
     default_group: ${USER}

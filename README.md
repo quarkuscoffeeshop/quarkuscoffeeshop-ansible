@@ -15,12 +15,12 @@ Requirements
 
 ScreenShots
 ------------------------------------------------
-![quarkus cafe topology](images/quarkus-cafe-applications.png "quarkus cafe topology")
+![quarkuscoffeeshop topology](images/quarkus-cafe-applications.png "quarkuscoffeeshop topology")
 
-![quarkus cafe kafka topics](images/ams-topics.png "quarkus cafe  kafka topics")
+![quarkuscoffeeshop AMQ kafka topics](images/amq-topics.png "quarkuscoffeeshop  kafka topics")
 
 http://quarkuscoffeeshop-web-quarkus-cafe-demo.apps.example.com example
-![quarkus cafe application](images/webpage-example.png "quarkus appliation")
+![qquarkuscoffeeshop application](images/webpage-example.png "quarkuscoffeeshop appliation")
 
 
 Usage

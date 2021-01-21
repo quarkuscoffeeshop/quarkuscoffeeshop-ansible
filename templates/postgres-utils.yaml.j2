@@ -1,0 +1,104 @@
+apiVersion: v1
+items:
+- apiVersion: build.openshift.io/v1
+  kind: BuildConfig
+  metadata:
+    labels:
+      app: postgres-utilites
+    name: postgres-utilites
+    namespace: {{ project_namespace }}
+  spec:
+    failedBuildsHistoryLimit: 5
+    nodeSelector: null
+    output:
+      to:
+        kind: ImageStreamTag
+        name: postgres-utilites:latest
+    postCommit: {}
+    resources: {}
+    runPolicy: Serial
+    source:
+      dockerfile: |-
+        FROM fedora:latest
+        RUN yum install -y nc wget curl postgresql
+        RUN curl -OL https://raw.githubusercontent.com/tosin2013/quarkus-cafe-demo-role/dev/files/init_postgres_db.sh && chmod +x init_postgres_db.sh && mv init_postgres_db.sh /bin/init_postgres_db.sh
+        CMD ["sleep", "10000"]
+      type: Dockerfile
+    strategy:
+      dockerStrategy:
+        from:
+          kind: ImageStreamTag
+          name: fedora:latest
+      type: Docker
+    successfulBuildsHistoryLimit: 5
+    triggers:
+    - github:
+        secret: AIfFwrUqqxKTY7Y2Ggei
+      type: GitHub
+    - generic:
+        secret: bxKrY02kw_FLEpnJ74K_
+      type: Generic
+    - type: ConfigChange
+    - imageChange:
+        lastTriggeredImageID: fedora@sha256:fdf235fa167d2aa5d820fba274ec1d2edeb0534bd32d28d602a19b31bad79b80
+      type: ImageChange
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    labels:
+      app: postgres-utilites
+    name: postgres-utilites
+    namespace: {{ project_namespace }}
+  spec:
+    lookupPolicy:
+      local: false
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "6"
+      image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"postgres-utilites:latest","namespace":"{{ project_namespace }}"},"fieldPath":"spec.template.spec.containers[?(@.name==\"postgres-utilites\")].image"}]'
+      openshift.io/generated-by: OpenShiftNewApp
+    labels:
+      app: postgres-utilites
+      app.kubernetes.io/component: postgres-utilites
+      app.kubernetes.io/instance: postgres-utilites
+    name: postgres-utilites
+    namespace: {{ project_namespace }}
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        deployment: postgres-utilites
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftNewApp
+        labels:
+          deployment: postgres-utilites
+      spec:
+        containers:
+        - env:
+          - name: PGPASSWORD
+            value: {{ postgres_password }}
+          image: image-registry.openshift-image-registry.svc:5000/{{ project_namespace }}/postgres-utilites:latest
+          imagePullPolicy: IfNotPresent
+          name: postgres-utilites
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+kind: List
+metadata:
+  resourceVersion: ""
+  selfLink: ""

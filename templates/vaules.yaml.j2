@@ -12,15 +12,23 @@ version:
   customermocker: {{ version_customermocker }}
   kitchen: {{ version_kitchen }}
   web: {{ version_web }}
-{% if  single_mongodb_install  == False %}
+{% if  single_mongodb_install  == False and skip_configure_postgres == True %}
 mongodb_url: mongodb://{{ mongodb_username }}:{{ mongodb_password }}+srv@quarkus-coffeeshop-replica-set-0.quarkus-coffeeshop-replica-set-svc.{{ project_namespace }}.svc.cluster.local:27017,quarkus-coffeeshop-replica-set-1.quarkus-coffeeshop-replica-set-svc.{{ project_namespace }}.svc.cluster.local:27017,quarkus-coffeeshop-replica-set-2.quarkus-coffeeshop-replica-set-svc.{{ project_namespace }}.svc.cluster.local:27017/cafedb?replicaSet=quarkus-coffeeshop-replica-set
 mongodb_username: {{ mongodb_username }}
 mongodb_password: {{ mongodb_password }}
-{% elif single_mongodb_install == True %}
+{% elif single_mongodb_install == True and skip_configure_postgres == True %}
 mongodb_url: mongodb://mongodb:mongodb@mongodb:27017/cafedb
 mongodb_username: mongodb
 mongodb_password: mongodb
+{% elif skip_configure_postgres != True %}
+pgsql_url: {{ pgsql_url }}
+pgsql_username: {{ pgsql_username }}
+pgsql_password: '{{ postgres_password }}'
 {% endif %}
+storeid: {{ storeid }}
+quarkus_log_level: {{ quarkus_log_level }}
+quarkuscoffeeshop_log_level: {{ quarkuscoffeeshop_log_level }}
+
 
 # Helm chart variables
 Release:

@@ -14,11 +14,19 @@
 
     - name: Configure Postgres Database
       include_tasks: configure-postgres.yml
-      when: skip_configure_postgres | bool
+      when: not skip_configure_postgres | bool
+
+    - name: Installing Single mongodb database
+      include_tasks: mongodb.yml
+      when: 
+         - single_mongodb_install | bool
+         - skip_configure_postgres | bool
 
     - name: MongoDB Operator installation
       include_tasks: mongodb-operator-install.yml
-      when: not skip_mongodb_operator_install
+      when: 
+        - not skip_mongodb_operator_install
+        - skip_configure_postgres | bool
 
     - name: Deploy Quarkus Cafe Helm Chart
       include_tasks: helm-chart.yml

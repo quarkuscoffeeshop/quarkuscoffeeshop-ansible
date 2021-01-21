@@ -1,3 +1,15 @@
+- name: Copying over MongoDB Subscription
+  template:
+    src: templates/mongodb-ephemeral.json.j2
+    dest:  "{{ config_location }}/mongodb-ephemeral.json"
+    owner: "{{ default_owner }}"
+    group: "{{ default_group }}"
+    mode: 0666
+
+- name: Create mongodb template
+  command: "{{ oc_location }} create -f {{ config_location }}/mongodb-ephemeral.json"
+  when: not delete_deployment|bool
+
 - name: Create mongodb instance
   command: "{{ oc_location }} new-app --name=mongodb --template=mongodb-ephemeral -e MONGODB_USER=mongodb -e MONGODB_PASSWORD=mongodb -e MONGODB_DATABASE=cafedb -e MONGODB_ADMIN_PASSWORD=mongodb"
   when: not delete_deployment|bool
@@ -33,3 +45,7 @@
   command: "{{ oc_location }} delete secret mongodb"
   ignore_errors: yes
   when: delete_deployment|bool
+
+- name: Delete mongodb template
+  command: "{{ oc_location }} delete -f {{ config_location }}/mongodb-ephemeral.json"
+  when:  delete_deployment|bool

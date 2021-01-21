@@ -1,7 +1,45 @@
+- name: Copying over Postgres utils file
+  template:
+    src: templates/postgres-utils.yaml.j2
+    dest:  "{{ config_location }}/postgres-utils.yaml"
+    owner: "{{ default_owner }}"
+    group: "{{ default_group }}"
+    mode: 0666
+  when: not delete_deployment|bool
+
 - name: Deploy Postgres utils
   command: "{{ oc_location }}  create -f {{ config_location }}/postgres-utils.yaml"
   ignore_errors: yes
   when: not delete_deployment|bool
 
+- name: Waiting for postgres-utilites to deploy
+  shell: |
+    set -o pipefail && {{ oc_location }} get pod  | grep -E 'postgres-utilites-[0-9a-z][0-9a-z].*-[0-9a-z]{5}' | grep Running  | wc -l
+  register: postgres_build_complete
+  when: not delete_deployment|bool
+  until: "'1' in postgres_build_complete.stdout"
+  retries: 100
+  delay: 25
+  args:
+    executable: /bin/bash
 
+- name:  Get postgres-utilites Pod name
+  shell: "{{ oc_location }} get pods  -n {{ project_namespace }} | grep Running | grep -E -o 'postgres-utilites-[0-9a-z][0-9a-z].*-[0-9a-z]{5}'"
+  register: get_podname
+  when: not delete_deployment|bool
+  args:
+    executable: /bin/bash
 
+- name: Saving  postgres-utilites Pod name
+  set_fact:
+    postgres_utils_pod: "{{ get_podname.stdout }}"
+  when: not delete_deployment|bool
+
+- name:  Create and load postgres database
+  command: "{{ oc_location }}  exec -it {{ postgres_utils_pod }} -- /bin/init_postgres_db.sh"
+  when: not delete_deployment|bool
+
+- name: Delete Postgres utils
+  command: "{{ oc_location }}  delete -f {{ config_location }}/postgres-utils.yaml"
+  ignore_errors: yes
+  when: delete_deployment|bool

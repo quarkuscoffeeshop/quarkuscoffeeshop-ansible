@@ -105,16 +105,14 @@ $ chmod 700 get_helm.sh
 $ ./get_helm.sh
 ```
 
-Docker Deployment Quick Start with MongoDB Operator testing.
+Quarkus CoffeeShop 5.0.1-SNAPSHOT OpenShift Deployment   
 -----------------------------------------------------------
 ```
-$ git clone https://github.com/tosin2013/quarkus-cafe-demo-role.git
-$ cd quarkus-cafe-demo-role
-$ git checkout dev
-$ cd .. 
-$ cd mv  quarkus-cafe-demo-role /etc/ansible/roles
+$ ansible-galaxy install tosin2013.quarkus_cafe_demo_role
 $ export DOMAIN=ocp4.example.com
 $ export OCP_TOKEN=123456789
+$ export POSTGRES_PASSWORD=123456789
+$ export STORE_ID=ATLANTA
 $ cat >deploy-quarkus-cafe.yml<<YAML
 - hosts: localhost
   become: yes
@@ -130,17 +128,17 @@ $ cat >deploy-quarkus-cafe.yml<<YAML
     skip_amq_install: false
     skip_configure_postgres: false
     skip_mongodb_operator_install: true
-    skip_quarkuscoffeeshop_helm_install: true
+    skip_quarkuscoffeeshop_helm_install: false
     domain: ${DOMAIN}
-    mongodb_admin: jane.doe@example.com
-    mongodb_password: Passw0rd.
+    postgres_password: "${POSTGRES_PASSWORD}"
+    storeid: ${STORE_ID}
   roles:
     - tosin2013.quarkus_cafe_demo_role
 YAML
 $ ansible-playbook  deploy-quarkus-cafe.yml
 ```
 
-Default Deployment with MongoDB OPS Manager
+Quarkus CoffeeShop v3.3.1 OpenShift Deployment  with MongoDB Operator
 -----------------------------
 ```
 $ ansible-galaxy install tosin2013.quarkus_cafe_demo_role
@@ -159,16 +157,23 @@ $ cat >deploy-quarkus-cafe.yml<<YAML
     project_namespace: quarkuscoffeeshop-demo
     delete_deployment: false
     skip_amq_install: false
+    skip_configure_postgres: true
     skip_mongodb_operator_install: false
     skip_quarkuscoffeeshop_helm_install: false
     domain: ${DOMAIN}
+    helm_chart_version: 3.3.0
+    version_barista: 3.0.0
+    version_counter: 3.1.0
+    version_customermocker: 3.0.1
+    version_kitchen: 3.1.0
+    version_web: 3.1.0
   roles:
     - tosin2013.quarkus_cafe_demo_role
 YAML
 $ ansible-playbook  deploy-quarkus-cafe.yml
 ```
 
-Deployment with single mongoDB instance
+Quarkus CoffeeShop v3.3.1 OpenShift Deployment  with single mongoDB instance
 -----------------------------
 ```
 $ ansible-galaxy install tosin2013.quarkus_cafe_demo_role
@@ -187,10 +192,17 @@ $ cat >deploy-quarkus-cafe.yml<<YAML
     project_namespace: quarkuscoffeeshop-demo
     delete_deployment: false
     skip_amq_install: false
+    skip_configure_postgres: true
     skip_mongodb_operator_install: true
     single_mongodb_install: true
     skip_quarkuscoffeeshop_helm_install: false
     domain: ${DOMAIN}
+    helm_chart_version: 3.3.0
+    version_barista: 3.0.0
+    version_counter: 3.1.0
+    version_customermocker: 3.0.1
+    version_kitchen: 3.1.0
+    version_web: 3.1.0
   roles:
     - tosin2013.quarkus_cafe_demo_role
 YAML

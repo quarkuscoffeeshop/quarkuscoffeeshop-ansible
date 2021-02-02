@@ -17,7 +17,7 @@
 
 - name: set oc location
   set_fact:
-    oc_location: "{{ oc_location_result.stdout  | map('trim')}}"
+    oc_location: "{{ oc_location_result.stdout  | trim() }}"
   when: ansible_distribution == 'MacOSX'
 
 - name: login as super user with token on OpenShift 4

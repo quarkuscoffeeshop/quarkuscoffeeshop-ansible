@@ -15,7 +15,7 @@ function usage() {
   -p      Postgres Password
   -s      Store ID
   -h      Display this help and exit
-  -rm     Destory coffeeshop 
+  -r      Destory coffeeshop 
   To deploy qaurkuscoffeeshop-ansible playbooks
   ${0}  -d ocp4.example.com -o sha-123456789 -p 123456789 -s ATLANTA
   To Delete qaurkuscoffeeshop-ansible playbooks from OpenShift
@@ -71,7 +71,7 @@ fi
 
 while getopts ":d:o:p:s:h:r:" arg; do
   case $arg in
-    h) usage;;
+    h) export  HELP=True;;
     d) export  DOMAIN=$OPTARG;;
     o) export  OCP_TOKEN=$OPTARG;;
     p) export POSTGRES_PASSWORD=$OPTARG;;
@@ -79,6 +79,12 @@ while getopts ":d:o:p:s:h:r:" arg; do
     r) export  DESTROY=$OPTARG;;
   esac
 done
+
+if [[ $1 == "-h" ]];
+then
+  usage
+  exit 0
+fi
 
 export GROUP=$(id -gn)
 export USERNAME=$(whoami)

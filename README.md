@@ -105,16 +105,7 @@ Dependencies
 * helm 
 * [Postges Operator](https://github.com/tosin2013/postgres-operator) for Quarkus CoffeeShop 5.0.1-SNAPSHOT 
 
-Quick Start
------------
-```
-ansible-galaxy collection install community.kubernetes
 
-# Install Helm 
-$ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
-$ chmod 700 get_helm.sh
-$ ./get_helm.sh
-```
 
 Quarkus CoffeeShop 5.0.1-SNAPSHOT OpenShift Deployment   
 -----------------------------------------------------------
@@ -132,6 +123,18 @@ $ ./deploy-quarkuscoffeeshop-ansible.sh [OPTION]
   ./deploy-quarkuscoffeeshop-ansible.sh  -d ocp4.example.com -o sha-123456789 -p 123456789 -s ATLANTA
   To Delete qaurkuscoffeeshop-ansible playbooks from OpenShift
   ./deploy-quarkuscoffeeshop-ansible.sh  -d ocp4.example.com -o sha-123456789 -p 123456789 -s ATLANTA -r true
+```
+
+
+Quarkus CoffeeShop v3.3.1 and lower dependencies
+-----------
+```
+ansible-galaxy collection install community.kubernetes
+
+# Install Helm 
+$ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+$ chmod 700 get_helm.sh
+$ ./get_helm.sh
 ```
 
 Quarkus CoffeeShop v3.3.1 OpenShift Deployment  with MongoDB Operator

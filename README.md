@@ -110,7 +110,7 @@ Dependencies
 Quarkus CoffeeShop 5.0.1-SNAPSHOT OpenShift Deployment   
 -----------------------------------------------------------
 ```
-$ curl -OL https://github.com/quarkuscoffeeshop/quarkuscoffeeshop-ansible/blob/master/files/deploy-quarkuscoffeeshop-ansible.sh
+$ curl -OL https://raw.githubusercontent.com/quarkuscoffeeshop/quarkuscoffeeshop-ansible/master/files/deploy-quarkuscoffeeshop-ansible.sh
 $ ./deploy-quarkuscoffeeshop-ansible.sh [OPTION]
  Options:
   -d      Add domain 

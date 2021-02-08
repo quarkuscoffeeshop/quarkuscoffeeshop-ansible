@@ -118,7 +118,7 @@ $ ./deploy-quarkuscoffeeshop-ansible.sh [OPTION]
   -p      Postgres Password
   -s      Store ID
   -h      Display this help and exit
-  -r      Destory coffeeshop 
+  -r      Destroy coffeeshop 
   To deploy qaurkuscoffeeshop-ansible playbooks
   ./deploy-quarkuscoffeeshop-ansible.sh  -d ocp4.example.com -o sha-123456789 -p 123456789 -s ATLANTA
   To Delete qaurkuscoffeeshop-ansible playbooks from OpenShift

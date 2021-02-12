@@ -111,7 +111,8 @@ Quarkus CoffeeShop 5.0.1-SNAPSHOT OpenShift Deployment
 -----------------------------------------------------------
 ```
 $ curl -OL https://raw.githubusercontent.com/quarkuscoffeeshop/quarkuscoffeeshop-ansible/master/files/deploy-quarkuscoffeeshop-ansible.sh
-$ ./deploy-quarkuscoffeeshop-ansible.sh [OPTION]
+$ chmod +x deploy-quarkuscoffeeshop-ansible.sh
+$ ./deploy-quarkuscoffeeshop-ansible.sh 
  Options:
   -d      Add domain 
   -o      OpenShift Token

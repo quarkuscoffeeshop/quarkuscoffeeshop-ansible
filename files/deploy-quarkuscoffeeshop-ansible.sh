@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e 
+#set -e 
 
 if [ "$EUID" -ne 0 ]
 then 
@@ -37,11 +37,17 @@ function deploy-amq-configure-postgres(){
     echo "Installing helm"
     curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
     chmod 700 get_helm.sh
-    ./get_helm.sh
+    ${USE_SUDO} ./get_helm.sh
   fi 
 
-  echo "Check if tosin2013.quarkus_cafe_demo_role exists"
-  ROLE_LOC=$(find  ~/.ansible/roles -name quarkuscoffeeshop-ansible)
+  echo "Check if quarkuscoffeeshop-ansible role exists"
+  if [ ! -z ${USE_SUDO} ];
+  then 
+    ROLE_LOC=$(${USE_SUDO}  find  /root/.ansible/roles -name quarkuscoffeeshop-ansible)
+  else 
+    ROLE_LOC=$(find  ~/.ansible/roles -name quarkuscoffeeshop-ansible)
+  fi 
+  
   if [ -d "${ROLE_LOC}" ];
   then 
     echo "ansible-playbook  deploy-quarkus-cafe.yml"
@@ -151,4 +157,3 @@ else
   echo "Ansible is not installed"
   exit 1
 fi 
-

@@ -118,7 +118,7 @@ cat >/tmp/deploy-quarkus-cafe.yml<<YAML
     skip_mongodb_operator_install: true
     skip_quarkuscoffeeshop_helm_install: true
     domain: ${DOMAIN}
-    postgres_password: "${POSTGRES_PASSWORD}"
+    postgres_password: '${POSTGRES_PASSWORD}'
     storeid: ${STORE_ID}
   roles:
     - quarkuscoffeeshop-ansible

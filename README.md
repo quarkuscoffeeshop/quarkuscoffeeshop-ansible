@@ -107,11 +107,24 @@ Dependencies
 
 
 
-Quarkus CoffeeShop 5.0.1-SNAPSHOT OpenShift Deployment   
+Quarkus CoffeeShop 5.0.3-SNAPSHOT OpenShift Deployment   
 -----------------------------------------------------------
+
+Download Script
 ```
 $ curl -OL https://raw.githubusercontent.com/quarkuscoffeeshop/quarkuscoffeeshop-ansible/master/files/deploy-quarkuscoffeeshop-ansible.sh
 $ chmod +x deploy-quarkuscoffeeshop-ansible.sh
+```
+
+**Optional: Change namespace**  
+`default is quarkuscoffeeshop-demo`
+```
+$ NAMESPACE=changeme
+$  sed -i "s/quarkuscoffeeshop-demo/${NAMESPACE}/g" deploy-quarkuscoffeeshop-ansible.sh
+```
+
+**Run deploy-quarkuscoffeeshop-ansible.sh script**
+```
 $ ./deploy-quarkuscoffeeshop-ansible.sh 
  Options:
   -d      Add domain 

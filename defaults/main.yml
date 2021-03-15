@@ -20,15 +20,25 @@ skip_postgres_operator_install: false
 domain: ocp4.example.com
 
 # Helm Chart Version 
-helm_chart_version: 3.4.7
+helm_chart_version: 3.5.0
 
 # Application Versions 
 version_barista: 5.0.0-SNAPSHOT
-version_counter: 5.0.1-SNAPSHOT
+version_counter: 5.0.3-SNAPSHOT
 version_customermocker: 5.0.1-SNAPSHOT
 version_inventory: 5.0.0-SNAPSHOT
 version_kitchen: 5.0.0-SNAPSHOT
 version_web: 5.0.3-SNAPSHOT
+version_customerloyalty: 5.0.1-SNAPSHOT
+
+# replica count 
+replica_barista: 1
+replica_counter: 1
+replica_customermocker: 1
+replica_inventory: 1
+replica_kitchen: 1
+replica_web: 1
+replica_customerloyalty: 1
 
 # mongo DB user information 
 mongodbops_admin: jane.doe@example.com

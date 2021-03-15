@@ -53,7 +53,7 @@ function deploy-amq-configure-postgres(){
     echo "ansible-playbook  deploy-quarkus-cafe.yml"
   else
     echo "Installing ansible role"
-    ${USE_SUDO} ansible-galaxy install git+https://github.com/quarkuscoffeeshop/quarkuscoffeeshop-ansible.git
+    ${USE_SUDO} ansible-galaxy install git+https://github.com/quarkuscoffeeshop/quarkuscoffeeshop-ansible.git --force
   fi 
 
   echo "****************"

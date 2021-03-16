@@ -113,7 +113,7 @@ cat >/tmp/deploy-quarkus-cafe.yml<<YAML
     skip_amq_install: false
     skip_configure_postgres: false
     skip_mongodb_operator_install: true
-    single_mongodb_install: true 
+    single_mongodb_install: false 
     skip_quarkuscoffeeshop_helm_install: true
     domain: ${DOMAIN}
     postgres_password: '${POSTGRES_PASSWORD}'

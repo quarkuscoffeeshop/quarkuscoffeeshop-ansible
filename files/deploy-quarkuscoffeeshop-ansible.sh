@@ -48,12 +48,14 @@ function deploy-amq-configure-postgres(){
     ROLE_LOC=$(find  ~/.ansible/roles -name quarkuscoffeeshop-ansible)
   fi 
   
-  if [ -d "${ROLE_LOC}" ];
+  if [ ! -d ${ROLE_LOC} ];
   then 
-    echo "ansible-playbook  deploy-quarkus-cafe.yml"
-  else
     echo "Installing ansible role"
-    ${USE_SUDO} ansible-galaxy install git+https://github.com/quarkuscoffeeshop/quarkuscoffeeshop-ansible.git --force
+    ${USE_SUDO} ansible-galaxy install  git+https://github.com/quarkuscoffeeshop/quarkuscoffeeshop-ansible.git
+  else
+    ${USE_SUDO} -rm ${ROLE_LOC}
+    ${USE_SUDO} ansible-galaxy install   git+https://github.com/quarkuscoffeeshop/quarkuscoffeeshop-ansible.git
+    echo "ansible-playbook  deploy-quarkus-cafe.yml"
   fi 
 
   echo "****************"
@@ -69,7 +71,7 @@ function destory_coffee_shop(){
   ${USE_SUDO} ansible-playbook  /tmp/deploy-quarkus-cafe.yml
 }
 
-if [ -z $1 ];
+if [ -z "$1" ];
 then
   usage
   exit 1
@@ -86,7 +88,7 @@ while getopts ":d:o:p:s:h:r:" arg; do
   esac
 done
 
-if [[ $1 == "-h" ]];
+if [[ "$1" == "-h" ]];
 then
   usage
   exit 0
@@ -97,7 +99,7 @@ export USERNAME=$(whoami)
 
 echo -e "\n$DOMAIN  $OCP_TOKEN   $POSTGRES_PASSWORD $STORE_ID\n"
 
-if [ -z ${DESTROY} ];
+if [ -z "${DESTROY}" ];
 then 
   export DESTROY=false
 fi
@@ -112,7 +114,7 @@ cat >/tmp/deploy-quarkus-cafe.yml<<YAML
     default_owner: ${USERNAME}
     default_group: ${GROUP}
     project_namespace: quarkuscoffeeshop-demo
-    delete_deployment: ${DESTROY}
+    delete_deployment: "${DESTROY}"
     skip_amq_install: false
     skip_configure_postgres: false
     skip_mongodb_operator_install: true
@@ -137,17 +139,17 @@ case "${unameOut}" in
 esac
 
 
-if [ ${machine} == 'Linux' ] && [ -f /bin/ansible ];
+if [ "${machine}" == 'Linux' ] && [ -f /bin/ansible ];
 then 
-  if [ ${DESTROY} == false ];
+  if [ "${DESTROY}" == false ];
   then 
     deploy-amq-configure-postgres
   else 
     destory_coffee_shop
   fi
-elif [ ${machine} == 'Mac' ] && [ -f /usr/local/bin/ansible ];
+elif [ "${machine}" == 'Mac' ] && [ -f /usr/local/bin/ansible ];
 then
-  if [ ${DESTROY} == false ];
+  if [ "${DESTROY}" == false ];
   then 
     deploy-amq-configure-postgres
   else 

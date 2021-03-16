@@ -3,6 +3,7 @@
   community.kubernetes.helm_repository:
     name: quarkuscoffeeshop-helm
     repo_url: "https://quarkuscoffeeshop.github.io/quarkuscoffeeshop-helm/"
+    update_repo_cache: true 
   when: not delete_deployment|bool
   
 - name: Copying over  quarkuscoffeeshop helm chart values

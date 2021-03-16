@@ -48,15 +48,10 @@ function deploy-amq-configure-postgres(){
     ROLE_LOC=$(find  ~/.ansible/roles -name quarkuscoffeeshop-ansible)
   fi 
   
-  if [ ! -d ${ROLE_LOC} ];
-  then 
-    echo "Installing ansible role"
-    ${USE_SUDO} ansible-galaxy install  git+https://github.com/quarkuscoffeeshop/quarkuscoffeeshop-ansible.git
-  else
-    ${USE_SUDO} -rm ${ROLE_LOC}
-    ${USE_SUDO} ansible-galaxy install   git+https://github.com/quarkuscoffeeshop/quarkuscoffeeshop-ansible.git
-    echo "ansible-playbook  deploy-quarkus-cafe.yml"
-  fi 
+
+  ${USE_SUDO} rm -rf ${ROLE_LOC}
+  ${USE_SUDO} ansible-galaxy install   git+https://github.com/quarkuscoffeeshop/quarkuscoffeeshop-ansible.git
+
 
   echo "****************"
   echo "Start Deployment"

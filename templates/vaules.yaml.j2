@@ -22,15 +22,15 @@ replica_count:
   kitchen: {{ replica_kitchen }}
   customerloyalty: {{ replica_customerloyalty }}
   web: {{ replica_web }}
-{% if  single_mongodb_install  == False and skip_configure_postgres == True %}
+{% if  single_mongodb_install  == False and skip_mongodb_operator_install == False %}
 mongodb_url: mongodb://{{ mongodb_username }}:{{ mongodb_password }}+srv@quarkus-coffeeshop-replica-set-0.quarkus-coffeeshop-replica-set-svc.{{ project_namespace }}.svc.cluster.local:27017,quarkus-coffeeshop-replica-set-1.quarkus-coffeeshop-replica-set-svc.{{ project_namespace }}.svc.cluster.local:27017,quarkus-coffeeshop-replica-set-2.quarkus-coffeeshop-replica-set-svc.{{ project_namespace }}.svc.cluster.local:27017/cafedb?replicaSet=quarkus-coffeeshop-replica-set
 mongodb_username: {{ mongodb_username }}
 mongodb_password: {{ mongodb_password }}
-{% elif single_mongodb_install == True and skip_configure_postgres == True %}
+{% elif skip_mongodb_operator_install == False and skip_mongodb_operator_install == True %}
 mongodb_url: mongodb://mongodb:mongodb@mongodb:27017/cafedb
 mongodb_username: mongodb
 mongodb_password: mongodb
-{% elif skip_configure_postgres != True  and  single_mongodb_install  == False %}
+{% elif skip_mongodb_operator_install  == True  and  single_mongodb_install  == True %}
 pgsql_url: {{ pgsql_url }}
 pgsql_username: {{ pgsql_username }}
 pgsql_password: '{{ postgres_password }}'

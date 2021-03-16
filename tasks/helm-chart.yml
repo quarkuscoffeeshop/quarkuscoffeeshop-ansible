@@ -3,7 +3,6 @@
   community.kubernetes.helm_repository:
     name: quarkuscoffeeshop-helm
     repo_url: "https://quarkuscoffeeshop.github.io/quarkuscoffeeshop-helm/"
-    update_repo_cache: true 
   when: not delete_deployment|bool
   
 - name: Copying over  quarkuscoffeeshop helm chart values
@@ -28,6 +27,7 @@
     chart_ref: quarkuscoffeeshop-helm/quarkuscoffeeshop-charts
     chart_version: "{{ helm_chart_version }}"
     release_namespace: "{{ project_namespace }}"
+    update_repo_cache: true 
     values_files:
       -  "{{ config_location }}/vaules.yaml"
   when: not delete_deployment|bool

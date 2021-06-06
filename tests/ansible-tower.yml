@@ -7,7 +7,7 @@
     storeid: ATLANTA
     openshift_url: "https://api.{{ domain }}:6443"
     project_namespace: quarkuscoffeeshop-demo
-    delete_deployment: flase
+    delete_deployment: false
     insecure_skip_tls_verify: true
     default_owner: root
     default_group: root
@@ -17,4 +17,4 @@
     single_mongodb_install: false 
     skip_quarkuscoffeeshop_helm_install: true
   roles:
-    - quarkuscoffeeshop-ansible
+  - quarkuscoffeeshop-ansible

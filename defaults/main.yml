@@ -51,6 +51,11 @@ pgsql_username: coffeshopadmin
 postgres_password: changeme
 pgsql_url: 'jdbc:postgresql://coffeeshopdb:5432/coffeeshopdb?currentSchema=coffeeshop'
 
+# pgAdmin Database values 
+pgadmin_setup_email: user@example.com
+pgadmin_default_password: changeme
+pgadmin_setup_password: changeme
+
 # Store ID
 storeid: ATLANTA
 

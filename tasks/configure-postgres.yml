@@ -7,6 +7,15 @@
     mode: 0666
   when: not delete_deployment|bool
 
+- name: Copying over pgadmin file
+  template:
+    src: templates/pgadmin.yaml.j2
+    dest:  "{{ config_location }}/pgadmin.yaml"
+    owner: "{{ default_owner }}"
+    group: "{{ default_group }}"
+    mode: 0666
+  when: not delete_deployment|bool
+
 - name: Deploy Postgres utils
   command: "{{ oc_location }}  create -f {{ config_location }}/postgres-utils.yaml"
   ignore_errors: yes
@@ -39,7 +48,29 @@
   command: "{{ oc_location }}  exec -it {{ postgres_utils_pod }} -- /bin/init_postgres_db.sh"
   when: not delete_deployment|bool
 
+- name: Deploy pgadmin
+  command: "{{ oc_location }}  create -f {{ config_location }}/pgadmin.yaml"
+  ignore_errors: yes
+  when: not delete_deployment|bool
+
+- name: Waiting for pgadmin to deploy
+  shell: |
+    set -o pipefail && {{ oc_location }} get pod  | grep -E 'crunchy-pgadmin4-[0-9a-z][0-9a-z].*-[0-9a-z]{5}' | grep Running  | wc -l
+  register: pgadmin_build_complete
+  when: not delete_deployment|bool
+  until: "'1' in pgadmin_build_complete.stdout"
+  retries: 100
+  delay: 25
+  args:
+    executable: /bin/bash
+
 - name: Delete Postgres utils
   command: "{{ oc_location }}  delete -f {{ config_location }}/postgres-utils.yaml"
   ignore_errors: yes
   when: delete_deployment|bool
+
+- name: Delete pgadmin
+  command: "{{ oc_location }}  delete -f {{ config_location }}/pgadmin.yaml"
+  ignore_errors: yes
+  when: delete_deployment|bool
+  

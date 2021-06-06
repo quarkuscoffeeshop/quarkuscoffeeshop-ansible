@@ -1,20 +1,20 @@
 - hosts: localhost
   become: yes
   vars:
-    openshift_token: xoxoxoxoxox
-    openshift_url: https://api.example.com:6443
+    openshift_token: openshift-token
+    domain: example.com
+    postgres_password: 'changeme'
+    storeid: ATLANTA
+    openshift_url: "https://api.{{ domain }}:6443"
+    project_namespace: quarkuscoffeeshop-demo
+    delete_deployment: flase
     insecure_skip_tls_verify: true
-    project_namespace: quarkus-cafe-demo
-    delete_deployment: false 
+    default_owner: root
+    default_group: root
     skip_amq_install: false
-    skip_quarkus_cafe_barista: false
-    skip_quarkus_cafe_core: false
-    skip_quarkus_cafe_kitchen: false
-    skip_quarkus_cafe_web: false
-    skip_quarkus_cafe_customermock: false
-    quarkus_build_memory_limit: 6Gi
-    quarkus_build_cpu_limit: 1
-    quarkus_core_build_memory_limit: 8Gi
-    domain: apps.example.com
+    skip_configure_postgres: false
+    skip_mongodb_operator_install: true
+    single_mongodb_install: false 
+    skip_quarkuscoffeeshop_helm_install: true
   roles:
-    - quarkus-cafe-demo-role
+    - quarkuscoffeeshop-ansible

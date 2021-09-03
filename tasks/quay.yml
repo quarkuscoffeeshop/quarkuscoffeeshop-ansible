@@ -1,7 +1,7 @@
 ---
 - name: "create the quay project"
   k8s:
-    kubeconfig: ~/.kube/config
+    kubeconfig: /home/lab-user/.kube/config
     state: present
     name: "{{ quay_project_name }}"
     kind: Project

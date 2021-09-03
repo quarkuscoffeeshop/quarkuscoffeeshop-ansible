@@ -1,0 +1,39 @@
+- name: delete QuayRegistry quayecosystem
+  command: oc delete QuayRegistry quayecosystem -n quay-enterprise
+  ignore_errors: true
+  tags: always
+
+- name: delete quay project
+  command: oc delete project {{ ocp4_edge_quay_project_name }}
+  ignore_errors: true
+  tags: always
+
+- name: delete quay crd
+  command: oc delete crd quayecosystems.redhatcop.redhat.io
+  ignore_errors: true
+  tags: always
+
+- name: delete openshift-storage.noobaa.io storage class
+  command:  oc delete sc openshift-storage.noobaa.io
+  ignore_errors: true
+  tags: always
+
+- name: delete  storageclusters.ocs.openshift.io crd 
+  command:  oc delete crd  storageclusters.ocs.openshift.io
+  ignore_errors: true
+  tags: always
+
+- name: delete openshift-storage project
+  command: oc delete project openshift-storage
+  ignore_errors: true
+  tags: always
+
+- name: delete development project
+  command: "oc delete project {{ development_project }}"
+  ignore_errors: true
+  tags: always
+
+- name: delete homeoffice project
+  command: "oc delete project {{ homeoffice_project }}"
+  ignore_errors: true
+  tags: always

@@ -1,6 +1,6 @@
 ---
 - name: Log in (obtain access token)
-  community.kubernetes.k8s_auth:
+  k8s_auth:
     host: "{{ {{ openshift_url }}"
     username: admin
     password: "{{ k8s_admin_password }}"

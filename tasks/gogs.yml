@@ -47,7 +47,7 @@
 
 - name: wait for gogs sign_up to be ready
   uri:
-    url: http://{{ gogs_urlprefix }}.{{ route_subdomain }}/user/sign_up
+    url: http://{{ gogs_urlprefix }}.apps.{{ domain }}/user/sign_up
     status_code: 200
   register: result
   until: result.status == 200
@@ -56,7 +56,7 @@
 
 - name: create gogs admin user
   uri:
-    url: http://{{ gogs_urlprefix }}.{{ route_subdomain }}/user/sign_up
+    url: http://{{ gogs_urlprefix }}.apps.{{ domain }}/user/sign_up
     method: POST
     # yamllint disable-line rule:line-length
     body: "user_name={{ gogs_admin_user }}&password={{ gogs_admin_password }}&&retype={{ gogs_admin_password }}&&email={{ gogs_admin_user }}@gogs.com"
@@ -66,7 +66,7 @@
 
 - name: check if user exists
   uri:
-    url: http://{{ gogs_urlprefix }}.{{ route_subdomain }}/api/v1/users/{{ gogs_user }}
+    url: http://{{ gogs_urlprefix }}.apps.{{ domain }}/api/v1/users/{{ gogs_user }}
     user: "{{ gogs_admin_user }}"
     password: "{{ gogs_admin_password }}"
     force_basic_auth: true

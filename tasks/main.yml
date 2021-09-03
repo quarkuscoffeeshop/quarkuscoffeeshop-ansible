@@ -8,14 +8,14 @@
 
     - name: Configure ACM 
       include_tasks: acm-deployment.yml
-      when: not skip_acm_deployment && not delete_deployment | bool
+      when: not skip_acm_deployment and not delete_deployment | bool
       tags: 
         - quay
         - gogs
 
     - name: remove  ACM deployment
       include_tasks: acm-deployment.yml
-      when: not skip_acm_deployment && delete_deployment | bool
+      when: not skip_acm_deployment and delete_deployment | bool
       tags: 
         - quay
         - gogs

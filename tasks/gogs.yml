@@ -36,8 +36,8 @@
 
 - name: remove existing gogs if clean deploy requested
   shell: |
-    {{ oc_location }} delete all,cm,pvc -l app={{ gogs_service_name }} -n {{ gogs_gogs_project_name }}
-    {{ oc_location }} delete sa {{ gogs_service_name }} -n {{ gogs_gogs_project_name }}
+    {{ oc_location }} delete all,cm,pvc -l app={{ gogs_service_name }} -n {{ gogs_project_name }}
+    {{ oc_location }} delete sa {{ gogs_service_name }} -n {{ gogs_project_name }}
   when:
     - install_gogs is succeeded
     - gogs_clean_deploy|bool

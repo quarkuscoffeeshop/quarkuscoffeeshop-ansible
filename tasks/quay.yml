@@ -5,6 +5,7 @@
     username: admin
     password: "{{ k8s_admin_password }}"
   register: k8s_auth_results
+  tags: quay
 
 - name: "create the quay project"
   k8s:

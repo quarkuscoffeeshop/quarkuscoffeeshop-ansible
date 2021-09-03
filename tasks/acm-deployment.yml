@@ -3,6 +3,19 @@
   include_tasks: gogs.yml
   tags: gogs
 
+- name: check if project openshift storage project exists
+  command: "{{ oc_location }} get project openshift-storage"
+  register: ocs_project_result
+  ignore_errors: true
+  changed_when: false
+  tags: quay
+
+- name: deploy openshift storage operator
+  import_tasks: ./openshift-storage.yaml
+  become: true
+  when: ocs_project_result is failed
+  tags: quay
+
 - name: Configure Quay 
   include_tasks: quay.yml
   tags: quay

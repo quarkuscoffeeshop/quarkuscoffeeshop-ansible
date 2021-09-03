@@ -101,7 +101,7 @@
 
 - name: wait for quay to be running
   uri:
-    url: https://{{ quay_urlprefix }}.{{ domain }}
+    url: https://{{ quay_urlprefix }}.apps.{{ domain }}
     status_code: 200
     validate_certs: false
   register: result

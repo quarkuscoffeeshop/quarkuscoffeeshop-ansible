@@ -75,7 +75,7 @@
 
 - name: create gogs user
   uri:
-    url: http://{{ gogs_urlprefix }}.{{ route_subdomain }}/api/v1/admin/users
+    url: http://{{ gogs_urlprefix }}.apps.{{ domain }}/api/v1/admin/users
     method: POST
     # yamllint disable-line rule:line-length
     body: "{'login_name': '{{ gogs_user }}', 'username': '{{ gogs_user }}', 'email': '{{ gogs_user }}@gogs.com', 'password': '{{ gogs_user_password }}'}"
@@ -88,7 +88,7 @@
 
 - name: generate gogs users
   uri:
-    url: http://{{ gogs_urlprefix }}.{{ route_subdomain }}/api/v1/admin/users
+    url: http://{{ gogs_urlprefix }}.apps.{{ domain }}/api/v1/admin/users
     method: POST
     body: "{'login_name': '{{ item }}', 'username': '{{ item }}', 'email': '{{ item }}@gogs.com', 'password': '{{ gogs_user_password }}'}"
     body_format: json

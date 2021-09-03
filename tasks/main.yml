@@ -4,6 +4,7 @@
   block:
     - name: Login Cluster
       include_tasks: login-to-cluster.yml
+      tags: always 
 
     - name: Configure ACM 
       include_tasks: acm-demployment.yml

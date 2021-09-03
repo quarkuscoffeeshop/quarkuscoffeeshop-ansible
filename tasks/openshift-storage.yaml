@@ -1,0 +1,27 @@
+---
+- name: deploy the openshift storage operator
+  command: "{{ oc_location }} create -f openshift-storage-operator.yaml"
+  args:
+    chdir: "{{ config_location }}/files"
+
+- name: Waiting for openshift storage operator
+  k8s_info:
+    kind: Pod
+    label_selectors:
+      - name = ocs-operator
+    field_selectors:
+      - status.phase=Running
+  register: r_storage_status
+  retries: 120
+  delay: 15
+  until: r_storage_status.resources | list | length == 1
+
+- name: displaying openshift storage operator  deployment status
+  debug:
+    var: r_storage_status.resources[0].status.phase
+  ignore_errors: false
+
+- name: deploy the quay-datastore noobaa
+  command: "{{ oc_location }} create -f quay-datastore.noobaa.yaml"
+  args:
+    chdir: "{{ config_location }}/files"

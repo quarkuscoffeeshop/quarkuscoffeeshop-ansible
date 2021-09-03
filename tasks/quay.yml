@@ -9,7 +9,7 @@
   tags: quay
 
 - name: "create the quay project"
-  community.kubernetes.k8s:
+  kubernetes.core.k8s:
     state: present
     api_key: "{{ k8s_auth_results.k8s_auth.api_key }}"
     name: "{{ quay_project_name }}"
@@ -18,7 +18,7 @@
   tags: quay
 
 - name: Create Quay Operator OperatorGroup
-  community.kubernetes.k8s:
+  kubernetes.core.k8s:
     state: present
     namespace: "{{ quay_project_name }}"
     definition: "{{ lookup('template', 'quay-SubscriptionGroup.yaml.j2') }}"

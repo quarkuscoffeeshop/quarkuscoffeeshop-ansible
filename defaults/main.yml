@@ -78,6 +78,8 @@ ephemeral: false
 gogs_clean_deploy: "{{ delete_deployment }}"
 gogs_admin_user: gogsadmin
 gogs_admin_password: openshift
+gogs_user: gogs
+gogs_user_password: openshift
 gogs_generate_user_count: 1
 
 # Quay settings 

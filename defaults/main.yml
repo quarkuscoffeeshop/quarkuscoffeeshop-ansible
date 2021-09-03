@@ -17,6 +17,7 @@ skip_mongodb_operator_install: false
 single_mongodb_install: false
 skip_quarkuscoffeeshop_helm_install: false
 skip_postgres_operator_install: false
+skip_acm_deployment: true
 domain: ocp4.example.com
 
 # Helm Chart Version 
@@ -62,3 +63,28 @@ storeid: ATLANTA
 #Quarkus counter logging level
 quarkus_log_level: INFO
 quarkuscoffeeshop_log_level: DEBUG
+
+# Settings for ACM Deployment
+development_project: quarkuscoffeeshop-cicd
+homeoffice_project: quarkuscoffeeshop-homeoffice
+
+# gogs configureation settings 
+gogs_urlprefix: "{{ ocp4_edge_gogs_service_name }}-{{ development_project }}"
+gogs_image_version:  0.11.34
+gogs_database_version: 9.6
+gogs_service_name: gogs
+gogs_project_name: "{{ development_project }}"
+ephemeral: false
+gogs_clean_deploy: "{{ delete_deployment }}"
+gogs_admin_user: gogsadmin
+gogs_admin_password: openshift
+gogs_generate_user_count: 1
+
+# Quay settings 
+quay_project_name: "quay-enterprise"
+quay_csv:  "red-hat-quay.v3.5.6"
+quay_channel: "quay-v3.5"
+quay_urlprefix:  "quayecosystem-quay-{{ quay_project_name }}"
+quay_pull_user: admin
+quay_pull_password: admin123
+

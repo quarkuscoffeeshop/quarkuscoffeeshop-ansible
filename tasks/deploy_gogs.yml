@@ -1,0 +1,41 @@
+---
+# yamllint disable rule:line-length
+- name: import postgresql-96 image into openshift namespace
+  shell: "{{ oc_location }} import-image -n openshift rhel8/postgresql-96 --from=registry.redhat.io/rhel8/postgresql-96 --confirm"
+
+- name: tag postgresql-96 as postgresql in openshift namespace
+  shell: "{{ oc_location }} tag postgresql-96:latest postgresql:9.6 -n openshift"
+
+- name: deploy gogs from template (persistent)
+  shell: |
+    {{ oc_location }} new-app -f https://raw.githubusercontent.com/OpenShiftDemos/gogs-openshift-docker/master/openshift/gogs-persistent-template.yaml \
+        --param=HOSTNAME={{ gogs_urlprefix }}.{{ domain }} \
+        --param=GOGS_VERSION={{ gogs_image_version }} \
+        --param=DATABASE_VERSION={{ gogs_database_version }} \
+        --param=SKIP_TLS_VERIFY=true \
+        --param=APPLICATION_NAME={{ gogs_service_name }} \
+        -n {{ gogs_project_name }}
+  when: not ephemeral|bool
+
+- name: deploy gogs from template (ephemeral)
+  shell: |
+    {{ oc_location }} new-app -f https://raw.githubusercontent.com/OpenShiftDemos/gogs-openshift-docker/master/openshift/gogs-template.yaml \
+        --param=HOSTNAME={{ gogs_urlprefix }}.{{ domain }} \
+        --param=GOGS_VERSION={{ gogs_image_version }} \
+        --param=DATABASE_VERSION={{ gogs_database_version }} \
+        --param=SKIP_TLS_VERIFY=true \
+        --param=APPLICATION_NAME={{ gogs_service_name }} \
+        -n {{ gogs_project_name }}
+  when: ephemeral|bool
+
+- name: set cpu and mem
+  shell: "{{ oc_location }} set resources dc/{{ gogs_service_name }} --limits=cpu=400m,memory=1Gi --requests=cpu=100m,memory=128Mi -n {{ gogs_project_name }}"
+
+- name: wait for gogs to be running
+  uri:
+    url: http://{{ gogs_urlprefix }}.{{ domain }}
+    status_code: 200
+  register: result
+  until: result.status == 200
+  retries: 10
+  delay: 30

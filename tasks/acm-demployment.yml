@@ -1,0 +1,6 @@
+---
+- name: Configure gogs 
+  include_tasks: gogs.yml
+
+- name: Configure Quay 
+  include_tasks: quay.yml

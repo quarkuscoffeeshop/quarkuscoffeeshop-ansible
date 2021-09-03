@@ -5,6 +5,9 @@
     - name: Login Cluster
       include_tasks: login-to-cluster.yml
 
+    - name: Configure ACM 
+      include_tasks: acm-demployment.yml
+
     - name: Create Quarkus project 
       include_tasks: create-project.yml
 

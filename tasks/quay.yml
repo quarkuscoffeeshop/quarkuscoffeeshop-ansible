@@ -5,12 +5,14 @@
     name: "{{ quay_project_name }}"
     kind: Project
     api_version: project.openshift.io/v1
+  tags: quay
 
 - name: Create Quay Operator OperatorGroup
   k8s:
     state: present
     namespace: "{{ quay_project_name }}"
     definition: "{{ lookup('template', 'quay-SubscriptionGroup.yaml.j2') }}"
+  tags: quay
 
 - name: Retrieve Quay PackageManifest
   k8s_info:
@@ -19,10 +21,12 @@
     name: quay-operator
     namespace: "{{ quay_project_name }}"
   register: quay_manifest
+  tags: quay
 
 - set_fact:
     # yamllint disable-line rule:line-length
     quay_csv: "{{ quay_manifest | json_query('resources[*].status.channels[?name==`' + quay_channel +'`].currentCSV') | first | first }}"
+  tags: quay
 
 - name: Create Quay Operator Subscription
   k8s:
@@ -41,6 +45,7 @@
         name: quay-operator
         startingCSV: "{{ quay_csv }}"
         installPlanApproval: Manual
+  tags: quay
 
 - name: wait for the status of the Quay subscription to not be empty
   k8s_info:
@@ -57,6 +62,7 @@
     - operator_subscription_out.resources[0].status.installplan is defined
   retries: 30
   delay: 20
+  tags: quay
 
 - name: patch the installplan to approve it
   k8s:
@@ -68,6 +74,7 @@
         name: "{{ operator_subscription_out.resources[0].status.installplan.name }}"
       spec:
         approved: true
+  tags: quay
 
 - name: Get an existing LimitRanges
   k8s_info:
@@ -75,6 +82,7 @@
     kind: LimitRange
     namespace: "{{ quay_project_name }}"
   register: quay_limit_ranges
+  tags: quay
 
 - name: Remove LimitRanges
   k8s:
@@ -84,20 +92,24 @@
     namespace: "{{ item.metadata.namespace }}"
     name: "{{ item.metadata.name }}"
   loop: "{{ quay_limit_ranges.resources }}"
+  tags: quay
 
 - name: create redhat pull secret
   # yamllint disable-line rule:line-length
   command: "{{ oc_location }} -n {{ quay_project_name }} create secret docker-registry redhat-pull-secret --docker-server=quay.io  --docker-username='{{ quay_pull_user }}' --docker-password='{{ quay_pull_password }}'"
+  tags: quay
 
 - name: create quay admin password secret
   # yamllint disable-line rule:line-length
   command: "{{ oc_location }} -n {{ quay_project_name }} create secret generic quay-admin-password --from-literal=superuser-username={{ quay_admin_user }} --from-literal=superuser-password={{ quay_admin_password }} --from-literal=superuser-email=quay@example.com"
+  tags: quay
 
 - name: Deploy Quay Operator
   k8s:
     state: present
     namespace: "{{ quay_project_name }}"
     definition: "{{ lookup('file', 'quay_cr.yml') }}"
+  tags: quay
 
 - name: wait for quay to be running
   uri:
@@ -109,3 +121,4 @@
   retries: 30
   delay: 30
   ignore_errors: true
+  tags: quay

@@ -4,6 +4,7 @@
     host: "{{ openshift_url }}"
     username: admin
     password: "{{ k8s_admin_password }}"
+    validate_certs: "{{ insecure_skip_tls_verify }}"
   register: k8s_auth_results
   tags: quay
 

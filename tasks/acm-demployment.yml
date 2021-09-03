@@ -3,10 +3,6 @@
   include_tasks: gogs.yml
   tags: gogs
 
-- name: Login Cluster for Ansible k8s
-  include_tasks: openshift.yml
-  tags: quay
-
 - name: Configure Quay 
   include_tasks: quay.yml
   tags: quay

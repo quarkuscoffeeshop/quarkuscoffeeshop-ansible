@@ -25,7 +25,7 @@
   tags: quay
 
 - name: Retrieve Quay PackageManifest
-  k8s_info:
+  kubernetes.core.k8s_info:
     api_version: packages.operators.coreos.com/v1
     kind: PackageManifest
     name: quay-operator
@@ -39,7 +39,7 @@
   tags: quay
 
 - name: Create Quay Operator Subscription
-  k8s:
+  kubernetes.core.k8s:
     state: present
     namespace: "{{ quay_project_name }}"
     definition:
@@ -58,7 +58,7 @@
   tags: quay
 
 - name: wait for the status of the Quay subscription to not be empty
-  k8s_info:
+  kubernetes.core.k8s_info:
     api_version: operators.coreos.com/v1alpha1
     kind: Subscription
     name: quay-operator
@@ -75,7 +75,7 @@
   tags: quay
 
 - name: patch the installplan to approve it
-  k8s:
+  kubernetes.core.k8s:
     definition:
       apiVersion: operators.coreos.com/v1alpha1
       kind: InstallPlan
@@ -87,7 +87,7 @@
   tags: quay
 
 - name: Get an existing LimitRanges
-  k8s_info:
+  kubernetes.core.k8s_info:
     api_version: v1
     kind: LimitRange
     namespace: "{{ quay_project_name }}"
@@ -95,7 +95,7 @@
   tags: quay
 
 - name: Remove LimitRanges
-  k8s:
+  kubernetes.core.k8s:
     state: absent
     api_version: v1
     kind: LimitRange
@@ -115,7 +115,7 @@
   tags: quay
 
 - name: Deploy Quay Operator
-  k8s:
+  kubernetes.core.k8s:
     state: present
     namespace: "{{ quay_project_name }}"
     definition: "{{ lookup('file', 'quay_cr.yml') }}"

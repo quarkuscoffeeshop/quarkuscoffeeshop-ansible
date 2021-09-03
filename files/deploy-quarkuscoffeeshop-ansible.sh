@@ -1,5 +1,6 @@
 #!/bin/bash
 #set -e 
+# https://github.com/ansible-collections/kubernetes.core/issues/159
 
 if [ "$EUID" -ne 0 ]
 then 

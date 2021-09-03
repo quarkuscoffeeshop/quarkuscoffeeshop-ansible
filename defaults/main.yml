@@ -69,10 +69,10 @@ development_project: quarkuscoffeeshop-cicd
 homeoffice_project: quarkuscoffeeshop-homeoffice
 
 # gogs configureation settings 
-gogs_urlprefix: "{{ ocp4_edge_gogs_service_name }}-{{ development_project }}"
 gogs_image_version:  0.11.34
 gogs_database_version: 9.6
 gogs_service_name: gogs
+gogs_urlprefix: "{{ gogs_service_name }}-{{ development_project }}"
 gogs_project_name: "{{ development_project }}"
 ephemeral: false
 gogs_clean_deploy: "{{ delete_deployment }}"

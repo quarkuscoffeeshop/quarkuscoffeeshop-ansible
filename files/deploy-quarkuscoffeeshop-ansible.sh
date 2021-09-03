@@ -99,6 +99,16 @@ then
   export DESTROY=false
 fi
 
+if [ -f $HOME/env.variables ];
+then 
+  source  $HOME/env.variables
+else
+  read -p "Would you like to acm to manage deployment? Default -> [false]: " SKIP_ACM_MANAGED
+  ACM_MANAGED=${SKIP_ACM_MANAGED:-"false"}
+  read -p "Would you configure AMQ Streams ->[true] " SKIP_AMQ_STREAMS
+  AMQ_STREAMS=${SKIP_AMQ_STREAMS:-"true"}
+fi
+
 cat >/tmp/deploy-quarkus-cafe.yml<<YAML
 - hosts: localhost
   become: yes
@@ -110,11 +120,12 @@ cat >/tmp/deploy-quarkus-cafe.yml<<YAML
     default_group: ${GROUP}
     project_namespace: quarkuscoffeeshop-demo
     delete_deployment: "${DESTROY}"
-    skip_amq_install: false
-    skip_configure_postgres: false
-    skip_mongodb_operator_install: true
-    single_mongodb_install: false 
-    skip_quarkuscoffeeshop_helm_install: true
+    skip_acm_deployment: ${SKIP_ACM_MANAGED}
+    skip_amq_install: ${SKIP_AMQ_STREAMS}
+    skip_configure_postgres: ${SKIP_CONFIGURE_POSTGRES}
+    skip_mongodb_operator_install: ${SKIP_MONGODB_OPERATOR}
+    single_mongodb_install: ${SKIP_MONGODB} 
+    skip_quarkuscoffeeshop_helm_install: ${SKIP_HELM_DEPLOY}
     domain: ${DOMAIN}
     postgres_password: '${POSTGRES_PASSWORD}'
     storeid: ${STORE_ID}
@@ -124,6 +135,8 @@ YAML
 
 cat /tmp/deploy-quarkus-cafe.yml
 sleep 3s 
+
+exit 1 
 
 unameOut="$(uname -s)"
 case "${unameOut}" in

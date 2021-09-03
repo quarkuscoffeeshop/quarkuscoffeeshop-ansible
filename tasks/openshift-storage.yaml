@@ -1,6 +1,9 @@
 ---
 - name: deploy the openshift storage operator
-  command: "{{ oc_location }} create -f files/openshift-storage-operator.yaml"
+  k8s:
+    state: present
+    namespace: "openshift-storage"
+    definition: "{{ lookup('template', 'openshift-storage-operator.yaml.j2') }}"
 
 - name: Waiting for openshift storage operator
   k8s_info:
@@ -20,4 +23,7 @@
   ignore_errors: false
 
 - name: deploy the quay-datastore noobaa
-  command: "{{ oc_location }} create -f files/quay-datastore.noobaa.yaml"
+  k8s:
+    state: present
+    namespace: "openshift-storage"
+    definition: "{{ lookup('file', 'quay-datastore.noobaa.yaml') }}"

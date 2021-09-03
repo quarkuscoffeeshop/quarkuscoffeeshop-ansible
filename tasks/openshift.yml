@@ -1,0 +1,6 @@
+# Authenticate with token, and return all pods and services for all namespaces
+plugin: community.kubernetes.openshift
+connections:
+  - host: "{{ openshift_url }}"
+    api_key: "{{ openshift_token }}"
+    verify_ssl: "{{ insecure_skip_tls_verify }}"

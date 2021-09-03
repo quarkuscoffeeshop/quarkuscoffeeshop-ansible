@@ -1,7 +1,14 @@
 ---
+- name: Log in (obtain access token)
+  community.kubernetes.k8s_auth:
+    username: admin
+    password: "{{ k8s_admin_password }}"
+  register: k8s_auth_results
+
 - name: "create the quay project"
   k8s:
     state: present
+    api_key: "{{ k8s_auth_results.k8s_auth.api_key }}"
     name: "{{ quay_project_name }}"
     kind: Project
     api_version: project.openshift.io/v1

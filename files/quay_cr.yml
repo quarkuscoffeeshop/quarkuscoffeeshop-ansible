@@ -1,0 +1,16 @@
+apiVersion: quay.redhat.com/v1
+kind: QuayRegistry
+metadata:
+  name: quayecosystem
+spec:
+  clair:
+    enabled: true
+    imagePullSecretName: redhat-pull-secret
+  quay:
+    deploymentStrategy: Recreate
+    superuserCredentialsSecretName: quay-admin-password
+    imagePullSecretName: redhat-pull-secret
+    database:
+      volumeSize: 10Gi
+    keepConfigDeployment: true
+    skipSetup: false

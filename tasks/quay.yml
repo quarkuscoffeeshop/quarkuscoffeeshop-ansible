@@ -1,7 +1,7 @@
 ---
 - name: Log in (obtain access token)
   k8s_auth:
-    host: "{{ {{ openshift_url }}"
+    host: "{{ openshift_url }}"
     username: admin
     password: "{{ k8s_admin_password }}"
   register: k8s_auth_results

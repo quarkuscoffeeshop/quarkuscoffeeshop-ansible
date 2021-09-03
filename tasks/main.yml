@@ -7,7 +7,15 @@
       tags: always 
 
     - name: Configure ACM 
-      include_tasks: acm-demployment.yml
+      include_tasks: acm-deployment.yml
+      when: not skip_acm_deployment
+      tags: 
+        - quay
+        - gogs
+
+    - name: remove  ACM deployment
+      include_tasks: acm-deployment.yml
+      when: not skip_acm_deployment && delete_deployment|bool
       tags: 
         - quay
         - gogs

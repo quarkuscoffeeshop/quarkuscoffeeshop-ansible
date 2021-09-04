@@ -77,7 +77,7 @@
         git remote add {{ my_user }} http://{{ my_user }}:{{ gogs_user_password }}@{{ gogs_urlprefix }}.apps.{{ domain }}/{{ my_user }}/{{ reponame_local }}.git
         git config --local user.email "{{ my_user }}@example.com"
         git config --local user.name "{{ my_user }}"
-        git push -f --all {{ my_user }}
+        git push -f --all "{{ my_user }}"
       # yamllint enable rule:line-length
       args:
         chdir: "{{ config_location.path }}{{ reponame }}"

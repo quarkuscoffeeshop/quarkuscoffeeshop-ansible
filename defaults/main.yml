@@ -93,4 +93,6 @@ quay_admin_user: admin
 quay_admin_password: admin123
 
 # OpenShift Pipelines 
+# Official Mirror
+ocp4_installer_root__pipeline_url: https://mirror.openshift.com/pub/openshift-v4/clients/pipeline/
 pipelines_tkn_version:  0.19.1

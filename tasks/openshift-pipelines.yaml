@@ -19,8 +19,7 @@
   become: true
   unarchive:
     src: >-
-      {{ config_location }}/pipeline/{{
-      pipelines_tkn_version }}/tkn-linux-amd64-{{ pipelines_tkn_version }}.tar.gz
+      {{ config_location }}/tkn-linux-amd64-{{ pipelines_tkn_version }}.tar.gz
     remote_src: true
     dest: /usr/local/bin
     mode: 0755

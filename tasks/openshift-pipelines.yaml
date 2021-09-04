@@ -11,7 +11,7 @@
     url: "{{ ocp4_installer_root_pipeline_url }}/pipeline/{{
       pipelines_tkn_version }}/tkn-linux-amd64-{{ pipelines_tkn_version }}.tar.gz"
     dest: /tmp/
-    checksum: "sha256:{{ ocp4_installer_root__pipeline_url}}/pipeline/{{
+    checksum: "sha256:{{ ocp4_installer_root_pipeline_url}}/pipeline/{{
       pipelines_tkn_version }}/sha256sum.txt"
   tags: pipelines
 

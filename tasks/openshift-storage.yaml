@@ -5,7 +5,7 @@
     chdir: "{{ config_location}}/files"
 
 - name: Waiting for openshift storage operator
-  k8s_info:
+  kubernetes.core.k8s_info:
     kind: Pod
     namespace: openshift-storage
     label_selectors:

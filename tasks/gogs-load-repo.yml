@@ -80,7 +80,7 @@
         git push -f --all "{{ my_user }}"
       # yamllint enable rule:line-length
       args:
-        chdir: "{{ config_location.path }}{{ reponame }}"
+        chdir: "{{ config_location }}{{ reponame }}"
       when: repo_result.status != 200
       tags: gogs
 

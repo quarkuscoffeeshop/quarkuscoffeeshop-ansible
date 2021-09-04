@@ -6,9 +6,10 @@
     - set_fact:
         my_user: "{{ item }}"
 
-    - name: per_user {{ my_user }} Tasks Started
+    - name: loading gogs for {{ my_user }}  Started
       debug:
-        msg: "per_user {{ my_user }} Tasks - Started"
+        msg: "loading gogs for {{ my_user }}  - Started"
+      tags: gogs
 
     - name: check if repository exists in git for user "{{ my_user }}"
       uri:
@@ -63,6 +64,7 @@
       when: repo_result.status != 200
       tags: gogs
 
-    - name: per_user {{ my_user }} Tasks Complete
+    - name: loading gogs for {{ my_user }}  Complete
       debug:
-        msg: "per_user {{ my_user }} Tasks - Completed"
+        msg: "loading gogs for {{ my_user }}  - Completed"
+      tags: gogs

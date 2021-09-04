@@ -29,3 +29,7 @@
 - name: Configure OpenShift Pipelines 
   include_tasks: openshift-pipelines.yaml
   tags: pipelines
+
+- name: Configure OpenShift Gitops 
+  include_tasks: openshift-gitops.yaml
+  tags: gitops

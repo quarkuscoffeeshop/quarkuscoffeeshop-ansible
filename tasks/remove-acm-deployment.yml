@@ -6,6 +6,13 @@
   ignore_errors: true
   tags: always
 
+- name: Remove OpenShift gitops OperatorGroup
+  kubernetes.core.k8s:
+    state: absent
+    definition: "{{ lookup('template', 'openshift-gitops.yaml.j2') }}"
+  ignore_errors: true
+  tags: always
+
 
 - name: delete QuayRegistry quayecosystem
   command: oc delete QuayRegistry quayecosystem -n "{{ quay_project_name }}"

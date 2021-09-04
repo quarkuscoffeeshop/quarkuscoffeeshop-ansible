@@ -38,11 +38,13 @@
       stat:
       path: "{{ config_location }}/{{ reponame }}"
       register: repo_dir
+      tags: gogs
 
     - name: "echo if directory already existed"
       debug:
-      msg: "the repo directory is already existed"
+        msg: "the repo directory is already existed"
       when: repo_dir.stat.exists
+      tags: gogs
 
     - name: "Create repo directory if not exists"
       file:
@@ -52,6 +54,7 @@
       group: root
       owner: root
       when: repo_dir.stat.exists == false
+      tags: gogs
 
     - name: remove git metadata
       shell: |

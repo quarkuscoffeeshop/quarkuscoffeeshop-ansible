@@ -130,7 +130,7 @@
   uri:
     url: http://{{ gogs_urlprefix }}.apps.{{ domain }}/api/v1/repos/{{ item }}/{{ reponame_local }}
     user: "{{ item }}"
-    password: "{{ ocp4_edge_gogs_user_password }}"
+    password: "{{ gogs_user_password }}"
     force_basic_auth: true
     status_code: 200,404
   register: repo_result
@@ -145,7 +145,7 @@
     body: '{"name": "{{ reponame_local }}", "private": false}'
     body_format: json
     user: "{{ item }}"
-    password: "{{ ocp4_edge_gogs_user_password }}"
+    password: "{{ gogs_user_password }}"
     status_code: 200,201
     force_basic_auth: true
   when: repo_result.status != 200

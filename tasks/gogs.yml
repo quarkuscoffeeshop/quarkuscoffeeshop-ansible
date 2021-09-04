@@ -148,7 +148,8 @@
     password: "{{ gogs_user_password }}"
     status_code: 200,201
     force_basic_auth: true
-  when: repo_result.status != 200
+  with_sequence: start=0 end={{ gogs_generate_user_count }} format="{{ user_format }}"
+  when: gogs_generate_user_count|int >= 0 and repo_result.status != 200'
   tags: gogs
 
 - name: remove git metadata

@@ -38,7 +38,7 @@
   tags: pipelines
 
 - name: Wait until Pipelines Pods are ready
-  k8s_info:
+  kubernetes.core.k8s_info:
     api_version: apps/v1
     kind: Deployment
     namespace: openshift-pipelines

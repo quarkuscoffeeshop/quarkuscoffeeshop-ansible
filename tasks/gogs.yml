@@ -111,29 +111,5 @@
   when: gogs_generate_user_count|int >= 0
   tags: gogs
 
-- name: create temporary git directory
-  tempfile:
-    state: directory
-    path: "{{ config_location }}"
-    prefix: "projects-git"
-  register: git_dir
-  tags: gogs
-
-- name: create local repository to push to git
-  command: |
-    git clone {{ repo_url }}
-  args:
-    chdir: "{{ git_dir.path }}"
-  tags: gogs
-
-- name: per user
-  block:
-    - set_fact:
-        my_user: "{{ item }}"
-
-    - name: per_user {{ my_user }} Tasks Complete
-      debug:
-        msg: "per_user {{ my_user }} Tasks - Completed"
-  with_sequence: start=0 end={{ gogs_generate_user_count }} format="{{ user_format }}"
-  when: gogs_generate_user_count|int >= 0
-  tags: gogs
+- include_tasks: gogs-load-repo.yml
+  with_sequence: start={{ gogs_generate_user_count }} end={{ user_count_end }} format={{ user_format }}

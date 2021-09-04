@@ -1,4 +1,11 @@
 
+- name: Create Namespaces
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'gitops-ns.yml.j2') }}"
+  ignore_errors: true
+  tags: gitops
+
 - name: Create OpenShift gitops OperatorGroup
   kubernetes.core.k8s:
     state: present

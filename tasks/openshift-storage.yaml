@@ -30,3 +30,17 @@
   args:
     chdir: "{{ config_location }}/files"
   tags: quay
+
+- name: Waiting for noobaa-db-pg-0
+  kubernetes.core.k8s_info:
+    kind: Pod
+    namespace: openshift-storage
+    label_selectors:
+      - app = noobaa
+    field_selectors:
+      - status.phase=Running
+  register: r_noobadb
+  retries: 120
+  delay: 15
+  until: r_noobadb.resources | list | length == 1
+  tags: quay

@@ -48,6 +48,7 @@ mongodb_username: mongodb
 mongodb_password: 7lIHuw&#0KrE
 
 # Postgres database information
+postgres_version: postgresql:10-el8
 pgsql_username: coffeshopadmin
 postgres_password: changeme
 pgsql_url: 'jdbc:postgresql://coffeeshopdb:5432/coffeeshopdb?currentSchema=coffeeshop'
@@ -82,6 +83,12 @@ gogs_user: gogs
 gogs_user_password: openshift
 gogs_generate_user_count: 1
 user_format: user%d
+# temp variable 
+my_user: user1
+# Name of repository on checkout from workshop repo
+reponame_local: tekton-pipelines
+# Name of repository on checkout from workshop repo
+reponame: tekton-pipelines
 
 # Quay settings 
 quay_project_name: "quay-enterprise"

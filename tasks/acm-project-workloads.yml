@@ -1,0 +1,32 @@
+---
+- name: check if  project "{{ development_project }}" exists
+  shell: "{{ oc_location }} get project {{ development_project }}"
+  register: user_project
+  ignore_errors: true
+  changed_when: false
+  tags: acm-workload
+
+- name: create project "{{ development_project }}" 
+  command: "{{ oc_location }} adm new-project {{ item }}"
+  when: user_project is failed
+  tags: acm-workload
+  ignore_errors: true 
+  with_items:
+    - "{{ development_project }}"
+    - "{{ homeoffice_project }}"
+
+
+- name: Create Postgres Secret
+  k8s:
+    state: present
+    namespace:  "{{ homeoffice_project }}"
+    definition: "{{ lookup('template', 'postgres-secret.j2') }}"
+  tags: acm-workload
+
+- name: Create Postgres Database
+  k8s:
+    state: present
+    namespace:  "{{ homeoffice_project }}"
+    definition: "{{ lookup('template', 'postgres.yaml.j2') }}"
+  tags: acm-workload
+

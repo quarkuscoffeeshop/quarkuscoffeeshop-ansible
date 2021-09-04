@@ -60,7 +60,7 @@
 
 # Define ArgoCD admin creds to use in tkn Pipelines
 - name: Add Secrets for ArgoCD env
-  kubernetes.core.8s:
+  kubernetes.core.k8s:
     state: present
     definition: "{{ lookup('template', 'gitops-env-secret.yaml.j2') }}"
   tags: gitops

@@ -24,6 +24,7 @@ function usage() {
 "
 }
 
+# community.kubernetes.helm_repository
 function deploy-amq-configure-postgres(){
   echo "Check if community.kubernetes exists"
   if [ ! -d ~/.ansible/collections/ansible_collections/community/kubernetes ];

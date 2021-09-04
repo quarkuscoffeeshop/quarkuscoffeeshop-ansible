@@ -6,7 +6,7 @@
   tags: gitops
 
 - name: Wait for GitOps CRD to exist
-  k8s_facts:
+  kubernetes.core.k8s_facts:
     api_version: "apiextensions.k8s.io/v1beta1"
     kind: CustomResourceDefinition
     name: "{{ item }}"
@@ -18,14 +18,14 @@
   tags: gitops
 
 - name: Add ClusterRoleBinding to the openshift-gitops-controller
-  k8s:
+  kubernetes.core.k8s:
     state: present
     definition: "{{ lookup('template', 'gitops-rb.yml.j2') }}"
   tags: gitops
 
 
 - name: Get ArgoCD route
-  k8s_info:
+  kubernetes.core.k8s_info:
     kind: Route
     api_version: route.openshift.io/v1
     name: openshift-gitops-server
@@ -38,7 +38,7 @@
   tags: gitops
 
 - name: Get argocd password
-  k8s_info:
+  kubernetes.core.k8s_info:
     kind: Secret
     api_version: /v1
     name: openshift-gitops-cluster
@@ -53,14 +53,14 @@
 
 # Set up an ArgoCD route as an cm/env to use in tkn Pipelines
 - name: Add CM for ArgoCD env
-  k8s:
+  kubernetes.core.k8s:
     state: present
     definition: "{{ lookup('template', 'gitops-env-cm.yaml.j2') }}"
   tags: gitops
 
 # Define ArgoCD admin creds to use in tkn Pipelines
 - name: Add Secrets for ArgoCD env
-  k8s:
+  kubernetes.core.8s:
     state: present
     definition: "{{ lookup('template', 'gitops-env-secret.yaml.j2') }}"
   tags: gitops

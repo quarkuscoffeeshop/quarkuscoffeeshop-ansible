@@ -111,6 +111,21 @@
   when: gogs_generate_user_count|int >= 0
   tags: gogs
 
+- name: create temporary git directory
+  tempfile:
+    state: directory
+    path: "{{ config_location }}"
+    prefix: "projects-git"
+  register: git_dir
+  tags: gogs
+
+- name: create local repository to push to git
+  command: |
+    git clone {{ repo_url }}
+  args:
+    chdir: "{{ git_dir.path }}"
+  tags: gogs
+
 - name: link secrets to service accounts
   command: "{{ oc_location }} secrets link {{ item }} quay -n {{ development_project }}"
   with_items:

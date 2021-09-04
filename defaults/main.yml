@@ -89,6 +89,8 @@ my_user: user1
 reponame_local: tekton-pipelines
 # Name of repository on checkout from workshop repo
 reponame: tekton-pipelines
+# tekton pipelines repo for applications
+repo_url: https://github.com/quarkuscoffeeshop/tekton-pipelines.git
 
 # Quay settings 
 quay_project_name: "quay-enterprise"

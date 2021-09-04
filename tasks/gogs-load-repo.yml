@@ -47,12 +47,9 @@
       tags: gogs
 
     - name: "Create repo directory if not exists"
-      file:
-      path: "{{ config_location }}/{{ reponame }}"
-      state: directory
-      mode: 0755
-      group: root
-      owner: root
+      ansible.builtin.file:
+        path: "{{ config_location }}/{{ reponame }}"
+        mode: '0755'
       when: repo_dir.stat.exists == false
       tags: gogs
 

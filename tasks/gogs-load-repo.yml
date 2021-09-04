@@ -36,7 +36,7 @@
 
     - name: check for repo directory.
       ansible.builtin.stat:
-        path: /etc/foo.conf
+        path: "{{ config_location }}{{ reponame }}"
       register: repo_dir
       tags: gogs
 

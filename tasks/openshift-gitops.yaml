@@ -10,7 +10,7 @@
     api_version: "apiextensions.k8s.io/v1beta1"
     kind: CustomResourceDefinition
     name: "{{ item }}"
-  loop: "{{ ocp4_edge_gitops_expected_crds }}"
+  loop: "{{ gitops_expected_crds }}"
   register: crds
   until: crds.resources|length > 0
   retries: 30

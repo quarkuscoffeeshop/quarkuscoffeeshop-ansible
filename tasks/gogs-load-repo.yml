@@ -38,7 +38,7 @@
       shell: |
         rm -fr .git
       args:
-        chdir: "{{ config_location.path }}/{{ reponame }}"
+        chdir: "{{ config_location }}/{{ reponame }}"
       tags: gogs
 
     - name: create new git repo
@@ -48,7 +48,7 @@
         git add *
         git commit -am "Initial checkin"
       args:
-        chdir: "{{ config_location.path }}/{{ reponame }}"
+        chdir: "{{ config_location }}/{{ reponame }}"
       tags: gogs
 
     - name: push catalog to git repository in Gogs for user "{{ my_user }}"

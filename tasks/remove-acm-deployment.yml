@@ -1,3 +1,12 @@
+- name: Remove OpenShift Pipelines OperatorGroup
+  kubernetes.core.k8s:
+    state: absent
+    namespace: openshift-operators
+    definition: "{{ lookup('template', 'openshift-pipelines.yaml.j2') }}"
+  ignore_errors: true
+  tags: always
+
+
 - name: delete QuayRegistry quayecosystem
   command: oc delete QuayRegistry quayecosystem -n "{{ quay_project_name }}"
   ignore_errors: true

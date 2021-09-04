@@ -92,3 +92,5 @@ quay_pull_password: changeme
 quay_admin_user: admin
 quay_admin_password: admin123
 
+# OpenShift Pipelines 
+pipelines_tkn_version:  0.19.1

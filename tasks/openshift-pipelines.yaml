@@ -10,8 +10,8 @@
   become: true
   unarchive:
     src: >-
-      {{ ocp4_installer_root_url }}/pipeline/{{
-      ocp4_workload_pipelines_tkn_version }}/tkn-linux-amd64-{{ ocp4_workload_pipelines_tkn_version }}.tar.gz
+      {{ config_location }}/pipeline/{{
+      pipelines_tkn_version }}/tkn-linux-amd64-{{ pipelines_tkn_version }}.tar.gz
     remote_src: true
     dest: /usr/local/bin
     mode: 0755

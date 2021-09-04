@@ -25,3 +25,7 @@
 - name: Configure Quay 
   include_tasks: quay.yml
   tags: quay
+
+- name: Configure OpenShift Pipelines 
+  include_tasks: openshift-pipelines.yaml
+  tags: pipelines

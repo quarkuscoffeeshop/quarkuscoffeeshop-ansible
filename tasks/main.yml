@@ -12,6 +12,7 @@
       tags: 
         - quay
         - gogs
+        - pipelines
 
     - name: remove  ACM deployment
       include_tasks: remove-acm-deployment.yml
@@ -19,6 +20,7 @@
       tags: 
         - quay
         - gogs
+        - pipelines
 
     - name: Create Quarkus project 
       include_tasks: create-project.yml

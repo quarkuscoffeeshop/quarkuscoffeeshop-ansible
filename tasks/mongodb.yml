@@ -48,4 +48,5 @@
 
 - name: Delete mongodb template
   command: "{{ oc_location }} delete -f {{ config_location }}/mongodb-ephemeral.json"
+  ignore_errors: yes
   when:  delete_deployment|bool

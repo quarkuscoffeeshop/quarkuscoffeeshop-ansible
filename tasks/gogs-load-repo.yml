@@ -38,7 +38,7 @@
       shell: |
         rm -fr .git
       args:
-        chdir: "{{ git_dir.path }}/{{ reponame }}"
+        chdir: "{{ config_location.path }}/{{ reponame }}"
       tags: gogs
 
     - name: create new git repo
@@ -48,7 +48,7 @@
         git add *
         git commit -am "Initial checkin"
       args:
-        chdir: "{{ git_dir.path }}/{{ reponame }}"
+        chdir: "{{ config_location.path }}/{{ reponame }}"
       tags: gogs
 
     - name: push catalog to git repository in Gogs for user "{{ my_user }}"
@@ -60,7 +60,7 @@
         git push -f --all {{ my_user }}
       # yamllint enable rule:line-length
       args:
-        chdir: "{{ git_dir.path }}/{{ reponame }}"
+        chdir: "{{ config_location.path }}/{{ reponame }}"
       when: repo_result.status != 200
       tags: gogs
 

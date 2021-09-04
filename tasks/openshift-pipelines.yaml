@@ -2,6 +2,7 @@
 - name: Create OpenShift Pipelines OperatorGroup
   kubernetes.core.k8s:
     state: present
+    namespace: openshift-pipelines
     definition: "{{ lookup('template', 'openshift-pipelines.yaml.j2') }}"
   tags: pipelines
 

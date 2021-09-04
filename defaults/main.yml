@@ -82,6 +82,7 @@ gogs_admin_password: openshift
 gogs_user: gogs
 gogs_user_password: openshift
 gogs_generate_user_count: 1
+user_count_end: "{{ gogs_generate_user_count }}"
 user_format: user%d
 # temp variable 
 my_user: user1

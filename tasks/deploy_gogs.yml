@@ -2,9 +2,11 @@
 # yamllint disable rule:line-length
 - name: import postgresql-96 image into openshift namespace
   shell: "{{ oc_location }} import-image -n openshift rhel8/postgresql-96 --from=registry.redhat.io/rhel8/postgresql-96 --confirm"
+  tags: gogs
 
 - name: tag postgresql-96 as postgresql in openshift namespace
   shell: "{{ oc_location }} tag postgresql-96:latest postgresql:9.6 -n openshift"
+  tags: gogs
 
 - name: deploy gogs from template (persistent)
   shell: |
@@ -16,6 +18,7 @@
         --param=APPLICATION_NAME={{ gogs_service_name }} \
         -n {{ gogs_project_name }}
   when: not ephemeral|bool
+  tags: gogs
 
 - name: deploy gogs from template (ephemeral)
   shell: |
@@ -27,9 +30,11 @@
         --param=APPLICATION_NAME={{ gogs_service_name }} \
         -n {{ gogs_project_name }}
   when: ephemeral|bool
+  tags: gogs
 
 - name: set cpu and mem
   shell: "{{ oc_location }} set resources dc/{{ gogs_service_name }} --limits=cpu=400m,memory=1Gi --requests=cpu=100m,memory=128Mi -n {{ gogs_project_name }}"
+  tags: gogs
 
 - name: wait for gogs to be running
   uri:
@@ -39,3 +44,4 @@
   until: result.status == 200
   retries: 10
   delay: 30
+  tags: gogs

@@ -41,7 +41,7 @@
   k8s_info:
     api_version: v1
     kind: Deployment
-    namespace: openshift-operators
+    namespace: openshift-pipelines
     name: tekton-pipelines-controller
   register: r_pipeline_controller_deployment
   retries: 30

@@ -5,10 +5,12 @@
   register: gogs_project_result
   ignore_errors: true
   changed_when: false
+  tags: gogs
 
 - name: create gogs project {{ gogs_project_name }}
   shell: "{{ oc_location }} new-project {{ gogs_project_name }} --display-name='quarkuscoffeeshop-cicd' --description='quarkuscoffeeshop-cicd project'"
   when: gogs_project_result is failed
+  tags: gogs
 
 - name: assign user as project admin
   shell: "{{ oc_location }} adm policy add-role-to-user admin {{ project_admin }} -n {{ gogs_project_name }}"
@@ -18,6 +20,7 @@
     - project_admin is defined
     - project_admin is not none
     - project_admin|trim() != ""
+  tags: gogs
 
 - name: annotate gogs project {{ gogs_project_name }}
   shell: "{{ oc_location }} annotate --overwrite namespace {{ gogs_project_name }} {{ project_annotations }}"
@@ -27,12 +30,14 @@
     - project_annotations is defined
     - project_annotations is not none
     - project_annotations|trim() != ""
+  tags: gogs
 
 - name: check if gogs exists
   shell: "{{ oc_location }} get service {{ gogs_service_name }} -n {{ gogs_project_name }}"
   register: install_gogs
   ignore_errors: true
   changed_when: false
+  tags: gogs
 
 - name: remove existing gogs if clean deploy requested
   shell: |
@@ -41,6 +46,7 @@
   when:
     - install_gogs is succeeded
     - gogs_clean_deploy|bool
+  tags: gogs
 
 - import_tasks: deploy_gogs.yml
   when: gogs_clean_deploy|bool or install_gogs is failed
@@ -53,6 +59,7 @@
   until: result.status == 200
   retries: 10
   delay: 30
+  tags: gogs
 
 - name: create gogs admin user
   uri:
@@ -63,6 +70,7 @@
     headers:
       Content-Type: "application/x-www-form-urlencoded"
     status_code: 302,200
+  tags: gogs
 
 - name: check if user exists
   uri:
@@ -72,6 +80,7 @@
     force_basic_auth: true
     status_code: 200,404
   register: user_result
+  tags: gogs
 
 - name: create gogs user
   uri:
@@ -85,6 +94,7 @@
     status_code: 200,201
     force_basic_auth: true
   when: user_result.status != 200
+  tags: gogs
 
 - name: generate gogs users
   uri:
@@ -99,3 +109,4 @@
   ignore_errors: true
   with_sequence: start=0 end={{ gogs_generate_user_count }} format="{{ user_format }}"
   when: gogs_generate_user_count|int >= 0
+  tags: gogs

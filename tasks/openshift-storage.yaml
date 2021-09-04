@@ -3,6 +3,7 @@
   command: "{{ oc_location }} create -f openshift-storage-operator.yaml"
   args:
     chdir: "{{ config_location}}/files"
+  tags: quay
 
 - name: Waiting for openshift storage operator
   kubernetes.core.k8s_info:
@@ -16,13 +17,16 @@
   retries: 120
   delay: 15
   until: r_storage_status.resources | list | length == 1
+  tags: quay
 
 - name: displaying openshift storage operator  deployment status
   debug:
     var: r_storage_status.resources[0].status.phase
   ignore_errors: false
+  tags: quay
 
 - name: deploy the quay-datastore noobaa
   command: "{{ oc_location }} create -f quay-datastore.noobaa.yaml"
   args:
     chdir: "{{ config_location }}/files"
+  tags: quay

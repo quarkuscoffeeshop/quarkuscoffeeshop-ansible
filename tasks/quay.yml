@@ -135,7 +135,7 @@
 
 - name: create docker secret for quay
   # yamllint disable-line rule:line-length
-  command: "{{ oc_location }} create secret docker-registry quay --docker-server={{ quay_urlprefix }}.apps.{{ domain }} --docker-username={{ ocp4_edge_quay_user }} --docker-password={{ ocp4_edge_quay_user_password }} -n {{ development_project }}"
+  command: "{{ oc_location }} create secret docker-registry quay-auth-secret --docker-server={{ quay_urlprefix }}.apps.{{ domain }} --docker-username={{ ocp4_edge_quay_user }} --docker-password={{ ocp4_edge_quay_user_password }} -n {{ development_project }}"
   tags: quay
 
 - name: link secrets to service accounts

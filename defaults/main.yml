@@ -81,6 +81,7 @@ gogs_admin_password: openshift
 gogs_user: gogs
 gogs_user_password: openshift
 gogs_generate_user_count: 1
+user_format: user%d
 
 # Quay settings 
 quay_project_name: "quay-enterprise"

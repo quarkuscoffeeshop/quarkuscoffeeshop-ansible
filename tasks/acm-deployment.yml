@@ -1,4 +1,10 @@
 ---
+
+- name: copy the files used
+  copy:
+    src: "files"
+    dest: "{{ config_location }}"
+
 - name: Configure gogs 
   include_tasks: gogs.yml
   tags: gogs

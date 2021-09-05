@@ -139,7 +139,7 @@
   tags: quay
 
 - name: link secrets to service accounts
-  command: "{{ oc_location }} secrets link {{ item }} quay -n {{ development_project }}"
+  command: "{{ oc_location }} secrets link {{ item }} quay-auth-secret -n {{ development_project }}"
   with_items:
     - default
     - builder

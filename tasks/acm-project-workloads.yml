@@ -19,7 +19,7 @@
   k8s:
     state: present
     namespace:  "{{ development_project }}"
-    definition: "{{ lookup('template', 'pipeline-sa.yaml.j2') }}"
+    definition: "{{ lookup('files', 'pipeline-sa.yaml') }}"
   tags: acm-workload
 
 - name: AMQ Streams installation

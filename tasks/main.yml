@@ -14,6 +14,11 @@
         - gogs
         - pipelines
         - gitops
+
+    - name: ACM Workload 
+      include_tasks: acm-project-workloads.yml
+      when: not skip_acm_deployment and not delete_deployment | bool
+      tags: 
         - acm-workload
 
     - name: remove  ACM deployment

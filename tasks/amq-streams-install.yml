@@ -90,14 +90,18 @@
     state: present
     namespace:  "{{ project_namespace }}"
     definition: "{{ lookup('template', 'amq-kafka-topics.yaml.j2') }}"
-  tags: amq
+  tags:
+    - amq
+    - acm-workload
 
 - name: Create kafdrop
   k8s:
     state: present
     namespace:  "{{ project_namespace }}"
     definition: "{{ lookup('template', 'kafdrop.yaml.j2') }}"
-  tags: amq
+  tags:
+    - amq
+    - acm-workload
 
 - name: Remove kafdrop
   k8s:
@@ -106,13 +110,17 @@
     definition: "{{ lookup('template', 'kafdrop.yaml.j2') }}"
   ignore_errors: yes
   when: delete_deployment|bool
-  tags: amq
+  tags:
+    - amq
+    - acm-workload
 
 - name: Remove kafka topics
   command: "{{ oc_location }}  delete -f {{ config_location }}amq-kafka-topics.yaml"
   ignore_errors: yes
   when: delete_deployment|bool
-  tags: amq
+  tags:
+    - amq
+    - acm-workload
 
 - name: Remove kafka instance
   k8s:
@@ -121,7 +129,9 @@
     definition: "{{ lookup('template', 'amq-kafka-instance.yaml.j2') }}"
   ignore_errors: yes
   when: delete_deployment|bool
-  tags: amq
+  tags:
+    - amq
+    - acm-workload
 
 - name: Waiting for  kafka instances to be deleted
   shell: |
@@ -134,7 +144,9 @@
   ignore_errors: yes
   args:
     executable: /bin/bash
-  tags: amq
+  tags:
+    - amq
+    - acm-workload
 
 - name: Remove AMQ Subscription
   k8s:
@@ -142,16 +154,22 @@
     definition: "{{ lookup('template', 'amq-sub.yaml.j2') }}"
   ignore_errors: yes
   when: delete_deployment|bool
-  tags: amq
+  tags:
+    - amq
+    - acm-workload
 
 - name: Remove AMQ Subscription
   command: "{{ oc_location }}  delete -f {{ config_location }}amqstreams.v1.6.1.yaml"
   ignore_errors: yes
   when: delete_deployment|bool
-  tags: amq
+  tags:
+    - amq
+    - acm-workload
 
 - name: Remove AMQ
   command: "{{ oc_location }}  delete csv {{ amqstartingCSV }} -n {{ project_namespace }}"
   ignore_errors: yes
   when: delete_deployment|bool
-  tags: amq
+  tags: 
+    - amq
+    - acm-workload

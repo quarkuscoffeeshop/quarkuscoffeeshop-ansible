@@ -1,5 +1,5 @@
 - name: Create AMQ Subscription
-  k8s:
+  kubernetes.core.k8s:
     state: present
     definition: "{{ lookup('template', 'amq-sub.yaml.j2') }}"
   register: rbac_result
@@ -9,7 +9,7 @@
 
 # wait for AMQ to be ready
 - name: Wait for AMQ CRD to be ready
-  k8s_info:
+  kubernetes.core.k8s_info:
     api_version: operators.coreos.com/v1alpha1
     kind: ClusterServiceVersion
     namespace: "{{ project_namespace }}"
@@ -47,7 +47,7 @@
     - acm-workload
 
 - name: Create kafka instance
-  k8s:
+  kubernetes.core.k8s:
     state: present
     namespace:  "{{ project_namespace }}"
     definition: "{{ lookup('template', 'amq-kafka-instance.yaml.j2') }}"
@@ -56,7 +56,7 @@
     - acm-workload
 
 - name: Search for all Pods labeled  cafe-cluster-zookeeper
-  k8s_info:
+  kubernetes.core.k8s_info:
     kind: Pod
     label_selectors:
       - "strimzi.io/name=cafe-cluster-zookeeper"
@@ -71,7 +71,7 @@
     - acm-workload
 
 - name: Search for all Pods labeled  cafe-cluster-kafka
-  k8s_info:
+  kubernetes.core.k8s_info:
     kind: Pod
     label_selectors:
       - "strimzi.io/name=cafe-cluster-kafka"
@@ -86,7 +86,7 @@
     - acm-workload
 
 - name: Create kafka topics
-  k8s:
+  kubernetes.core.k8s:
     state: present
     namespace:  "{{ project_namespace }}"
     definition: "{{ lookup('template', 'amq-kafka-topics.yaml.j2') }}"
@@ -95,7 +95,7 @@
     - acm-workload
 
 - name: Create kafdrop
-  k8s:
+  kubernetes.core.k8s:
     state: present
     namespace:  "{{ project_namespace }}"
     definition: "{{ lookup('template', 'kafdrop.yaml.j2') }}"
@@ -104,7 +104,7 @@
     - acm-workload
 
 - name: Remove kafdrop
-  k8s:
+  kubernetes.core.k8s:
     state: absent
     namespace:  "{{ project_namespace }}"
     definition: "{{ lookup('template', 'kafdrop.yaml.j2') }}"
@@ -123,7 +123,7 @@
     - acm-workload
 
 - name: Remove kafka instance
-  k8s:
+  kubernetes.core.k8s:
     state: absent
     namespace:  "{{ project_namespace }}"
     definition: "{{ lookup('template', 'amq-kafka-instance.yaml.j2') }}"
@@ -149,7 +149,7 @@
     - acm-workload
 
 - name: Remove AMQ Subscription
-  k8s:
+  kubernetes.core.k8s:
     state: absent
     definition: "{{ lookup('template', 'amq-sub.yaml.j2') }}"
   ignore_errors: yes

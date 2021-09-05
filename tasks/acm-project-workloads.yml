@@ -16,7 +16,7 @@
     - "{{ homeoffice_project }}"
 
 - name: Create Service Account for Pipelines
-  k8s:
+  kubernetes.core.k8s:
     state: present
     namespace:  "{{ development_project }}"
     definition: "{{ lookup('file', 'pipeline-sa.yaml') }}"
@@ -29,14 +29,14 @@
   tags: acm-workload
 
 - name: Create Postgres Secret
-  k8s:
+  kubernetes.core.k8s:
     state: present
     namespace:  "{{ homeoffice_project }}"
     definition: "{{ lookup('template', 'postgres-secret.j2') }}"
   tags: acm-workload
 
 - name: Create Postgres Database
-  k8s:
+  kubernetes.core.k8s:
     state: present
     namespace:  "{{ homeoffice_project }}"
     definition: "{{ lookup('template', 'postgres.yaml.j2') }}"

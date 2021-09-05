@@ -14,6 +14,7 @@
         - gogs
         - pipelines
         - gitops
+        - acm-workload
 
     - name: remove  ACM deployment
       include_tasks: remove-acm-deployment.yml
@@ -23,6 +24,7 @@
         - gogs
         - pipelines
         - gitops
+        - acm-workload
 
     - name: Create Quarkus project 
       include_tasks: create-project.yml

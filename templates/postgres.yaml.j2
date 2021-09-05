@@ -4,7 +4,7 @@ metadata:
   annotations:
     template.alpha.openshift.io/wait-for-ready: 'true'
   name: postgresql
-  namespace: user1-quarkuscoffeeshop-homeoffice
+  namespace: {{ homeoffice_project }}
   labels:
     template: postgresql-ephemeral-template
     template.openshift.io/template-instance-owner: 56c84e6a-7992-4aa4-95de-ee26009d83d8

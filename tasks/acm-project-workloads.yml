@@ -15,6 +15,18 @@
     - "{{ development_project }}"
     - "{{ homeoffice_project }}"
 
+- name: Create Service Account for Pipelines
+  k8s:
+    state: present
+    namespace:  "{{ development_project }}"
+    definition: "{{ lookup('template', 'pipeline-sa.yaml.j2') }}"
+  tags: acm-workload
+
+- name: AMQ Streams installation
+  vars: 
+    project_namespace: "{{ homeoffice_project }}"
+  include_tasks: amq-streams-install.yml
+  tags: acm-workload
 
 - name: Create Postgres Secret
   k8s:

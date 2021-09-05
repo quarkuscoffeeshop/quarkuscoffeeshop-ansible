@@ -4,7 +4,6 @@ metadata:
   name: barista-in
   labels:
     strimzi.io/cluster: cafe-cluster
-  namespace:  {{ project_namespace }}
 spec:
   partitions: 10
   replicas: 3
@@ -18,7 +17,6 @@ metadata:
   name: kitchen-in
   labels:
     strimzi.io/cluster: cafe-cluster
-  namespace:  {{ project_namespace }}
 spec:
   partitions: 10
   replicas: 3
@@ -32,7 +30,6 @@ metadata:
   name: orders
   labels:
     strimzi.io/cluster: cafe-cluster
-  namespace:  {{ project_namespace }}
 spec:
   partitions: 10
   replicas: 3
@@ -46,7 +43,6 @@ metadata:
   name: consumer-offsets---84e7a678d08f4bd226872e5cdd4eb527fadc1c6a
   labels:
     strimzi.io/cluster: cafe-cluster
-  namespace:  {{ project_namespace }}
 spec:
   partitions: 10
   replicas: 3
@@ -60,7 +56,6 @@ metadata:
   name: web-in
   labels:
     strimzi.io/cluster: cafe-cluster
-  namespace:  {{ project_namespace }}
 spec:
   partitions: 10
   replicas: 3
@@ -74,7 +69,6 @@ metadata:
   name: web-updates
   labels:
     strimzi.io/cluster: cafe-cluster
-  namespace:  {{ project_namespace }}
 spec:
   partitions: 10
   replicas: 3
@@ -88,7 +82,6 @@ metadata:
   name: webui
   labels:
     strimzi.io/cluster: cafe-cluster
-  namespace:  {{ project_namespace }}
 spec:
   partitions: 10
   replicas: 3
@@ -102,7 +95,6 @@ metadata:
   name: web-updates-order-up
   labels:
     strimzi.io/cluster:  cafe-cluster
-  namespace: {{ project_namespace }}
 spec:
   partitions: 10
   replicas: 3

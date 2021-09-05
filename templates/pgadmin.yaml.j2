@@ -1,0 +1,149 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  labels:
+    app: crunchy-pgadmin4
+    app.kubernetes.io/component: crunchy-pgadmin4
+    app.kubernetes.io/instance: crunchy-pgadmin4
+    app.kubernetes.io/part-of: crunchy-pgadmin4
+  name: crunchy-pgadmin4
+  namespace: {{ project_namespace }}
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+  - annotations:
+      openshift.io/generated-by: OpenShiftWebConsole
+      openshift.io/imported-from: registry.connect.redhat.com/crunchydata/crunchy-pgadmin4
+    from:
+      kind: DockerImage
+      name: registry.connect.redhat.com/crunchydata/crunchy-pgadmin4
+    generation: 2
+    importPolicy: {}
+    name: latest
+    referencePolicy:
+      type: Local
+---
+kind: Service
+apiVersion: v1
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftWebConsole
+  name: crunchy-pgadmin4
+  namespace: {{ project_namespace }}
+  labels:
+    app: crunchy-pgadmin4
+    app.kubernetes.io/component: crunchy-pgadmin4
+    app.kubernetes.io/instance: crunchy-pgadmin4
+    app.kubernetes.io/part-of: crunchy-pgadmin4
+    app.openshift.io/runtime-version: latest
+spec:
+  ports:
+    - name: 5050-tcp
+      protocol: TCP
+      port: 5050
+      targetPort: 5050
+  selector:
+    app: crunchy-pgadmin4
+    deploymentconfig: crunchy-pgadmin4
+  type: ClusterIP
+  sessionAffinity: None
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  annotations:
+    alpha.image.policy.openshift.io/resolve-names: '*'
+    image.openshift.io/triggers: >-
+      [{"from":{"kind":"ImageStreamTag","name":"crunchy-pgadmin4:latest","namespace":"{{ project_namespace }}"},"fieldPath":"spec.template.spec.containers[?(@.name==\"crunchy-pgadmin4\")].image","pause":"false"}]
+    openshift.io/generated-by: OpenShiftWebConsole
+  selfLink: /apis/apps/v1/namespaces/{{ project_namespace }}/deployments/crunchy-pgadmin4
+  name: crunchy-pgadmin4
+  namespace: {{ project_namespace }}
+  labels:
+    app: crunchy-pgadmin4
+    app.kubernetes.io/component: crunchy-pgadmin4
+    app.kubernetes.io/instance: crunchy-pgadmin4
+    app.kubernetes.io/part-of: crunchy-pgadmin4
+    app.openshift.io/runtime: postgresql
+    app.openshift.io/runtime-namespace: {{ project_namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: crunchy-pgadmin4
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: crunchy-pgadmin4
+        deploymentconfig: crunchy-pgadmin4
+      annotations:
+        openshift.io/generated-by: OpenShiftWebConsole
+    spec:
+      volumes:
+        - name: crunchy-pgadmin4-1
+          emptyDir: {}
+        - name: crunchy-pgadmin4-2
+          emptyDir: {}
+        - name: crunchy-pgadmin4-3
+          emptyDir: {}
+      containers:
+        - resources: {}
+          terminationMessagePath: /dev/termination-log
+          name: crunchy-pgadmin4
+          env:
+            - name: PGADMIN_SETUP_EMAIL
+              value: {{ pgadmin_setup_email }}
+            - name: PGADMIN_DEFAULT_PASSWORD
+              value: {{ pgadmin_default_password }}
+            - name: PGADMIN_SETUP_PASSWORD
+              value: {{ pgadmin_setup_password }}
+          ports:
+            - containerPort: 5050
+              protocol: TCP
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: crunchy-pgadmin4-1
+              mountPath: /certs
+            - name: crunchy-pgadmin4-2
+              mountPath: /run/httpd
+            - name: crunchy-pgadmin4-3
+              mountPath: /var/lib/pgadmin
+          terminationMessagePolicy: File
+          image: >-
+            image-registry.openshift-image-registry.svc:5000/{{ project_namespace }}/crunchy-pgadmin4
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: crunchy-pgadmin4
+  namespace: {{ project_namespace }}
+  labels:
+    app: crunchy-pgadmin4
+    app.kubernetes.io/component: crunchy-pgadmin4
+    app.kubernetes.io/instance: crunchy-pgadmin4
+    app.kubernetes.io/part-of: crunchy-pgadmin4
+    app.openshift.io/runtime-version: latest
+  annotations:
+    openshift.io/host.generated: 'true'
+spec:
+  to:
+    kind: Service
+    name: crunchy-pgadmin4
+    weight: 100
+  port:
+    targetPort: 5050-tcp
+  wildcardPolicy: None

@@ -109,14 +109,9 @@
   command: "{{ oc_location }} -n {{ quay_project_name }} create secret docker-registry redhat-pull-secret --docker-server=quay.io  --docker-username='{{ quay_pull_user }}' --docker-password='{{ quay_pull_password }}'"
   tags: quay
 
-#- name: create quay admin password secret
+- name: create quay admin password secret
   # yamllint disable-line rule:line-length
-#  command: "{{ oc_location }} -n {{ quay_project_name }} create secret generic quay-admin-password --from-literal=superuser-username={{ quay_admin_user }} --from-literal=superuser-password={{ quay_admin_password }} --from-literal=superuser-email=quay@example.com"
-#  tags: quay
-
-- name: Test create quay admin password secret
-  # yamllint disable-line rule:line-length
-  command: "{{ oc_location }} -n {{ quay_project_name }} create secret generic quay-superuser-secret --from-literal=superuser-username={{ quay_admin_user }} --from-literal=superuser-password={{ quay_admin_password }} --from-literal=superuser-email=quay@example.com"
+  command: "{{ oc_location }} -n {{ quay_project_name }} create secret generic quay-admin-password --from-literal=superuser-username={{ quay_admin_user }} --from-literal=superuser-password={{ quay_admin_password }} --from-literal=superuser-email=quay@example.com"
   tags: quay
 
 - name: Deploy Quay Operator

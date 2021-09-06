@@ -33,3 +33,4 @@
 - name: Configure OpenShift Gitops 
   include_tasks: openshift-gitops.yaml
   tags: gitops
+

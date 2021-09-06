@@ -100,7 +100,7 @@ quay_channel: "quay-v3.5"
 quay_urlprefix:  "quayecosystem-quay-{{ quay_project_name }}.router-default"
 quay_pull_user: changeme
 quay_pull_password: changeme
-quay_admin_user: admin
+quay_admin_user: quayadmin
 quay_admin_password: admin123
 
 # OpenShift Pipelines 

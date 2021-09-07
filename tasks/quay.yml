@@ -47,9 +47,9 @@
         installPlanApproval: Manual
   tags: quay
 
-- name: Pause for 30 seconds for pods to download 
+- name: Pause for 60 seconds for pods to download 
   pause:
-    seconds: 30
+    seconds: 60
   tags: quay
 
 - name: wait for the status of the Quay subscription to not be empty

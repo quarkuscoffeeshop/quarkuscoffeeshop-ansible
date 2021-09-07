@@ -37,6 +37,7 @@ function configure-ansible-and-playbooks(){
     ${USE_SUDO} ansible-galaxy collection install kubernetes.core
     ${USE_SUDO} pip3 install kubernetes 
     ${USE_SUDO} pip3 install openshift 
+    ${USE_SUDO} install jmespath
   fi 
 
   echo "Check if Helm is installed exists"

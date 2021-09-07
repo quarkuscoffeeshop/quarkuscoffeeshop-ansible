@@ -25,7 +25,7 @@ function usage() {
 }
 
 # community.kubernetes.helm_repository
-function deploy-amq-configure-postgres(){
+function configure-ansible-and-playbooks(){
   echo "Check if community.kubernetes exists"
   if [ ! -d ~/.ansible/collections/ansible_collections/community/kubernetes ];
   then 
@@ -35,6 +35,8 @@ function deploy-amq-configure-postgres(){
     ${USE_SUDO} cp kubernetes.core/plugins/action/k8s.py /home/${USER}/.ansible/plugins/modules/
     ${USE_SUDO} ansible-galaxy collection install community.kubernetes
     ${USE_SUDO} ansible-galaxy collection install kubernetes.core
+    ${USE_SUDO} pip3 install kubernetes 
+    ${USE_SUDO} pip3 install openshift 
   fi 
 
   echo "Check if Helm is installed exists"
@@ -58,10 +60,11 @@ function deploy-amq-configure-postgres(){
   ${USE_SUDO} rm -rf ${ROLE_LOC}
   ${USE_SUDO} ansible-galaxy install   git+https://github.com/quarkuscoffeeshop/quarkuscoffeeshop-ansible.git
 
-
+  
   echo "****************"
   echo "Start Deployment"
   echo "****************"
+  exit 1 
   ${USE_SUDO} ansible-playbook  /tmp/deploy-quarkus-cafe.yml
 }
 
@@ -142,8 +145,6 @@ YAML
 cat /tmp/deploy-quarkus-cafe.yml
 sleep 3s 
 
-exit 1 
-
 unameOut="$(uname -s)"
 case "${unameOut}" in
     Linux*)     machine=Linux;;
@@ -158,7 +159,7 @@ if [ "${machine}" == 'Linux' ] && [ -f /bin/ansible ];
 then 
   if [ "${DESTROY}" == false ];
   then 
-    deploy-amq-configure-postgres
+    configure-ansible-and-playbooks
   else 
     destory_coffee_shop
   fi
@@ -166,7 +167,7 @@ elif [ "${machine}" == 'Mac' ] && [ -f /usr/local/bin/ansible ];
 then
   if [ "${DESTROY}" == false ];
   then 
-    deploy-amq-configure-postgres
+    configure-ansible-and-playbooks
   else 
     destory_coffee_shop
   fi

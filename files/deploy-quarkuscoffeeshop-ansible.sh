@@ -119,7 +119,7 @@ else
   SKIP_AMQ_STREAMS=${SKIP_AMQ_STREAMS:-"false"}
   read -p "Would you like to skip the Postgres installation? Default ->[false] " SKIP_CONFIGURE_POSTGRES
   SKIP_CONFIGURE_POSTGRES=${SKIP_CONFIGURE_POSTGRES:-"false"}
-  read -p "Would you like to skip the AMongoDB Operator installation? Default ->[true] " SKIP_MONGODB_OPERATOR
+  read -p "Would you like to skip the MongoDB Operator installation? Default ->[true] " SKIP_MONGODB_OPERATOR
   SKIP_MONGODB_OPERATOR=${SKIP_MONGODB_OPERATOR:-"true"}
   read -p "Would you like to skip the MongoDb OpenShift Template installation? Default ->[true] " SKIP_MONGODB
   SKIP_MONGODB=${SKIP_MONGODB:-"true"}

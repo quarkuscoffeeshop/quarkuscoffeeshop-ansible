@@ -22,6 +22,10 @@
     definition: "{{ lookup('file', 'pipeline-sa.yaml') }}"
   tags: acm-workload
 
+- name: Set privileged containers for the push
+  shell: "{{ oc_location }} adm policy add-scc-to-user privileged -z pipeline -n {{ development_project }}"
+  tags: acm-workload
+
 - name: AMQ Streams installation
   vars: 
     project_namespace: "{{ homeoffice_project }}"

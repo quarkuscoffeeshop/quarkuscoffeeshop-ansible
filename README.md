@@ -115,6 +115,16 @@ Quarkus CoffeeShop 5.0.3-SNAPSHOT OpenShift Deployment
 
 Download Script
 ```
+$ cat >env.variables<<EOF
+# Quick config for deploy-quarkuscoffeeshop-ansible.sh
+
+SKIP_ACM_MANAGED=FALSE
+SKIP_AMQ_STREAMS=TRUE
+SKIP_CONFIGURE_POSTGRES=TRUE
+SKIP_MONGODB_OPERATOR=TRUE
+SKIP_MONGODB=TRUE
+SKIP_HELM_DEPLOYMENT=TRUE
+EOF
 $ curl -OL https://raw.githubusercontent.com/quarkuscoffeeshop/quarkuscoffeeshop-ansible/master/files/deploy-quarkuscoffeeshop-ansible.sh
 $ chmod +x deploy-quarkuscoffeeshop-ansible.sh
 ```

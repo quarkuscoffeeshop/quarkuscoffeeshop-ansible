@@ -71,7 +71,7 @@
     - operator_subscription_out.resources[0].status is defined
     - operator_subscription_out.resources[0].status.installplan is defined
   retries: 30
-  delay: 20
+  delay: 45
   tags: quay
 
 - name: patch the installplan to approve it

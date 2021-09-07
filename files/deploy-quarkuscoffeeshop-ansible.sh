@@ -127,7 +127,7 @@ cat >/tmp/deploy-quarkus-cafe.yml<<YAML
     skip_configure_postgres: ${SKIP_CONFIGURE_POSTGRES}
     skip_mongodb_operator_install: ${SKIP_MONGODB_OPERATOR}
     single_mongodb_install: ${SKIP_MONGODB} 
-    skip_quarkuscoffeeshop_helm_install: ${SKIP_HELM_DEPLOY}
+    skip_quarkuscoffeeshop_helm_install: ${SKIP_HELM_DEPLOYMENT}
     domain: ${DOMAIN}
     postgres_password: '${POSTGRES_PASSWORD}'
     storeid: ${STORE_ID}

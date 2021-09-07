@@ -15,7 +15,7 @@
       - status.phase=Running
   register: r_storage_status
   retries: 120
-  delay: 15
+  delay: 45
   until: r_storage_status.resources | list | length == 1
   tags: quay
 

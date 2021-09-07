@@ -113,10 +113,18 @@ if [ -f $HOME/env.variables ];
 then 
   source  $HOME/env.variables
 else
-  read -p "Would you like to acm to manage deployment? Default -> [false]: " SKIP_ACM_MANAGED
-  ACM_MANAGED=${SKIP_ACM_MANAGED:-"false"}
-  read -p "Would you configure AMQ Streams ->[true] " SKIP_AMQ_STREAMS
-  AMQ_STREAMS=${SKIP_AMQ_STREAMS:-"true"}
+  read -p "Would you like to skip the ACM deployment? Default -> [true]: " SKIP_ACM_MANAGED
+  SKIP_ACM_MANAGED=${SKIP_ACM_MANAGED:-"true"}
+  read -p "Would you like to skip the AMQ Streams installation? Default ->[false] " SKIP_AMQ_STREAMS
+  SKIP_AMQ_STREAMS=${SKIP_AMQ_STREAMS:-"false"}
+  read -p "Would you like to skip the Postgres installation? Default ->[false] " SKIP_CONFIGURE_POSTGRES
+  SKIP_CONFIGURE_POSTGRES=${SKIP_CONFIGURE_POSTGRES:-"false"}
+  read -p "Would you like to skip the AMongoDB Operator installation? Default ->[true] " SKIP_MONGODB_OPERATOR
+  SKIP_MONGODB_OPERATOR=${SKIP_MONGODB_OPERATOR:-"true"}
+  read -p "Would you like to skip the MongoDb OpenShift Template installation? Default ->[true] " SKIP_MONGODB
+  SKIP_MONGODB=${SKIP_MONGODB:-"true"}
+  read -p "Would you like to skip the Helm Deployment? Default ->[false] " SKIP_HELM_DEPLOYMENT
+  SKIP_HELM_DEPLOYMENT=${SKIP_HELM_DEPLOYMENT:-"false"}
 fi
 
 cat >/tmp/deploy-quarkus-cafe.yml<<YAML

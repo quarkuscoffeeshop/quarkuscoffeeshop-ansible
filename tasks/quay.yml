@@ -1,17 +1,7 @@
 ---
-- name: Log in (obtain access token)
-  k8s_auth:
-    host: "{{ openshift_url }}"
-    username: admin
-    password: "{{ k8s_admin_password }}"
-    validate_certs: false
-  register: k8s_auth_results
-  tags: quay
-
 - name: "create the quay project"
   kubernetes.core.k8s:
     state: present
-    api_key: "{{ k8s_auth_results.k8s_auth.api_key }}"
     name: "{{ quay_project_name }}"
     kind: Project
     api_version: project.openshift.io/v1

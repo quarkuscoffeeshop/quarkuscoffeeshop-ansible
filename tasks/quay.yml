@@ -47,6 +47,10 @@
         installPlanApproval: Manual
   tags: quay
 
+- name: Pause for 30 seconds for pods to download 
+  pause:
+    seconds: 30
+
 - name: wait for the status of the Quay subscription to not be empty
   kubernetes.core.k8s_info:
     api_version: operators.coreos.com/v1alpha1
@@ -61,7 +65,7 @@
     - operator_subscription_out.resources[0].status is defined
     - operator_subscription_out.resources[0].status.installplan is defined
   retries: 30
-  delay: 45
+  delay: 15
   tags: quay
 
 - name: patch the installplan to approve it
@@ -119,7 +123,7 @@
   register: result
   until: result.status == 200
   retries: 30
-  delay: 30
+  delay: 15
   ignore_errors: true
   tags: quay
 

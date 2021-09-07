@@ -30,7 +30,11 @@ function deploy-amq-configure-postgres(){
   if [ ! -d ~/.ansible/collections/ansible_collections/community/kubernetes ];
   then 
     echo "Installing community.kubernetes ansible role"
+    ${USE_SUDO} git clone https://github.com/ansible-collections/kubernetes.core.git
+    ${USE_SUDO} mkdir -p /home/${USER}/.ansible/plugins/modules
+    ${USE_SUDO} cp kubernetes.core/plugins/action/k8s.py /home/${USER}/.ansible/plugins/modules/
     ${USE_SUDO} ansible-galaxy collection install community.kubernetes
+    ${USE_SUDO} ansible-galaxy collection install kubernetes.core
   fi 
 
   echo "Check if Helm is installed exists"

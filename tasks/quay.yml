@@ -50,6 +50,7 @@
 - name: Pause for 30 seconds for pods to download 
   pause:
     seconds: 30
+  tags: quay
 
 - name: wait for the status of the Quay subscription to not be empty
   kubernetes.core.k8s_info:

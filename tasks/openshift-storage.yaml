@@ -5,6 +5,11 @@
     chdir: "{{ config_location}}/files"
   tags: quay
 
+- name: Pause for 30 seconds for pods to download 
+  pause:
+    seconds: 30
+  tags: quay
+
 - name: Waiting for openshift storage operator
   kubernetes.core.k8s_info:
     kind: Pod

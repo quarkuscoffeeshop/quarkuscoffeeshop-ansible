@@ -1,6 +1,8 @@
 #!/bin/bash
 #set -e 
-# https://github.com/ansible-collections/kubernetes.core/issues/159
+# For development export the enviorment variable below
+export DEVELOPMENT=true 
+
 
 if [ "$EUID" -ne 0 ]
 then 
@@ -58,13 +60,24 @@ function configure-ansible-and-playbooks(){
   fi 
   
 
-  ${USE_SUDO} rm -rf ${ROLE_LOC}
-  ${USE_SUDO} ansible-galaxy install   git+https://github.com/quarkuscoffeeshop/quarkuscoffeeshop-ansible.git
-
+  if [[ $DEVELOPMENT == "false" ]] || [[ -z $DEVELOPMENT ]];
+  then
+    ${USE_SUDO} rm -rf ${ROLE_LOC}
+    ${USE_SUDO} ansible-galaxy install   git+https://github.com/quarkuscoffeeshop/quarkuscoffeeshop-ansible.git
+    echo "****************"
+    echo "Start Deployment"
+    echo "****************"
+  elif  [ $DEVELOPMENT == "true" ];
+  then 
+    ${USE_SUDO} rm -rf ${ROLE_LOC}
+    ${USE_SUDO} ansible-galaxy install   git+https://github.com/quarkuscoffeeshop/quarkuscoffeeshop-ansible.git,dev
+    echo "****************"
+    echo " Start Deployment "
+    echo " DEVELOPMENT MODE "
+    echo "****************"
+  fi 
   
-  echo "****************"
-  echo "Start Deployment"
-  echo "****************"
+
   exit 1 
   ${USE_SUDO} ansible-playbook  /tmp/deploy-quarkus-cafe.yml
 }

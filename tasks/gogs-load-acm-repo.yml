@@ -1,0 +1,90 @@
+---
+
+- name: load gogs repo
+  become: true
+  block:
+    - set_fact:
+        my_user: "{{ item }}"
+
+    - name: loading gogs for {{ my_user }}  Started
+      debug:
+        msg: "loading gogs for {{ my_user }}  - Started"
+      tags: gogs
+
+    - name: check if repository exists in git for user "{{ my_user }}"
+      uri:
+        url: http://{{ gogs_urlprefix }}.apps.{{ domain }}/api/v1/repos/{{ my_user }}/{{ acm_reponame_local }}
+        user: "{{ my_user }}"
+        password: "{{ gogs_user_password }}"
+        force_basic_auth: true
+        status_code: 200,404
+      register: repo_result
+      tags: gogs
+
+    - name: create git repository for user "{{ my_user }}"
+      uri:
+        url: http://{{ gogs_urlprefix }}.apps.{{ domain }}/api/v1/user/repos
+        method: POST
+        body: '{"name": "{{ acm_reponame_local }}", "private": false}'
+        body_format: json
+        user: "{{ my_user }}"
+        password: "{{ gogs_user_password }}"
+        status_code: 200,201
+        force_basic_auth: true
+      when: repo_result.status != 200
+      tags: gogs
+
+    - name: check for repo directory.
+      ansible.builtin.stat:
+        path: "{{ config_location }}{{ acm_reponame }}"
+      register: repo_dir
+      tags: gogs
+
+    - name: "echo if directory already existed"
+      debug:
+        msg: "the repo directory is already existed"
+      when: repo_dir.stat.exists
+      tags: gogs
+
+    - name: Git checkout
+      ansible.builtin.git:
+        repo: "{{ acm_repo_url }}"
+        dest: "{{ config_location }}{{ acm_reponame }}"
+        version: master
+      when: repo_dir.stat.exists == false
+      tags: gogs
+
+    - name: remove git metadata
+      shell: |
+        rm -fr .git
+      args:
+        chdir: "{{ config_location }}{{ acm_reponame }}"
+      tags: gogs
+
+    - name: create new git repo
+      shell: |
+        rm -fr .git || true
+        git init .
+        git add *
+        git commit -am "Initial checkin"
+      args:
+        chdir: "{{ config_location }}{{ acm_reponame }}"
+      tags: gogs
+
+    - name: push catalog to git repository in Gogs for user "{{ my_user }}"
+      # yamllint disable rule:line-length
+      shell: |
+        git remote add {{ my_user }} http://{{ my_user }}:{{ gogs_user_password }}@{{ gogs_urlprefix }}.apps.{{ domain }}/{{ my_user }}/{{ acm_reponame_local }}.git
+        git config --local user.email "{{ my_user }}@example.com"
+        git config --local user.name "{{ my_user }}"
+        git push -f --all "{{ my_user }}"
+      # yamllint enable rule:line-length
+      args:
+        chdir: "{{ config_location }}{{ acm_reponame }}"
+      when: repo_result.status != 200
+      tags: gogs
+
+    - name: loading gogs for {{ my_user }}  Complete
+      debug:
+        msg: "loading gogs for {{ my_user }}  - Completed"
+      tags: gogs

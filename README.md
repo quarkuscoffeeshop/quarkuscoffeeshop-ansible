@@ -16,6 +16,7 @@ Requirements
 * Ansible community.kubernetes module must be installed `ansible-galaxy collection install community.kubernetes`
 * Install [Helm](https://helm.sh/docs/intro/install/) Binary
 * [Postges Operator](https://github.com/tosin2013/postgres-operator) for Quarkus CoffeeShop 5.0.1-SNAPSHOT Deployments
+* pip3 
 
 ScreenShots
 ------------------------------------------------
@@ -136,6 +137,7 @@ SKIP_HELM_DEPLOYMENT=TRUE
 EOF
 ```
 
+**Set Enviornment variables for standard deployment**
 ```
 $ cat >env.variables<<EOF
 # Quick config for deploy-quarkuscoffeeshop-ansible.sh
@@ -148,6 +150,7 @@ SKIP_MONGODB=TRUE
 SKIP_HELM_DEPLOYMENT=TRUE
 EOF
 ```
+
 $ curl -OL https://raw.githubusercontent.com/quarkuscoffeeshop/quarkuscoffeeshop-ansible/master/files/deploy-quarkuscoffeeshop-ansible.sh
 $ chmod +x deploy-quarkuscoffeeshop-ansible.sh
 ```

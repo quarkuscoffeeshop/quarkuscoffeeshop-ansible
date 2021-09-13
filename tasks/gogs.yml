@@ -114,3 +114,7 @@
 - include_tasks: gogs-load-repo.yml
   with_sequence: start={{ gogs_generate_user_count }} end={{ user_count_end }} format={{ user_format }}
   tags: gogs
+
+- include_tasks: gogs-load-acm-repo.yml
+  with_sequence: start={{ gogs_generate_user_count }} end={{ user_count_end }} format={{ user_format }}
+  tags: gogs

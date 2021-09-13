@@ -77,8 +77,9 @@ function configure-ansible-and-playbooks(){
     echo "****************"
   fi 
   
-
+  checkpipmodules
   exit 1 
+  
   ${USE_SUDO} ansible-playbook  /tmp/deploy-quarkus-cafe.yml
 }
 
@@ -86,9 +87,30 @@ function destory_coffee_shop(){
   echo "******************"
   echo "Destroy Deployment"
   echo "******************"
+  checkpipmodules
   ${USE_SUDO} ansible-playbook  /tmp/deploy-quarkus-cafe.yml
 }
 
+function checkpipmodules(){
+  if python3 -c "import openshift" &> /dev/null; then
+    echo 'openshift pip module is installed '
+  else
+      echo 'openshift pip module is not installed '
+  fi
+
+  if python3 -c "import kubernetes" &> /dev/null; then
+    echo 'kubernetes pip module is installed '
+  else
+      echo 'kubernetes pip module is not installed '
+  fi
+
+  if python3 -c "import jmespath" &> /dev/null; then
+    echo 'jmespath pip module is installed '
+  else
+      echo 'jmespath pip module is not installed '
+  fi
+
+}
 if [ -z "$1" ];
 then
   usage

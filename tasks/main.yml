@@ -36,25 +36,25 @@
 
     - name: AMQ Streams installation
       include_tasks: amq-streams-install.yml
-      when: not skip_amq_install
+      tags: 
+        - amq
 
     - name: Configure Postgres Database
       include_tasks: configure-postgres.yml
-      when: not skip_configure_postgres | bool
+      tags: 
+        - postgres
 
     - name: Installing Single mongodb database
       include_tasks: mongodb.yml
-      when: 
-         - single_mongodb_install | bool
-         - skip_configure_postgres | bool
-         - not skip_acm_deployment | bool
+      tags:
+       - mongodb
 
     - name: MongoDB Operator installation
       include_tasks: mongodb-operator-install.yml
-      when: 
-        - not skip_mongodb_operator_install
-        - skip_configure_postgres | bool
+      tags:
+       - mongodb-operator
 
     - name: Deploy Quarkus Cafe Helm Chart
       include_tasks: helm-chart.yml
-      when: not skip_quarkuscoffeeshop_helm_install
+      tags:
+       - helm

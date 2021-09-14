@@ -6,6 +6,8 @@
     group: "{{ default_group }}"
     mode: 0666
   when: not delete_deployment|bool
+  tags: 
+  - postgres
 
 #- name: Copying over pgadmin file
 #  template:
@@ -20,6 +22,8 @@
   command: "{{ oc_location }}  create -f {{ config_location }}/postgres-utils.yaml"
   ignore_errors: yes
   when: not delete_deployment|bool
+  tags: 
+  - postgres
 
 - name: Waiting for postgres-utilites to deploy
   shell: |
@@ -31,6 +35,8 @@
   delay: 25
   args:
     executable: /bin/bash
+  tags: 
+  - postgres
 
 - name:  Get postgres-utilites Pod name
   shell: "{{ oc_location }} get pods  -n {{ project_namespace }} | grep Running | grep -E -o 'postgres-utilites-[0-9a-z][0-9a-z].*-[0-9a-z]{5}'"
@@ -38,15 +44,21 @@
   when: not delete_deployment|bool
   args:
     executable: /bin/bash
+  tags: 
+  - postgres
 
 - name: Saving  postgres-utilites Pod name
   set_fact:
     postgres_utils_pod: "{{ get_podname.stdout }}"
   when: not delete_deployment|bool
+  tags: 
+  - postgres
 
 - name:  Create and load postgres database
   command: "{{ oc_location }}  exec -it {{ postgres_utils_pod }} -- /bin/init_postgres_db.sh"
   when: not delete_deployment|bool
+  tags: 
+  - postgres
 
 #- name: Deploy pgadmin
 #  command: "{{ oc_location }}  create -f {{ config_location }}/pgadmin.yaml"
@@ -68,7 +80,9 @@
   command: "{{ oc_location }}  delete -f {{ config_location }}/postgres-utils.yaml"
   ignore_errors: yes
   when: delete_deployment|bool
-
+  tags: 
+  - postgres
+  
 #- name: Delete pgadmin
 #  command: "{{ oc_location }}  delete -f {{ config_location }}/pgadmin.yaml"
 #  ignore_errors: yes

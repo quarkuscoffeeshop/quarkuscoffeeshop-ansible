@@ -81,6 +81,10 @@ function configure-ansible-and-playbooks(){
   exit 1 
   
   ${USE_SUDO} ansible-playbook  /tmp/deploy-quarkus-cafe.yml
+   #ansible-playbook  /tmp/deploy-quarkus-cafe.yml -t quay,gogs,pipelines,gitops,acm-workload --extra-vars delete_deployment=false -vv
+   #ansible-playbook  /tmp/deploy-quarkus-cafe.yml -t quay,gogs,pipelines,gitops,acm-workload,amq,postgres --extra-vars delete_deployment=false -vv
+   #ansible-playbook  /tmp/deploy-quarkus-cafe.yml -t amq,postgres --extra-vars delete_deployment=false -vv
+   #ansible-playbook  /tmp/deploy-quarkus-cafe.yml -t amq,postgres,helm --extra-vars delete_deployment=false -vv
 }
 
 function destory_coffee_shop(){

@@ -47,6 +47,7 @@
       when: 
          - single_mongodb_install | bool
          - skip_configure_postgres | bool
+         - not skip_acm_deployment | bool
 
     - name: MongoDB Operator installation
       include_tasks: mongodb-operator-install.yml

@@ -108,7 +108,7 @@ spec:
       containers:
       - env:
         - name: PGPASSWORD
-          value: {{ postgres_password }}
+          value: '{{ postgres_password }}'
         image: image-registry.openshift-image-registry.svc:5000/{{ project_namespace }}/postgres-utilites:latest
         imagePullPolicy: IfNotPresent
         name: postgres-utilites

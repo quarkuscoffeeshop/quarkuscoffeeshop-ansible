@@ -137,7 +137,7 @@ MONGODB_OPERATOR=n
 MONGODB=n
 HELM_DEPLOYMENT=n
 EOF
-$ ./deploy-quarkuscoffeeshop-ansible.sh -d ocp4.example.com -o sha-123456789 -p 123456789 -s ATLANTA
+$ ./deploy-quarkuscoffeeshop-ansible.sh -d ocp4.example.com -t sha-123456789 -p 123456789 -s ATLANTA
 ```
 
 **Set Environment variables for standard deployment**
@@ -150,7 +150,7 @@ MONGODB_OPERATOR=n
 MONGODB=n
 HELM_DEPLOYMENT=y
 EOF
-$ ./deploy-quarkuscoffeeshop-ansible.sh -d ocp4.example.com -o sha-123456789 -p 123456789 -s ATLANTA
+$ ./deploy-quarkuscoffeeshop-ansible.sh -d ocp4.example.com -t sha-123456789 -p 123456789 -s ATLANTA
 ```
 
 **Optional: Change namespace for helm deployments**  

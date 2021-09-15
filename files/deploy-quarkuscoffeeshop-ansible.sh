@@ -135,16 +135,19 @@ then
   exit 1
 fi
 
-while getopts ":d:ot:p:s:h:u:" arg; do
+while getopts ":d:t:p:s:h:u:" arg; do
   case $arg in
     h) export  HELP=True;;
     d) export  DOMAIN=$OPTARG;;
-    o) export  OCP_TOKEN=$OPTARG;;
+    t) export  OCP_TOKEN=$OPTARG;;
     p) export POSTGRES_PASSWORD=$OPTARG;;
     s) export  STORE_ID=$OPTARG;;
-    r) export  DESTROY=$OPTARG;;
+    u) export  DESTROY=$OPTARG;;
   esac
 done
+
+echo "${POSTGRES_PASSWORD}"
+echo "${DESTROY}"
 
 if [ -z "${DESTROY}" ];
 then 

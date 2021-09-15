@@ -16,7 +16,6 @@
 
 - name: create projects 
   command: "{{ oc_location }} adm new-project {{ item }}"
-  when: user_project is failed
   tags: acm-workload
   ignore_errors: true 
   with_items:

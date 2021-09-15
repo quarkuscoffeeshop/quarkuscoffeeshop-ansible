@@ -1,5 +1,5 @@
 
-- name: "create  homeoffice project"
+- name: "create homeoffice project"
   kubernetes.core.k8s:
     state: present
     name: "{{ homeoffice_project }}"
@@ -8,7 +8,16 @@
   ignore_errors: true
   tags: gitops
 
-- name: "create  cicd project"
+- name: "create demo project"
+  kubernetes.core.k8s:
+    state: present
+    name: "{{ project_namespace }}"
+    kind: Project
+    api_version: project.openshift.io/v1
+  ignore_errors: true
+  tags: gitops
+
+- name: "create cicd project"
   kubernetes.core.k8s:
     state: present
     name: "{{ development_project }}"

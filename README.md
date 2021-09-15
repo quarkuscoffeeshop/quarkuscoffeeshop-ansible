@@ -115,8 +115,12 @@ Quarkus CoffeeShop 5.0.3-SNAPSHOT OpenShift Deployment
 -----------------------------------------------------------
 
 ## Download Script
+```
+$ curl -OL https://raw.githubusercontent.com/quarkuscoffeeshop/quarkuscoffeeshop-ansible/master/files/deploy-quarkuscoffeeshop-ansible.sh
+$ chmod +x deploy-quarkuscoffeeshop-ansible.sh
+```
 
-**Set Enviornment variables for ACM Deployment**
+**Set Environment variables for ACM Deployment**
 * Gogs server
 * OpenShift Pipelines
 * OpenShift GitOps
@@ -135,9 +139,10 @@ SKIP_MONGODB_OPERATOR=TRUE
 SKIP_MONGODB=TRUE
 SKIP_HELM_DEPLOYMENT=TRUE
 EOF
+$ deploy-quarkuscoffeeshop-ansible.sh
 ```
 
-**Set Enviornment variables for standard deployment**
+**Set Environment variables for standard deployment**
 ```
 $ cat >env.variables<<EOF
 # Quick config for deploy-quarkuscoffeeshop-ansible.sh
@@ -149,10 +154,7 @@ SKIP_MONGODB_OPERATOR=TRUE
 SKIP_MONGODB=TRUE
 SKIP_HELM_DEPLOYMENT=TRUE
 EOF
-```
-
-$ curl -OL https://raw.githubusercontent.com/quarkuscoffeeshop/quarkuscoffeeshop-ansible/master/files/deploy-quarkuscoffeeshop-ansible.sh
-$ chmod +x deploy-quarkuscoffeeshop-ansible.sh
+$ deploy-quarkuscoffeeshop-ansible.sh
 ```
 
 **Optional: Change namespace**  

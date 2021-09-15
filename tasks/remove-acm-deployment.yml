@@ -34,6 +34,12 @@
   ignore_errors: true
   tags: always
 
+- name: delete openshift-gitops project
+  command: oc delete project openshift-gitops
+  ignore_errors: true
+  tags: always
+
+
 - name: delete openshift-storage project
   command: oc delete project openshift-storage
   ignore_errors: true

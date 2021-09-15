@@ -3,6 +3,7 @@
     state: present
     definition: "{{ lookup('template', 'amq-sub.yaml.j2') }}"
   register: rbac_result
+  when: not delete_deployment|bool
   tags: 
     - amq
     - acm-workload
@@ -19,6 +20,7 @@
   retries: 20
   delay: 60
   until: r_amq_crd.resources | list | length == 1
+  when: not delete_deployment|bool
   tags: 
     - amq
     - acm-workload
@@ -26,6 +28,7 @@
 - name: Display AMQ install status
   debug:
     var: r_amq_crd.resources[0].status
+  when: not delete_deployment|bool
   tags: 
     - amq
     - acm-workload
@@ -34,6 +37,7 @@
   set_fact:
     amq_installed: "{{ r_amq_crd.resources[0].status }}"
   ignore_errors: false
+  when: not delete_deployment|bool
   tags:
     - amq
     - acm-workload
@@ -41,7 +45,7 @@
 - name: fail when AMQ subscription if not ready
   fail:
     msg: AMQ subscription is not Present on cluster
-  when: amq_installed is not defined
+  when: amq_installed is not defined and not delete_deployment|bool
   tags:
     - amq
     - acm-workload
@@ -51,6 +55,7 @@
     state: present
     namespace:  "{{ project_namespace }}"
     definition: "{{ lookup('template', 'amq-kafka-instance.yaml.j2') }}"
+  when: not delete_deployment|bool
   tags: 
     - amq
     - acm-workload
@@ -66,6 +71,7 @@
   retries: 200
   delay: 10
   until: r_zookeeper_status.resources  | list | length == 3
+  when: not delete_deployment|bool
   tags:
     - amq
     - acm-workload
@@ -81,6 +87,7 @@
   retries: 200
   delay: 10
   until: r_kafka_status.resources  | list | length == 3
+  when: not delete_deployment|bool
   tags:
     - amq
     - acm-workload
@@ -90,6 +97,7 @@
     state: present
     namespace:  "{{ project_namespace }}"
     definition: "{{ lookup('template', 'amq-kafka-topics.yaml.j2') }}"
+  when: not delete_deployment|bool
   tags:
     - amq
     - acm-workload
@@ -99,6 +107,7 @@
     state: present
     namespace:  "{{ project_namespace }}"
     definition: "{{ lookup('template', 'kafdrop.yaml.j2') }}"
+  when: not delete_deployment|bool
   tags:
     - amq
     - acm-workload

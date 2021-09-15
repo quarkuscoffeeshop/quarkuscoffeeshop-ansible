@@ -11,13 +11,6 @@ amqstartingCSV: amqstreams.v1.8.1
 mongodbstartingCSV: mongodb-enterprise.v1.8.0
 config_location: "/tmp/"
 kafka_cluster_name: cafe-cluster
-skip_amq_install: false
-skip_configure_postgres: false
-skip_mongodb_operator_install: false
-single_mongodb_install: false
-skip_quarkuscoffeeshop_helm_install: false
-skip_postgres_operator_install: false
-skip_acm_deployment: true
 domain: ocp4.example.com
 
 # Helm Chart Version 

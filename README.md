@@ -107,7 +107,7 @@ Dependencies
 * Ansible
 * OpenShift cli
 * helm 
-* [Postges Operator](https://github.com/tosin2013/postgres-operator) for Quarkus CoffeeShop 5.0.1-SNAPSHOT 
+* [Postges Operator](https://github.com/tosin2013/postgres-operator) for Quarkus CoffeeShop 5.0.3-SNAPSHOT 
 
 
 
@@ -130,54 +130,42 @@ $ chmod +x deploy-quarkuscoffeeshop-ansible.sh
 
 ```
 $ cat >env.variables<<EOF
-# Quick config for deploy-quarkuscoffeeshop-ansible.sh
-
-SKIP_ACM_MANAGED=FALSE
-SKIP_AMQ_STREAMS=TRUE
-SKIP_CONFIGURE_POSTGRES=FALSE
-SKIP_MONGODB_OPERATOR=TRUE
-SKIP_MONGODB=TRUE
-SKIP_HELM_DEPLOYMENT=TRUE
+ACM_WORKLOADS=y
+AMQ_STREAMS=y
+CONFIGURE_POSTGRES=y
+MONGODB_OPERATOR=n
+MONGODB=n
+HELM_DEPLOYMENT=n
 EOF
-$ deploy-quarkuscoffeeshop-ansible.sh
+$ ./deploy-quarkuscoffeeshop-ansible.sh -d ocp4.example.com -o sha-123456789 -p 123456789 -s ATLANTA
 ```
 
 **Set Environment variables for standard deployment**
 ```
 $ cat >env.variables<<EOF
-# Quick config for deploy-quarkuscoffeeshop-ansible.sh
-
-SKIP_ACM_MANAGED=FALSE
-SKIP_AMQ_STREAMS=TRUE
-SKIP_CONFIGURE_POSTGRES=TRUE
-SKIP_MONGODB_OPERATOR=TRUE
-SKIP_MONGODB=TRUE
-SKIP_HELM_DEPLOYMENT=TRUE
+ACM_WORKLOADS=n
+AMQ_STREAMS=y
+CONFIGURE_POSTGRES=y
+MONGODB_OPERATOR=n
+MONGODB=n
+HELM_DEPLOYMENT=y
 EOF
-$ deploy-quarkuscoffeeshop-ansible.sh
+$ ./deploy-quarkuscoffeeshop-ansible.sh -d ocp4.example.com -o sha-123456789 -p 123456789 -s ATLANTA
 ```
 
-**Optional: Change namespace**  
+**Optional: Change namespace for helm deployments**  
 `default is quarkuscoffeeshop-demo`
 ```
+$ cat >env.variables<<EOF
+ACM_WORKLOADS=n
+AMQ_STREAMS=y
+CONFIGURE_POSTGRES=y
+MONGODB_OPERATOR=n
+MONGODB=n
+HELM_DEPLOYMENT=y
+EOF
 $ NAMESPACE=changeme
 $  sed -i "s/quarkuscoffeeshop-demo/${NAMESPACE}/g" deploy-quarkuscoffeeshop-ansible.sh
-```
-
-**Run deploy-quarkuscoffeeshop-ansible.sh script**
-```
-$ ./deploy-quarkuscoffeeshop-ansible.sh 
- Options:
-  -d      Add domain 
-  -o      OpenShift Token
-  -p      Postgres Password
-  -s      Store ID
-  -h      Display this help and exit
-  -r      Destroy coffeeshop 
-  To deploy qaurkuscoffeeshop-ansible playbooks
-  ./deploy-quarkuscoffeeshop-ansible.sh  -d ocp4.example.com -o sha-123456789 -p 123456789 -s ATLANTA
-  To Delete qaurkuscoffeeshop-ansible playbooks from OpenShift
-  ./deploy-quarkuscoffeeshop-ansible.sh  -d ocp4.example.com -o sha-123456789 -p 123456789 -s ATLANTA -r true
 ```
 
 

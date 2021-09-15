@@ -126,8 +126,9 @@ $ chmod +x deploy-quarkuscoffeeshop-ansible.sh
 * OpenShift GitOps
 * Quay.io
 * AMQ Streams
-* Postgres Template
-
+* Postgres Template deployment
+* homeoffice Tekton pipelines
+* quarkus-coffeeshop Tekton pipelines
 ```
 $ cat >env.variables<<EOF
 ACM_WORKLOADS=y
@@ -141,6 +142,9 @@ $ ./deploy-quarkuscoffeeshop-ansible.sh -d ocp4.example.com -t sha-123456789 -p 
 ```
 
 **Set Environment variables for standard deployment**
+* AMQ Streams
+* Postgres Operator configuration 
+* quarkus coffeeshop helm deployment
 ```
 $ cat >env.variables<<EOF
 ACM_WORKLOADS=n

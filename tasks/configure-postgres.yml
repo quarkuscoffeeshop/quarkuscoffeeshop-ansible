@@ -27,7 +27,7 @@
 
 - name: Waiting for postgres-utilites to deploy
   shell: |
-    set -o pipefail && {{ oc_location }} get pod  | grep -E 'postgres-utilites-[0-9a-z][0-9a-z].*-[0-9a-z]{5}' | grep Running  | wc -l
+    set -o pipefail && {{ oc_location }} get pod  -n {{ project_namespace }} | grep -E 'postgres-utilites-[0-9a-z][0-9a-z].*-[0-9a-z]{5}' | grep Running  | wc -l
   register: postgres_build_complete
   when: not delete_deployment|bool
   until: "'1' in postgres_build_complete.stdout"

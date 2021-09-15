@@ -120,7 +120,7 @@ $ curl -OL https://raw.githubusercontent.com/quarkuscoffeeshop/quarkuscoffeeshop
 $ chmod +x deploy-quarkuscoffeeshop-ansible.sh
 ```
 
-**Set Environment variables for ACM Deployment**
+**Set Environment variables for ACM WORKLOADS**
 * Gogs server
 * OpenShift Pipelines
 * OpenShift GitOps

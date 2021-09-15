@@ -1,13 +1,8 @@
 ---
-- name: make the temp dir
-  file:
-    path: "{{ config_location }}/files"
-    state: directory
-
 - name: copy the files used
   copy:
     src: "files"
-    dest: "{{ config_location }}/files"
+    dest: "{{ config_location }}"
 
 - name: deploy the openshift storage operator
   command: "{{ oc_location }} create -f openshift-storage-operator.yaml"

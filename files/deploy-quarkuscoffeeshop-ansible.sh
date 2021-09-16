@@ -20,9 +20,9 @@ function usage() {
   -h      Display this help and exit
   -u      Uninstall coffeeshop 
   To deploy qaurkuscoffeeshop-ansible playbooks
-  ${0}  -d ocp4.example.com -o sha-123456789 -p 123456789 -s ATLANTA
+  ${0}  -d ocp4.example.com -t sha-123456789 -p 123456789 -s ATLANTA
   To Delete qaurkuscoffeeshop-ansible playbooks from OpenShift
-  ${0}  -d ocp4.example.com -o sha-123456789 -p 123456789 -s ATLANTA -u true
+  ${0}  -d ocp4.example.com -t sha-123456789 -p 123456789 -s ATLANTA -u true
 "
 }
 
@@ -199,7 +199,6 @@ else
   x=$(for i in $(cat /tmp/tags.temp); do echo -n "${i}",; done| sed 's/,$//') ; echo  $x > /tmp/tags
   rm -rf /tmp/tags.temp
 fi
-
 
 cat >/tmp/deploy-quarkus-cafe.yml<<YAML
 - hosts: localhost

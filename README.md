@@ -133,7 +133,7 @@ $ chmod +x deploy-quarkuscoffeeshop-ansible.sh
 $ cat >env.variables<<EOF
 ACM_WORKLOADS=y
 AMQ_STREAMS=y
-CONFIGURE_POSTGRES=y
+CONFIGURE_POSTGRES=n
 MONGODB_OPERATOR=n
 MONGODB=n
 HELM_DEPLOYMENT=n

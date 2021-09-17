@@ -19,7 +19,7 @@
 #  when: not delete_deployment|bool
 
 - name: Deploy Postgres utils
-  command: "{{ oc_location }}  create -f {{ config_location }}/postgres-utils.yaml"
+  command: "{{ oc_location }}  create -f {{ config_location }}/postgres-utils.yaml -n {{ project_namespace }}"
   ignore_errors: yes
   when: not delete_deployment|bool
   tags: 

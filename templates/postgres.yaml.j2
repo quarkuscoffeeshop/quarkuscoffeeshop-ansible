@@ -1,3 +1,27 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: postgresql
+  namespace: {{ homeoffice_project }}
+  labels:
+    template: postgresql-ephemeral-template
+    template.openshift.io/template-instance-owner: e55136ad-fd22-4604-9573-24480d1e8fcd
+  annotations:
+    template.openshift.io/expose-uri: 'postgres://{.spec.clusterIP}:{.spec.ports[?(.name=="postgresql")].port}'
+spec:
+  ports:
+    - name: postgresql
+      protocol: TCP
+      port: 5432
+      targetPort: 5432
+  selector:
+    name: postgresql
+  type: ClusterIP
+  sessionAffinity: None
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+---
 kind: DeploymentConfig
 apiVersion: apps.openshift.io/v1
 metadata:

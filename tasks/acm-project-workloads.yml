@@ -27,25 +27,42 @@
   shell: "{{ oc_location }} adm policy add-scc-to-user privileged -z pipeline -n {{ development_project }}"
   tags: acm-workload
 
-- name: create project "{{ development_project }}" 
+- name: set permissions project {{ homeoffice_project }}
   command: "{{ oc_location }} adm policy add-role-to-user admin system:serviceaccount:{{ homeoffice_project }}:pipeline -n {{ item }}"
-  when: user_project is failed
   tags: acm-workload
   ignore_errors: true 
   with_items:
     - "{{ development_project }}"
 
-- name: create project "{{ development_project }}" 
+- name: set permissions project "{{ homeoffice_project }}" 
   command: "{{ oc_location }} policy add-role-to-group system:image-puller system:serviceaccounts:{{ homeoffice_project }} -n {{ item }}"
-  when: user_project is failed
   tags: acm-workload
   ignore_errors: true 
   with_items:
     - "{{ development_project }}"
 
-- name: create project "{{ development_project }}" 
+- name: set permissions project "{{ homeoffice_project }}" 
   command: "{{ oc_location }} adm policy add-role-to-user admin system:serviceaccount:{{ item }}:pipeline -n {{ homeoffice_project }}"
-  when: user_project is failed
+  tags: acm-workload
+  ignore_errors: true 
+  with_items:
+    - "{{ development_project }}"
+
+- name: set permissions project {{ project_namespace }}
+  command: "{{ oc_location }} adm policy add-role-to-user admin system:serviceaccount:{{ project_namespace }}:pipeline -n {{ item }}"
+  tags: acm-workload
+  ignore_errors: true 
+  with_items:
+    - "{{ development_project }}"
+
+- name: set permissions project "{{ project_namespace }}" 
+  command: "{{ oc_location }} policy add-role-to-group system:image-puller system:serviceaccounts:{{ project_namespace }} -n {{ item }}"
+  ignore_errors: true 
+  with_items:
+    - "{{ development_project }}"
+
+- name: set permissions project "{{ project_namespace }}" 
+  command: "{{ oc_location }} adm policy add-role-to-user admin system:serviceaccount:{{ item }}:pipeline -n {{ project_namespace }}"
   tags: acm-workload
   ignore_errors: true 
   with_items:

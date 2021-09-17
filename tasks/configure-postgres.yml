@@ -1,3 +1,22 @@
+- name:  Check if postgres-operator is running 
+  shell: "{{ oc_location }} get pods  -n {{ project_namespace }} | grep Running | grep -E -o 'postgres-operator-[0-9a-z][0-9a-z].*-[0-9a-z]{5}'"
+  register: get_operator
+  when: not delete_deployment|bool
+  args:
+    executable: /bin/bash
+  tags: 
+  - postgres
+
+- name: Saving postgres-operator Pod name
+  set_fact:
+    postgres_utils_pod: "{{ get_operator.stdout }}"
+  when: not delete_deployment|bool
+  tags: 
+  - postgres
+
+- fail: msg="Bailing out. this play requires 'postgres-operator to be running'"
+  when: get_operator is not defined
+
 - name: Copying over Postgres utils file
   template:
     src: templates/postgres-utils.yaml.j2

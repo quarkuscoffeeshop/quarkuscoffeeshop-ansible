@@ -95,6 +95,8 @@
     owner: "{{ default_owner }}"
     group: "{{ default_group }}"
     mode: 0666
+  vars:
+    target_project: "{{ homeoffice_project }}"
   when: not delete_deployment|bool
   tags: 
   - acm-workload

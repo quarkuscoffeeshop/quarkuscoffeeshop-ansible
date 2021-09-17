@@ -5,6 +5,8 @@
     owner: "{{ default_owner }}"
     group: "{{ default_group }}"
     mode: 0666
+  vars:
+    target_project: "{{ project_namespace }}"
   when: not delete_deployment|bool
   tags: 
   - postgres

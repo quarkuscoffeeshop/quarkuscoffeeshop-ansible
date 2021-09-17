@@ -3,6 +3,8 @@ kind: ImageStream
 apiVersion: image.openshift.io/v1
 metadata:
   name: fedora
+  namespace: {{ target_project }}
+  selfLink: /apis/image.openshift.io/v1/namespaces/{{ target_project }}/imagestreams/fedora
 spec:
   lookupPolicy:
     local: false
@@ -23,6 +25,7 @@ metadata:
   labels:
     app: postgres-utilites
   name: postgres-utilites
+  namespace: {{ target_project }}
 spec:
   failedBuildsHistoryLimit: 5
   nodeSelector: null
@@ -65,6 +68,7 @@ metadata:
   labels:
     app: postgres-utilites
   name: postgres-utilites
+  namespace: {{ target_project }}
 spec:
   lookupPolicy:
     local: false
@@ -74,13 +78,14 @@ kind: Deployment
 metadata:
   annotations:
     deployment.kubernetes.io/revision: "6"
-    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"postgres-utilites:latest","namespace":"{{ project_namespace }}"},"fieldPath":"spec.template.spec.containers[?(@.name==\"postgres-utilites\")].image"}]'
+    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"postgres-utilites:latest","namespace":"{{ target_project }}"},"fieldPath":"spec.template.spec.containers[?(@.name==\"postgres-utilites\")].image"}]'
     openshift.io/generated-by: OpenShiftNewApp
   labels:
     app: postgres-utilites
     app.kubernetes.io/component: postgres-utilites
     app.kubernetes.io/instance: postgres-utilites
   name: postgres-utilites
+  namespace: {{ target_project }}
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -104,7 +109,7 @@ spec:
       - env:
         - name: PGPASSWORD
           value: '{{ postgres_password }}'
-        image: image-registry.openshift-image-registry.svc:5000/{{ project_namespace }}/postgres-utilites:latest
+        image: image-registry.openshift-image-registry.svc:5000/{{ target_project }}/postgres-utilites:latest
         imagePullPolicy: IfNotPresent
         name: postgres-utilites
         resources: {}

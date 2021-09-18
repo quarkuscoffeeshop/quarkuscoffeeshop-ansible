@@ -9,10 +9,10 @@
   - postgres
 
 - fail: msg="Bailing out. this play requires 'postgres-operator to be running'"
-  when:  "'No resources found' in get_operator.stderr"
+  when:  "get_operator.rc == 1"
   tags: 
   - postgres
-  
+
 - name: Saving postgres-operator Pod name
   set_fact:
     postgres_utils_pod: "{{ get_operator.stdout }}"

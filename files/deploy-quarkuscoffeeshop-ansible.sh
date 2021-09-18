@@ -168,6 +168,16 @@ fi
 export GROUP=$(id -gn)
 export USERNAME=$(whoami)
 
+function modulecheck(){
+  read -p "Do you wish to install ${1} on your cluster? " yn
+  case $yn in
+    [Yy]* ) run_tags ${1};;
+    [Nn]* ) echo "Skipping ${1}";;
+    * ) echo "Please answer yes or no."
+        modulecheck ${1};;
+  esac
+}
+
 echo -e "\n$DOMAIN  $OCP_TOKEN   $POSTGRES_PASSWORD $STORE_ID\n"
 
 if [ -f $HOME/env.variables ];
@@ -189,15 +199,12 @@ else
   tags=( "ACM_WORKLOADS" "AMQ_STREAMS" "CONFIGURE_POSTGRES" "MONGODB_OPERATOR" "MONGODB" "HELM_DEPLOYMENT")
   for i in "${tags[@]}"
   do
-    read -p "Do you wish to install ${i} on your cluster? " yn
-    case $yn in
-        [Yy]* ) run_tags ${i};;
-        [Nn]* ) continue;;
-        * ) echo "Please answer yes or no.";;
-    esac
+    modulecheck ${i}
+
   done
   x=$(for i in $(cat /tmp/tags.temp); do echo -n "${i}",; done| sed 's/,$//') ; echo  $x > /tmp/tags
   rm -rf /tmp/tags.temp
+
 fi
 
 cat >/tmp/deploy-quarkus-cafe.yml<<YAML

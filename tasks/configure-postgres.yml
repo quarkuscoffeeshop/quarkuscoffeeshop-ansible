@@ -1,7 +1,6 @@
 - name:  Check if postgres-operator is running 
   shell: "{{ oc_location }} get pods  -n {{ project_namespace }} | grep Running | grep -E -o 'postgres-operator-[0-9a-z][0-9a-z].*-[0-9a-z]{5}'"
   register: get_operator
-  when: not delete_deployment|bool
   ignore_errors: yes
   args:
     executable: /bin/bash

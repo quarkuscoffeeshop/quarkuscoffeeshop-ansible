@@ -9,7 +9,7 @@
   - postgres
 
 - fail: msg="Bailing out. this play requires 'postgres-operator to be running'"
-  when:  get_operator.rc == 0
+  when:  get_operator.rc == 1
 
 - name: Saving postgres-operator Pod name
   set_fact:

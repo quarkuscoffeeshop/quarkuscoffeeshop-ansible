@@ -9,7 +9,7 @@
   - postgres
 
 - fail: msg="Bailing out. this play requires 'postgres-operator to be running'"
-  when:  "get_operator.rc == 1"
+  when:  "get_operator.rc == 1 and not delete_deployment|bool"
   tags: 
   - postgres
 

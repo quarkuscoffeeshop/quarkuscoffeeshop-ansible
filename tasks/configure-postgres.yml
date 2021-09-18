@@ -8,8 +8,12 @@
   tags: 
   - postgres
 
+- name: Setting host facts using complex arguments
+  set_fact:
+    get_operator_fact: get_operator.stderr
+
 - fail: msg="Bailing out. this play requires 'postgres-operator to be running'"
-  when:  "'No resources found' in get_operator.stderr"
+  when:  "'No resources found' in get_operator_fact"
 
 - name: Saving postgres-operator Pod name
   set_fact:

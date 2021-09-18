@@ -2,10 +2,14 @@
   shell: "{{ oc_location }} get pods  -n {{ project_namespace }} | grep Running | grep -E -o 'postgres-operator-[0-9a-z][0-9a-z].*-[0-9a-z]{5}'"
   register: get_operator
   when: not delete_deployment|bool
+  ignore_errors: yes
   args:
     executable: /bin/bash
   tags: 
   - postgres
+
+- fail: msg="Bailing out. this play requires 'postgres-operator to be running'"
+  when:  get_operator.rc == 0
 
 - name: Saving postgres-operator Pod name
   set_fact:
@@ -13,9 +17,6 @@
   when: not delete_deployment|bool
   tags: 
   - postgres
-
-- fail: msg="Bailing out. this play requires 'postgres-operator to be running'"
-  when: get_operator is not defined
 
 - name: Copying over Postgres utils file
   template:

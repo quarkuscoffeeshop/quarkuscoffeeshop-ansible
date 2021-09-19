@@ -89,6 +89,10 @@ acm_reponame: quarkuscoffeeshop-gitops
 repo_url: https://github.com/quarkuscoffeeshop/tekton-pipelines.git
 acm_repo_url: https://github.com/quarkuscoffeeshop/quarkuscoffeeshop-gitops.git
 
+# OpenShift Storage
+ocs_update_channel: stable-4.8
+ocs_starting_csv: ocs-operator.v4.8.1
+
 # Quay settings 
 quay_project_name: "quay-enterprise"
 quay_csv:  "red-hat-quay.v3.5.6"

@@ -97,18 +97,21 @@ function checkpipmodules(){
     echo 'openshift pip module is installed '
   else
       echo 'openshift pip module is not installed '
+      exit $?
   fi
 
   if python3 -c "import kubernetes" &> /dev/null; then
     echo 'kubernetes pip module is installed '
   else
       echo 'kubernetes pip module is not installed '
+      exit $?
   fi
 
   if python3 -c "import jmespath" &> /dev/null; then
     echo 'jmespath pip module is installed '
   else
       echo 'jmespath pip module is not installed '
+      exit $?
   fi
 
 }

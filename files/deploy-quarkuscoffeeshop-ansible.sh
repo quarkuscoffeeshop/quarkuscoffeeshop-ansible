@@ -211,6 +211,13 @@ else
 fi
 
 OC_VERSION=$(oc version  | grep Server | grep -o  "[4].[7-9]")
+if [ $OC_VERSION == '4.8' ];
+then 
+  QUAY_URL="quayecosystem-quay-{{ quay_project_name }}.router-default"
+else
+  QUAY_URL="quayecosystem-quay-{{ quay_project_name }}"
+fi 
+
 cat >/tmp/deploy-quarkus-cafe.yml<<YAML
 - hosts: localhost
   become: yes
@@ -226,6 +233,7 @@ cat >/tmp/deploy-quarkus-cafe.yml<<YAML
     postgres_password: '${POSTGRES_PASSWORD}'
     storeid: ${STORE_ID}
     oc_version: ${OC_VERSION}
+    quay_urlprefix: ${QUAY_URL}
   roles:
     - quarkuscoffeeshop-ansible
 YAML

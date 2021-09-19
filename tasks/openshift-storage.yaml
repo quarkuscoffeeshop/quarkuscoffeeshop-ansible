@@ -3,11 +3,26 @@
   copy:
     src: "files"
     dest: "{{ config_location }}"
+  tags: quay
+
+- name: Get OpenShift storage operator version
+  shell: |
+    {{ oc_location }}  describe packagemanifests  ocs-operator -n openshift-marketplace | grep Version: |  grep {{ oc_version }}  | awk '{print $2}'
+  environment:
+    KUBECONFIG: "{{ openshift_install_dir }}/auth/kubeconfig"
+  register: operator_version_check
+  become: no
+  tags: quay
+
+- name: setting openshift-storage-operator version
+  set_fact:
+    ocs_starting_csv: "{{ operator_version_check.stdout }}"
+  tags: quay
 
 - name: deploy the openshift storage operator
-  command: "{{ oc_location }} create -f openshift-storage-operator.yaml"
-  args:
-    chdir: "{{ config_location}}/files"
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('template', 'openshift-storage-operator.yaml.j2') }}"
   tags: quay
 
 - name: Pause for 120 seconds for pods to download 

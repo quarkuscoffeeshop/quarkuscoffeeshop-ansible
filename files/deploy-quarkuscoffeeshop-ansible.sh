@@ -207,6 +207,7 @@ else
 
 fi
 
+OC_VERSION=$(oc version  | grep Server | grep -o  "[4].[7-9]")
 cat >/tmp/deploy-quarkus-cafe.yml<<YAML
 - hosts: localhost
   become: yes
@@ -221,6 +222,7 @@ cat >/tmp/deploy-quarkus-cafe.yml<<YAML
     domain: ${DOMAIN}
     postgres_password: '${POSTGRES_PASSWORD}'
     storeid: ${STORE_ID}
+    oc_version: ${OC_VERSION}
   roles:
     - quarkuscoffeeshop-ansible
 YAML

@@ -22,7 +22,7 @@ metadata:
   name: ocs-subscription
   namespace: openshift-storage
 spec:
-  channel: "{{ ocs_update_channel }}"
+  channel: "stable-{{ oc_version }}"
   config:
     resources: {}
   name: ocs-operator

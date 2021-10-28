@@ -107,6 +107,8 @@ spec:
     spec:
       containers:
       - env:
+        - name: PGHOSTNAME
+          value: '{{ postgres_hostname }}'
         - name: PGPASSWORD
           value: '{{ postgres_password }}'
         image: image-registry.openshift-image-registry.svc:5000/{{ target_project }}/postgres-utilites:latest

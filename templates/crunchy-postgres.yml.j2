@@ -1,0 +1,35 @@
+apiVersion: postgres-operator.crunchydata.com/v1beta1
+kind: PostgresCluster
+metadata:
+  name: coffeeshopdb
+  namespace: {{ project_namespace }}
+spec:
+  backups:
+    pgbackrest:
+      image: >-
+        registry.developers.crunchydata.com/crunchydata/crunchy-pgbackrest:centos8-2.35-0
+      repos:
+        - name: repo1
+          volume:
+            volumeClaimSpec:
+              accessModes:
+                - ReadWriteOnce
+              resources:
+                requests:
+                  storage: 1Gi
+  instances:
+    - dataVolumeClaimSpec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
+      name: ''
+      replicas: 1
+  port: 5432
+  postgresVersion: 13
+  users:
+    - databases:
+        - coffeeshopdb
+      name: coffeshopadmin
+

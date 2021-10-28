@@ -1,5 +1,5 @@
 - name:  Check if postgres-operator is running 
-  shell: "{{ oc_location }} get pods  -n {{ project_namespace }} | grep Running | grep -E -o 'postgres-operator-[0-9a-z][0-9a-z].*-[0-9a-z]{5}'"
+  shell: "{{ oc_location }} get pods  -n {{ project_namespace }} | grep Running | grep -E -o 'pgo-[0-9a-z][0-9a-z].*-[0-9a-z]{5}'"
   register: get_operator
   ignore_errors: yes
   args:

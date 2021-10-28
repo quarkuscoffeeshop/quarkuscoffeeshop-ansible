@@ -1,0 +1,123 @@
+- name: Create Crunchy Postgres for Kubernetes subscription
+  kubernetes.core.k8s:
+    state: present
+    namespace: "{{ project_namespace }}"
+    definition: "{{ lookup('template', 'crunchy-postgres-sub.yaml.j2') }}"
+  when: not delete_deployment|bool
+  tags: postgres
+
+# wait for Postgres to be ready
+- name: Wait for Postgres CRD to be ready
+  kubernetes.core.k8s_info:
+    api_version: operators.coreos.com/v1alpha1
+    kind: ClusterServiceVersion
+    namespace: "{{ project_namespace }}"
+    field_selectors:
+      - metadata.name={{ crunchystartingCSV }}
+  register: r_pgo_crd
+  retries: 20
+  delay: 60
+  until: r_pgo_crd.resources | list | length == 1
+  when: not delete_deployment|bool
+  tags: postgres
+
+- name: Create Crunchy Postgres database instance 
+  kubernetes.core.k8s:
+    state: present
+    namespace: "{{ project_namespace }}"
+    definition: "{{ lookup('template', 'crunchy-postgres.yml.j2') }}"
+  when: not delete_deployment|bool
+  tags: postgres
+
+
+- name: Get a list of all pods from any namespace
+  kubernetes.core.k8s_info:
+    api_version: postgres-operator.crunchydata.com/v1beta1
+    kind: PostgresCluster
+    namespace: "{{ project_namespace }}"
+  register: pod_list
+  when: not delete_deployment|bool
+  tags: postgres
+
+- name: Print return information from the previous task
+  ansible.builtin.debug:
+    var: pod_list.resources[0].status.conditions[1].status
+    verbosity: 2
+  when: not delete_deployment|bool
+  tags: postgres
+
+# wait for Postgres to be ready
+- name: Wait for coffeeshopdb to be ready
+  kubernetes.core.k8s_info:
+    api_version: postgres-operator.crunchydata.com/v1beta1
+    kind: PostgresCluster
+    namespace: "{{ project_namespace }}"
+  register: r_pgo_status
+  retries: 20
+  delay: 60
+  until: r_pgo_status.resources[0].status.conditions[1].status == 'True'
+  ignore_errors: true
+  when: not delete_deployment|bool
+  tags: postgres
+
+- name: retrieve pullsecret
+# Newer version of Ansible call this module k8s_info
+  k8s_facts:
+    api: v1
+    kind: Secret
+    name: coffeeshopdb-pguser-coffeshopadmin
+    namespace: "{{ project_namespace }}"
+  register: databasepassword
+  tags: postgres
+
+- name: Get the original cred secrets
+  set_fact:
+    original_secret: "{{ item.data.password }}"
+  with_items: "{{ databasepassword.resources }}"
+  no_log: true
+  tags: postgres
+
+- name: Print return information from the previous task
+  ansible.builtin.debug:
+    var: original_secret
+    verbosity: 2
+  tags: postgres
+
+- name: Get the dockerconfigjson info
+  set_fact:
+    postgres_password: '{{ original_secret| b64decode }}'
+  tags: postgres
+
+- name: Delete Crunchy Postgres database instance 
+  kubernetes.core.k8s:
+    state: absent
+    namespace: "{{ project_namespace }}"
+    definition: "{{ lookup('template', 'crunchy-postgres.yml.j2') }}"
+  when: delete_deployment|bool
+  tags: postgres
+
+- name: Remove an coffeeshopdb-repo-host
+  kubernetes.core.k8s:
+    state: absent
+    api_version: apps/v1
+    kind: StatefulSet
+    namespace: "{{ project_namespace }}"
+    name: coffeeshopdb-repo-host
+  when:  delete_deployment|bool
+  tags: postgres
+
+- name: delete Crunchy Postgres  crd
+  command: oc delete csv {{ crunchystartingCSV }} -n "{{ project_namespace }}"
+  ignore_errors: true
+  when:  delete_deployment|bool
+  tags: postgres
+
+- name: Remove Crunchy Postgres for Kubernetes subscription
+  kubernetes.core.k8s:
+    state: absent
+    namespace: "{{ project_namespace }}"
+    definition: "{{ lookup('template', 'crunchy-postgres-sub.yaml.j2') }}"
+  when:  delete_deployment|bool
+  tags: postgres
+  
+

@@ -4,14 +4,16 @@
     namespace: "{{ project_namespace }}"
     definition: "{{ lookup('template', 'crunchy-postgres-sub.yaml.j2') }}"
   when: not delete_deployment|bool
-  tags: postgres
+  tags: 
+    - postgres
+    - acm-workload
 
 # wait for Postgres to be ready
 - name: Wait for Postgres CRD to be ready
   kubernetes.core.k8s_info:
     api_version: operators.coreos.com/v1alpha1
     kind: ClusterServiceVersion
-    namespace: "{{ project_namespace }}"
+    namespace: "openshift-operators"
     field_selectors:
       - metadata.name={{ crunchystartingCSV }}
   register: r_pgo_crd
@@ -19,7 +21,9 @@
   delay: 60
   until: r_pgo_crd.resources | list | length == 1
   when: not delete_deployment|bool
-  tags: postgres
+  tags: 
+    - postgres
+    - acm-workload
 
 - name: Create Crunchy Postgres database instance 
   kubernetes.core.k8s:
@@ -27,7 +31,9 @@
     namespace: "{{ project_namespace }}"
     definition: "{{ lookup('template', 'crunchy-postgres.yml.j2') }}"
   when: not delete_deployment|bool
-  tags: postgres
+  tags:
+    - postgres
+    - acm-workload
 
 
 - name: Get a list of all pods from any namespace
@@ -37,14 +43,18 @@
     namespace: "{{ project_namespace }}"
   register: pod_list
   when: not delete_deployment|bool
-  tags: postgres
+  tags:
+    - postgres
+    - acm-workload
 
 - name: Print return information from the previous task
   ansible.builtin.debug:
     var: pod_list.resources[0].status.conditions[1].status
     verbosity: 2
   when: not delete_deployment|bool
-  tags: postgres
+  tags:
+    - postgres
+    - acm-workload
 
 # wait for Postgres to be ready
 - name: Wait for coffeeshopdb to be ready
@@ -58,7 +68,9 @@
   until: r_pgo_status.resources[0].status.conditions[1].status == 'True'
   ignore_errors: true
   when: not delete_deployment|bool
-  tags: postgres
+  tags:
+    - postgres
+    - acm-workload
 
 - name: retrieve pullsecret
 # Newer version of Ansible call this module k8s_info
@@ -68,25 +80,28 @@
     name: coffeeshopdb-pguser-coffeshopadmin
     namespace: "{{ project_namespace }}"
   register: databasepassword
-  tags: postgres
+  when: not delete_deployment|bool
+  tags:
+    - postgres
+    - acm-workload
 
 - name: Get the original cred secrets
   set_fact:
     original_secret: "{{ item.data.password }}"
   with_items: "{{ databasepassword.resources }}"
+  when: not delete_deployment|bool
   no_log: true
-  tags: postgres
+  tags:
+    - postgres
+    - acm-workload
 
-- name: Print return information from the previous task
-  ansible.builtin.debug:
-    var: original_secret
-    verbosity: 2
-  tags: postgres
-
-- name: Get the dockerconfigjson info
+- name: Get postgress password
   set_fact:
     postgres_password: '{{ original_secret| b64decode }}'
-  tags: postgres
+  when: not delete_deployment|bool
+  tags: 
+    - postgres
+    - acm-workload
 
 - name: Delete Crunchy Postgres database instance 
   kubernetes.core.k8s:
@@ -94,7 +109,9 @@
     namespace: "{{ project_namespace }}"
     definition: "{{ lookup('template', 'crunchy-postgres.yml.j2') }}"
   when: delete_deployment|bool
-  tags: postgres
+  tags: 
+    - postgres
+    - acm-workload
 
 - name: Remove an coffeeshopdb-repo-host
   kubernetes.core.k8s:
@@ -104,20 +121,26 @@
     namespace: "{{ project_namespace }}"
     name: coffeeshopdb-repo-host
   when:  delete_deployment|bool
-  tags: postgres
+  tags: 
+    - postgres
+    - acm-workload
 
 - name: delete Crunchy Postgres  crd
   command: oc delete csv {{ crunchystartingCSV }} -n "{{ project_namespace }}"
   ignore_errors: true
   when:  delete_deployment|bool
-  tags: postgres
+  tags:
+    - postgres
+    - acm-workload
 
 - name: Remove Crunchy Postgres for Kubernetes subscription
   kubernetes.core.k8s:
     state: absent
-    namespace: "{{ project_namespace }}"
+    namespace: "openshift-operators"
     definition: "{{ lookup('template', 'crunchy-postgres-sub.yaml.j2') }}"
   when:  delete_deployment|bool
-  tags: postgres
+  tags:
+    - postgres
+    - acm-workload
   
 

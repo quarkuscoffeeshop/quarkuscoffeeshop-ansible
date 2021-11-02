@@ -1,23 +1,26 @@
 - name:  Check if postgres-operator is running 
-  shell: "{{ oc_location }} get pods  -n {{ project_namespace }} | grep Running | grep -E -o 'pgo-[0-9a-z][0-9a-z].*-[0-9a-z]{5}'"
+  shell: "{{ oc_location }} get pods  -n openshift-operators | grep Running | grep -E -o 'pgo-[0-9a-z][0-9a-z].*-[0-9a-z]{5}'"
   register: get_operator
   ignore_errors: yes
   args:
     executable: /bin/bash
   tags: 
-  - postgres
+    - postgres
+    - acm-workload
 
 - fail: msg="Bailing out. this play requires 'postgres-operator to be running'"
   when:  "get_operator.rc == 1 and not delete_deployment|bool"
   tags: 
-  - postgres
+    - postgres
+    - acm-workload
 
 - name: Saving postgres-operator Pod name
   set_fact:
     postgres_utils_pod: "{{ get_operator.stdout }}"
   when: not delete_deployment|bool
   tags: 
-  - postgres
+    - postgres
+    - acm-workload
 
 - name: Copying over Postgres utils file
   template:
@@ -30,7 +33,8 @@
     target_project: "{{ project_namespace }}"
   when: not delete_deployment|bool
   tags: 
-  - postgres
+    - postgres
+    - acm-workload
 
 #- name: Copying over pgadmin file
 #  template:
@@ -46,7 +50,8 @@
   ignore_errors: yes
   when: not delete_deployment|bool
   tags: 
-  - postgres
+    - postgres
+    - acm-workload
 
 - name: Waiting for postgres-utilites to deploy
   shell: |
@@ -59,7 +64,8 @@
   args:
     executable: /bin/bash
   tags: 
-  - postgres
+    - postgres
+    - acm-workload
 
 - name:  Get postgres-utilites Pod name
   shell: "{{ oc_location }} get pods  -n {{ project_namespace }} | grep Running | grep -E -o 'postgres-utilites-[0-9a-z][0-9a-z].*-[0-9a-z]{5}'"
@@ -68,20 +74,23 @@
   args:
     executable: /bin/bash
   tags: 
-  - postgres
+    - postgres
+    - acm-workload
 
 - name: Saving  postgres-utilites Pod name
   set_fact:
     postgres_utils_pod: "{{ get_podname.stdout }}"
   when: not delete_deployment|bool
   tags: 
-  - postgres
+    - postgres
+    - acm-workload
 
 - name:  Create and load postgres database
   command: "{{ oc_location }}  exec -it {{ postgres_utils_pod }} -n {{ project_namespace }}  -- /bin/init_postgres_db.sh"
   when: not delete_deployment|bool
   tags: 
-  - postgres
+    - postgres
+    - acm-workload
 
 #- name: Deploy pgadmin
 #  command: "{{ oc_location }}  create -f {{ config_location }}/pgadmin.yaml"
@@ -104,7 +113,8 @@
   ignore_errors: yes
   when: delete_deployment|bool
   tags: 
-  - postgres
+    - postgres
+    - acm-workload
   
 #- name: Delete pgadmin
 #  command: "{{ oc_location }}  delete -f {{ config_location }}/pgadmin.yaml"

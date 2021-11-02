@@ -10,7 +10,7 @@ The source code for the  [quarkuscoffeeshop](https://github.com/quarkuscoffeesho
 Requirements
 ------------
 
-* OpenShift 4.5 an up Cluster installed
+* OpenShift 4.8 an up Cluster installed
 * Ansible should be installed on machine
 * oc cli must be installed
 * Ansible community.kubernetes module must be installed `ansible-galaxy collection install community.kubernetes`
@@ -25,7 +25,7 @@ ScreenShots
 ![quarkuscoffeeshop AMQ kafka topics](images/amq-topics.png "quarkuscoffeeshop  kafka topics")
 
 http://quarkuscoffeeshop-web-quarkus-cafe-demo.apps.example.com example
-![qquarkuscoffeeshop application](images/webpage-example.png "quarkuscoffeeshop appliation")
+![qquarkuscoffeeshop application](images/webpage-example.png "quarkuscoffeeshop application")
 
 
 Usage
@@ -107,9 +107,6 @@ Dependencies
 * Ansible
 * OpenShift cli
 * helm 
-* [Postges Operator](https://github.com/tosin2013/postgres-operator) for Quarkus CoffeeShop 5.0.3-SNAPSHOT 
-
-
 
 Quarkus CoffeeShop 5.0.3-SNAPSHOT OpenShift Deployment   
 -----------------------------------------------------------

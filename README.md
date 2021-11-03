@@ -113,8 +113,8 @@ Quarkus CoffeeShop 5.0.3-SNAPSHOT OpenShift Deployment
 
 ## Download Script
 ```
-$ curl -OL https://raw.githubusercontent.com/quarkuscoffeeshop/quarkuscoffeeshop-ansible/dev/files/deploy-quarkuscoffeeshop-ansible.sh
-$ chmod +x deploy-quarkuscoffeeshop-ansible.sh
+curl -OL https://raw.githubusercontent.com/quarkuscoffeeshop/quarkuscoffeeshop-ansible/dev/files/deploy-quarkuscoffeeshop-ansible.sh
+chmod +x deploy-quarkuscoffeeshop-ansible.sh
 ```
 
 **Set Environment variables for ACM WORKLOADS**

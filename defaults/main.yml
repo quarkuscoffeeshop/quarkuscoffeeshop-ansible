@@ -98,7 +98,7 @@ oc_version: 4.8
 quay_project_name: "quay-enterprise"
 quay_csv:  "red-hat-quay.v3.5.6"
 quay_channel: "quay-v3.5"
-quay_urlprefix:  "quayecosystem-quay-{{ quay_project_name }}.router-default"
+quay_urlprefix:  "quayecosystem-quay-{{ quay_project_name }}"
 quay_pull_user: changeme
 quay_pull_password: changeme
 quay_admin_user: admin

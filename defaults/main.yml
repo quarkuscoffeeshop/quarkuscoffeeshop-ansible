@@ -106,10 +106,12 @@ quay_admin_password: admin123
 
 # OpenShift Pipelines 
 # Official Mirror
+openshiftpipelinesCSV: redhat-openshift-pipelines.v1.5.2
 ocp4_installer_root_pipeline_url: "https://mirror.openshift.com/pub/openshift-v4/clients/"
 pipelines_tkn_version:  0.19.1
 
 # OpenShift GitOps
+gitopsoperatorCSV: openshift-gitops-operator.v1.3.1
 pipelines_expected_crds:
 - pipelineresources.tekton.dev
 - pipelineruns.tekton.dev

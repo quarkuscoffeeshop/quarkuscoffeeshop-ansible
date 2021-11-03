@@ -34,8 +34,23 @@
   ignore_errors: true
   tags: always
 
-- name: delete  remaining csvs
-  command:  oc delete csv $(oc get csv | awk '{print $1}') -n openshift-operators
+- name: delete Red Hat Integration - AMQ Streams
+  command:  oc delete csv "{{ amqstartingCSV }}" -n openshift-operators
+  ignore_errors: true
+  tags: always
+
+- name: delete Crunchy Postgres for Kubernetes
+  command:  oc delete csv "{{ crunchystartingCSV }}" -n openshift-operators
+  ignore_errors: true
+  tags: always
+
+- name: delete Red Hat OpenShift GitOps 
+  command:  oc delete csv "{{ gitopsoperatorCSV }}" -n openshift-operators
+  ignore_errors: true
+  tags: always
+
+- name: delete Red Hat OpenShift Pipelines 
+  command:  oc delete csv "{{ openshiftpipelinesCSV }}" -n openshift-operators
   ignore_errors: true
   tags: always
 

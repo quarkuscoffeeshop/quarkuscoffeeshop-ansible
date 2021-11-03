@@ -144,7 +144,7 @@
 
 - name: Waiting for  kafka instances to be deleted
   shell: |
-    set -o pipefail && {{ oc_location }}  get pods | grep Running | grep {{ kafka_cluster_name }} | wc -l
+    set -o pipefail && {{ oc_location }} get pods  -n {{ project_namespace }} | grep Running | grep {{ kafka_cluster_name }} | wc -l
   register: install_status
   when: delete_deployment|bool
   until: "'No resources found' in install_status.stderr or '0' in install_status.stdout"

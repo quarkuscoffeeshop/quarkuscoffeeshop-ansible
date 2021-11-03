@@ -74,7 +74,7 @@
 
 - name: retrieve pullsecret
 # Newer version of Ansible call this module k8s_info
-  k8s_facts:
+  kubernetes.core.k8s_info:
     api: v1
     kind: Secret
     name: coffeeshopdb-pguser-coffeshopadmin

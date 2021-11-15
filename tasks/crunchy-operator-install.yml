@@ -108,6 +108,7 @@
     state: absent
     namespace: "{{ project_namespace }}"
     definition: "{{ lookup('template', 'crunchy-postgres.yml.j2') }}"
+  ignore_errors: true
   when: delete_deployment|bool
   tags: 
     - postgres
@@ -120,6 +121,7 @@
     kind: StatefulSet
     namespace: "{{ project_namespace }}"
     name: coffeeshopdb-repo-host
+  ignore_errors: true
   when:  delete_deployment|bool
   tags: 
     - postgres
@@ -138,6 +140,7 @@
     state: absent
     namespace: "openshift-operators"
     definition: "{{ lookup('template', 'crunchy-postgres-sub.yaml.j2') }}"
+  ignore_errors: true
   when:  delete_deployment|bool
   tags:
     - postgres

@@ -40,7 +40,7 @@ spec:
     dockerfile: |-
       FROM fedora:latest
       RUN yum install -y nc wget curl postgresql
-      RUN curl -OL https://raw.githubusercontent.com/tosin2013/quarkus-cafe-demo-role/dev/files/init_postgres_db.sh && chmod +x init_postgres_db.sh && mv init_postgres_db.sh /bin/init_postgres_db.sh
+      RUN curl -OL https://raw.githubusercontent.com/tosin2013/quarkus-cafe-demo-role/"{{ branch }}"/files/init_postgres_db.sh && chmod +x init_postgres_db.sh && mv init_postgres_db.sh /bin/init_postgres_db.sh
       CMD ["sleep", "10000"]
     type: Dockerfile
   strategy:

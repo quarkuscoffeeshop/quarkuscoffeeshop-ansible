@@ -13,6 +13,7 @@ crunchystartingCSV: postgresoperator.v5.0.3
 config_location: "/tmp/"
 kafka_cluster_name: cafe-cluster
 domain: ocp4.example.com
+branch: master # for developmemt change to dev
 
 # Helm Chart Version 
 helm_chart_version: 3.5.0

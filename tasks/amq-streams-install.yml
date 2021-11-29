@@ -1,3 +1,21 @@
+---
+- name: check if  project quarkuscoffeeshop-demo exists
+  shell: "{{ oc_location }} get project quarkuscoffeeshop-demo"
+  register: user_project
+  ignore_errors: true
+  changed_when: false
+  tags:
+    - amq
+    - acm-workload
+
+- name: create projects 
+  command: "{{ oc_location }} adm new-project quarkuscoffeeshop-demo"
+  when: user_project is failed
+  ignore_errors: true 
+  tags:
+    - amq
+    - acm-workload
+    
 - name: Create AMQ Subscription
   kubernetes.core.k8s:
     state: present

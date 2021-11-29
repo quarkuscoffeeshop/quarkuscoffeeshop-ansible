@@ -1,3 +1,21 @@
+---
+- name: check if  project quarkuscoffeeshop-demo exists
+  shell: "{{ oc_location }} get project quarkuscoffeeshop-demo"
+  register: user_project
+  ignore_errors: true
+  changed_when: false
+  tags:
+    - postgres
+    - acm-workload
+
+- name: create projects 
+  command: "{{ oc_location }} adm new-project quarkuscoffeeshop-demo"
+  when: user_project is failed
+  ignore_errors: true 
+  tags:
+    - postgres
+    - acm-workload
+
 - name:  Check if postgres-operator is running 
   shell: "{{ oc_location }} get pods  -n openshift-operators | grep Running | grep -E -o 'pgo-[0-9a-z][0-9a-z].*-[0-9a-z]{5}'"
   register: get_operator

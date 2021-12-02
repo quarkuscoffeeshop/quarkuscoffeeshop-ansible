@@ -1,6 +1,6 @@
 ---
-- name: check if  project quarkuscoffeeshop-demo exists
-  shell: "{{ oc_location }} get project quarkuscoffeeshop-demo"
+- name: check if  project {{ project_namespace }} exists
+  shell: "{{ oc_location }} get project {{ project_namespace }}"
   register: user_project
   ignore_errors: true
   changed_when: false
@@ -9,7 +9,7 @@
     - acm-workload
 
 - name: create projects 
-  command: "{{ oc_location }} adm new-project quarkuscoffeeshop-demo"
+  command: "{{ oc_location }} adm new-project {{ project_namespace }}"
   when: user_project is failed
   ignore_errors: true 
   tags:

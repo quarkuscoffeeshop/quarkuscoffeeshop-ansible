@@ -16,7 +16,7 @@ The source code for the  [quarkuscoffeeshop](https://github.com/quarkuscoffeesho
 ## Quick Start 
 **Download the deploy-quarkuscoffeeshop-ansible.sh shell script**
 ```
-curl -OL https://raw.githubusercontent.com/quarkuscoffeeshop/quarkuscoffeeshop-ansible/dev/files/deploy-quarkuscoffeeshop-ansible.sh
+curl -OL https://raw.githubusercontent.com/quarkuscoffeeshop/quarkuscoffeeshop-ansible/master/files/deploy-quarkuscoffeeshop-ansible.sh
 chmod +x deploy-quarkuscoffeeshop-ansible.sh
 ```
 

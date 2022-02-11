@@ -1,11 +1,41 @@
 # Docs
 Please see the Github Pages Site for complete documentation: [quarkuscoffeeshop.github.io](https://quarkuscoffeeshop.github.io)
 
-Quarkus Cafe Role
+QuarkusCoffeeshop Install
 =========
 
-The Quarkus Cafe Role will deploy an event-driven demo application built with Quarkus, AMQ Streams (Kafka), and MongoDB. The application deploys to OpenShift (Kubernetes.)
+_NOTE:_ Ansible must be installed https://docs.ansible.com/ansible/latest/installation_guide/index.html
+
+The QuarkusCoffeeshop Ansbile Role performs a basic installation that includes the microservices for a coffeeshop, installation of the Crunchy PostgreSQL DB, AMQ Streams (Kafka.)
+
+
+The QuarkusCoffeeshop Role will deploy an event-driven demo application built with Quarkus, AMQ Streams (Kafka), and MongoDB. The application deploys to OpenShift (Kubernetes.)
 The source code for the  [quarkuscoffeeshop](https://github.com/quarkuscoffeeshop) application support doc can be found  [here](https://github.com/quarkuscoffeeshop/quarkuscoffeeshop-support).
+
+
+## Quick Start 
+**Download the deploy-quarkuscoffeeshop-ansible.sh shell script**
+```
+curl -OL https://raw.githubusercontent.com/quarkuscoffeeshop/quarkuscoffeeshop-ansible/dev/files/deploy-quarkuscoffeeshop-ansible.sh
+chmod +x deploy-quarkuscoffeeshop-ansible.sh
+```
+
+**Set Environment variables for standard deployment**
+> This command will deploy the application on a Single cluster with the following services below. 
+* AMQ Streams
+* Postgres Operator configuration 
+* quarkus coffeeshop helm deployment
+```
+$ cat >env.variables<<EOF
+ACM_WORKLOADS=n
+AMQ_STREAMS=y
+CONFIGURE_POSTGRES=y
+MONGODB_OPERATOR=n
+MONGODB=n
+HELM_DEPLOYMENT=y
+EOF
+$ ./deploy-quarkuscoffeeshop-ansible.sh -d ocp4.example.com -t sha-123456789 -p 123456789 -s ATLANTA
+```
 
 Requirements
 ------------

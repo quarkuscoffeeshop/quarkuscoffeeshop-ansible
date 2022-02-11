@@ -15,14 +15,13 @@ function usage() {
  Options:
   -d      Add domain 
   -t      OpenShift Token
-  -p      Postgres Password
   -s      Store ID
   -h      Display this help and exit
   -u      Uninstall coffeeshop 
   To deploy qaurkuscoffeeshop-ansible playbooks
-  ${0}  -d ocp4.example.com -t sha-123456789 -p 123456789 -s ATLANTA
+  ${0}  -d ocp4.example.com -t sha-123456789  -s ATLANTA
   To Delete qaurkuscoffeeshop-ansible playbooks from OpenShift
-  ${0}  -d ocp4.example.com -t sha-123456789 -p 123456789 -s ATLANTA -u true
+  ${0}  -d ocp4.example.com -t sha-123456789  -s ATLANTA -u true
 "
 }
 
@@ -138,18 +137,16 @@ then
   exit 1
 fi
 
-while getopts ":d:t:p:s:h:u:" arg; do
+while getopts ":d:t:s:h:u:" arg; do
   case $arg in
     h) export  HELP=True;;
     d) export  DOMAIN=$OPTARG;;
     t) export  OCP_TOKEN=$OPTARG;;
-    p) export POSTGRES_PASSWORD=$OPTARG;;
     s) export  STORE_ID=$OPTARG;;
     u) export  DESTROY=$OPTARG;;
   esac
 done
 
-echo "${POSTGRES_PASSWORD}"
 echo "${DESTROY}"
 
 if [ -z "${DESTROY}" ];
@@ -181,7 +178,7 @@ function modulecheck(){
   esac
 }
 
-echo -e "\n$DOMAIN  $OCP_TOKEN   $POSTGRES_PASSWORD $STORE_ID\n"
+echo -e "\n$DOMAIN  $OCP_TOKEN  $STORE_ID\n"
 
 if [ -f $HOME/env.variables ];
 then 
@@ -230,7 +227,6 @@ cat >/tmp/deploy-quarkus-cafe.yml<<YAML
     project_namespace: quarkuscoffeeshop-demo
     delete_deployment: "${DESTROY}"
     domain: ${DOMAIN}
-    postgres_password: '${POSTGRES_PASSWORD}'
     storeid: ${STORE_ID}
     oc_version: ${OC_VERSION}
     quay_urlprefix: ${QUAY_URL}

@@ -10,13 +10,23 @@ The source code for the  [quarkuscoffeeshop](https://github.com/quarkuscoffeesho
 Requirements
 ------------
 
-* OpenShift 4.8 an up Cluster installed
+* OpenShift 4.9 an up Cluster installed
 * Ansible should be installed on machine
 * oc cli must be installed
 * Ansible community.kubernetes module must be installed `ansible-galaxy collection install community.kubernetes`
 * Install [Helm](https://helm.sh/docs/intro/install/) Binary
 * [Postges Operator](https://github.com/tosin2013/postgres-operator) for Quarkus CoffeeShop 5.0.1-SNAPSHOT Deployments
 * pip3 
+
+Quick Start 
+-----------
+> IN RHPDS OpenShift 4.9  WorkShop Cluster
+```
+dnf install ansible -y
+curl -OL https://raw.githubusercontent.com/quarkuscoffeeshop/quarkuscoffeeshop-ansible/dev/files/deploy-quarkuscoffeeshop-ansible.sh
+chmod +x deploy-quarkuscoffeeshop-ansible.sh
+./deploy-quarkuscoffeeshop-ansible.sh -d ocp4.example.com -t sha-123456789 -s ATLANTA
+```
 
 ScreenShots
 ------------------------------------------------
@@ -135,7 +145,7 @@ MONGODB_OPERATOR=n
 MONGODB=n
 HELM_DEPLOYMENT=n
 EOF
-$ ./deploy-quarkuscoffeeshop-ansible.sh -d ocp4.example.com -t sha-123456789 -p 123456789 -s ATLANTA
+$ ./deploy-quarkuscoffeeshop-ansible.sh -d ocp4.example.com -t sha-123456789 -s ATLANTA
 ```
 
 **Set Environment variables for standard deployment**

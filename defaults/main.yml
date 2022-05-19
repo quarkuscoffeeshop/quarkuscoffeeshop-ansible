@@ -41,7 +41,8 @@ mongodbops_admin: jane.doe@example.com
 mongodbops_password: Passw0rd.
 mongodb_username: mongodb
 mongodb_password: 7lIHuw&#0KrE
-
+single_mongodb_install: true
+skip_mongodb_operator_install: true 
 # Postgres database information
 postgres_version: postgresql:10-el8
 pgsql_username: coffeshopadmin

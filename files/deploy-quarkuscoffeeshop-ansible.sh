@@ -49,6 +49,7 @@ function configure-ansible-and-playbooks(){
     curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
     chmod 700 get_helm.sh
     ${USE_SUDO} ./get_helm.sh
+    ${USE_SUDO} ln /usr/local/bin/helm /bin/helm
   fi 
 
   echo "Check if quarkuscoffeeshop-ansible role exists"

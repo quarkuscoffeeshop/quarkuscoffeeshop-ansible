@@ -33,7 +33,7 @@ mongodb_password: mongodb
 {% elif skip_mongodb_operator_install  == True  and  single_mongodb_install  == True %}
 pgsql_url: {{ postgres_hostname }}
 pgsql_username: {{ pgsql_username }}
-pgsql_password: "{{ postgres_password }}"
+pgsql_password: '{{ postgres_password }}'
 {% endif %}
 storeid: {{ storeid }}
 quarkus_log_level: {{ quarkus_log_level }}

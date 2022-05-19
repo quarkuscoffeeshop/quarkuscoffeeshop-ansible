@@ -7,6 +7,7 @@
   tags:
     - postgres
     - acm-workload
+    - helm
 
 - name: create projects 
   command: "{{ oc_location }} adm new-project {{ project_namespace }}"
@@ -15,6 +16,7 @@
   tags:
     - postgres
     - acm-workload
+    - helm
 
 - name:  Check if postgres-operator is running 
   shell: "{{ oc_location }} get pods  -n openshift-operators | grep Running | grep -E -o 'pgo-[0-9a-z][0-9a-z].*-[0-9a-z]{5}'"
@@ -25,12 +27,14 @@
   tags: 
     - postgres
     - acm-workload
+    - helm
 
 - fail: msg="Bailing out. this play requires 'postgres-operator to be running'"
   when:  "get_operator.rc == 1 and not delete_deployment|bool"
   tags: 
     - postgres
     - acm-workload
+    - helm
 
 - name: Saving postgres-operator Pod name
   set_fact:
@@ -39,6 +43,7 @@
   tags: 
     - postgres
     - acm-workload
+    - helm
 
 - name: Copying over Postgres utils file
   template:
@@ -53,6 +58,7 @@
   tags: 
     - postgres
     - acm-workload
+    - helm
 
 #- name: Copying over pgadmin file
 #  template:
@@ -70,6 +76,7 @@
   tags: 
     - postgres
     - acm-workload
+    - helm
 
 - name: Waiting for postgres-utilites to deploy
   shell: |
@@ -84,6 +91,7 @@
   tags: 
     - postgres
     - acm-workload
+    - helm
 
 - name:  Get postgres-utilites Pod name
   shell: "{{ oc_location }} get pods  -n {{ project_namespace }} | grep Running | grep -E -o 'postgres-utilites-[0-9a-z][0-9a-z].*-[0-9a-z]{5}'"
@@ -94,6 +102,7 @@
   tags: 
     - postgres
     - acm-workload
+    - helm
 
 - name: Saving  postgres-utilites Pod name
   set_fact:
@@ -102,6 +111,7 @@
   tags: 
     - postgres
     - acm-workload
+    - helm
 
 - name:  Create and load postgres database
   command: "{{ oc_location }}  exec -it {{ postgres_utils_pod }} -n {{ project_namespace }}  -- /bin/init_postgres_db.sh"
@@ -109,6 +119,7 @@
   tags: 
     - postgres
     - acm-workload
+    - helm
 
 #- name: Deploy pgadmin
 #  command: "{{ oc_location }}  create -f {{ config_location }}/pgadmin.yaml"
@@ -133,7 +144,7 @@
   tags: 
     - postgres
     - acm-workload
-  
+    - helm
 #- name: Delete pgadmin
 #  command: "{{ oc_location }}  delete -f {{ config_location }}/pgadmin.yaml"
 #  ignore_errors: yes

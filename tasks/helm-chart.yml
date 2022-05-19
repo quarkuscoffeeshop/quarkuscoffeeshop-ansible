@@ -1,6 +1,6 @@
 # From repository
 - name: Add quarkuscoffeeshop helm chart repo
-  community.kubernetes.helm_repository:
+  kubernetes.core.helm_repository:
     name: quarkuscoffeeshop-helm
     repo_url: "https://quarkuscoffeeshop.github.io/quarkuscoffeeshop-helm/"
   when: not delete_deployment|bool

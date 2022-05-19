@@ -31,7 +31,7 @@ mongodb_url: mongodb://mongodb:mongodb@mongodb:27017/cafedb
 mongodb_username: mongodb
 mongodb_password: mongodb
 {% elif skip_mongodb_operator_install  == True  and  single_mongodb_install  == True %}
-pgsql_url: {{ postgres_hostname }}
+pgsql_url: jdbc:postgresql://{{ postgres_hostname }}:5432/coffeeshopdb?currentSchema=coffeeshop
 pgsql_username: {{ pgsql_username }}
 pgsql_password: '{{ postgres_password }}'
 {% endif %}

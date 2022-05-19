@@ -27,7 +27,7 @@
   tags:
     - helm
 
-- name: Get postgress password
+- name: Get postgres password
   set_fact:
     postgres_password: '{{ original_secret| b64decode }}'
   when: not delete_deployment|bool

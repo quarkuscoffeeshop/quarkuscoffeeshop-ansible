@@ -30,7 +30,7 @@ mongodb_password: {{ mongodb_password }}
 mongodb_url: mongodb://mongodb:mongodb@mongodb:27017/cafedb
 mongodb_username: mongodb
 mongodb_password: mongodb
-{% elif skip_mongodb_operator_install  == True  and  single_mongodb_install  == False %}
+{% elif skip_mongodb_operator_install  == True  and  single_mongodb_install  == True %}
 pgsql_url: {{ pgsql_url }}
 pgsql_username: {{ pgsql_username }}
 pgsql_password: '{{ postgres_password }}'

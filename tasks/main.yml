@@ -43,11 +43,13 @@
       include_tasks: crunchy-operator-install.yml
       tags: 
         - postgres
+        - helm
 
     - name: Configure Postgres Database
       include_tasks: configure-postgres.yml
       tags: 
         - postgres
+        - helm
 
     - name: Installing Single mongodb database
       include_tasks: mongodb.yml

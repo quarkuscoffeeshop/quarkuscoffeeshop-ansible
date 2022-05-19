@@ -25,7 +25,7 @@
   tags: helm
 
 - name: Deploy quarkuscoffeeshop helm chart to project
-  kubernetes.core.helm_repository:
+  kubernetes.core.helm:
     name: quarkuscoffeeshop-helm
     chart_ref: quarkuscoffeeshop-helm/quarkuscoffeeshop-charts
     chart_version: "{{ helm_chart_version }}"
@@ -42,7 +42,7 @@
   tags: helm
 
 - name: Remove test release and waiting suppression ending
-  kubernetes.core.helm_repository:
+  kubernetes.core.helm:
     name: quarkuscoffeeshop-helm
     state: absent
     release_namespace: "{{ project_namespace }}"

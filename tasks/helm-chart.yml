@@ -5,7 +5,35 @@
     repo_url: "https://quarkuscoffeeshop.github.io/quarkuscoffeeshop-helm/"
   when: not delete_deployment|bool
   tags: helm
-  
+
+- name: retrieve database password
+# Newer version of Ansible call this module k8s_info
+  kubernetes.core.k8s_info:
+    api: v1
+    kind: Secret
+    name: coffeeshopdb-pguser-coffeshopadmin
+    namespace: "{{ project_namespace }}"
+  register: databasepassword
+  when: not delete_deployment|bool
+  tags:
+    - helm
+
+- name: Get the original cred secrets
+  set_fact:
+    original_secret: "{{ item.data.password }}"
+  with_items: "{{ databasepassword.resources }}"
+  when: not delete_deployment|bool
+  no_log: true
+  tags:
+    - helm
+
+- name: Get postgress password
+  set_fact:
+    postgres_password: '{{ original_secret| b64decode }}'
+  when: not delete_deployment|bool
+  tags: 
+    - helm
+
 - name: Copying over  quarkuscoffeeshop helm chart values
   template:
     src: templates/vaules.yaml.j2

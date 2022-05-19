@@ -49,9 +49,6 @@
       tags: 
         - postgres
 
-    - name: End the play for hosts that run CentOS 6
-      meta: end_host
-
     - name: Installing Single mongodb database
       include_tasks: mongodb.yml
       tags:

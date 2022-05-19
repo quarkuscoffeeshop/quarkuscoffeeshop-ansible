@@ -4,6 +4,7 @@
     name: quarkuscoffeeshop-helm
     repo_url: "https://quarkuscoffeeshop.github.io/quarkuscoffeeshop-helm/"
   when: not delete_deployment|bool
+  tags: helm
   
 - name: Copying over  quarkuscoffeeshop helm chart values
   template:
@@ -12,6 +13,7 @@
     owner: "{{ default_owner }}"
     group: "{{ default_group }}"
     mode: 0666
+  tags: helm
 
 - name: Copying over quarkuscoffeeshop-web route
   template:
@@ -20,6 +22,7 @@
     owner: "{{ default_owner }}"
     group: "{{ default_group }}"
     mode: 0666
+  tags: helm
 
 - name: Deploy quarkuscoffeeshop helm chart to project
   community.kubernetes.helm:
@@ -31,11 +34,12 @@
     values_files:
       -  "{{ config_location }}/vaules.yaml"
   when: not delete_deployment|bool
+  tags: helm
 
 - name:  Create quarkuscoffeeshop-web route 
   command: "{{ oc_location }}  create -f {{ config_location }}quarkuscoffeeshop-web.yaml"
   when: not delete_deployment|bool
-
+  tags: helm
 
 - name: Remove test release and waiting suppression ending
   community.kubernetes.helm:
@@ -44,8 +48,9 @@
     release_namespace: "{{ project_namespace }}"
     wait: true
   when:  delete_deployment|bool
-
+  tags: helm
 
 - name:  Delete quarkuscoffeeshop-web route 
   command: "{{ oc_location }}  delete -f {{ config_location }}quarkuscoffeeshop-web.yaml"
   when:  delete_deployment|bool
+  tags: helm

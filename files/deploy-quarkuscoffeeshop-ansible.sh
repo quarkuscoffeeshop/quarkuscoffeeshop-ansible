@@ -1,5 +1,5 @@
 #!/bin/bash
-#set -e 
+#set -e
 # For development export the enviorment variable below
 #export DEVELOPMENT=false 
 
@@ -209,7 +209,13 @@ else
 
 fi
 
-OC_VERSION=$(oc version  | grep Server | grep -o  "[4].[7-9]")
+OC_VERSION=$(oc version  | grep Server | awk '{print $3}' | grep -oE "4.[0-20][0-9]")
+if [ -z "${OC_VERSION}" ];
+then
+  OC_VERSION=$(oc version  | grep Server | grep -o  "[4].[*]")
+  exit 
+fi
+
 if [ $OC_VERSION == '4.8' ];
 then 
   QUAY_URL="quayecosystem-quay-{{ quay_project_name }}.router-default"

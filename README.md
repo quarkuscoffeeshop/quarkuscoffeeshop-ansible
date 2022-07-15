@@ -40,7 +40,7 @@ $ ./deploy-quarkuscoffeeshop-ansible.sh -d ocp4.example.com -t sha-123456789 -p 
 Requirements
 ------------
 
-* OpenShift 4.9 an up Cluster installed
+* OpenShift 4.10 an up Cluster installed
 * Ansible should be installed on machine
 * oc cli must be installed
 * Ansible community.kubernetes module must be installed `ansible-galaxy collection install community.kubernetes`
@@ -50,7 +50,7 @@ Requirements
 
 Quick Start 
 -----------
-> IN RHPDS OpenShift 4.9  WorkShop Cluster
+> IN RHPDS OpenShift 4.10  WorkShop Cluster
 ```
 dnf install ansible -y
 curl -OL https://raw.githubusercontent.com/quarkuscoffeeshop/quarkuscoffeeshop-ansible/dev/files/deploy-quarkuscoffeeshop-ansible.sh

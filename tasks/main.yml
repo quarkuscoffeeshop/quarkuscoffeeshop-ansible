@@ -33,6 +33,7 @@
 
     - name: Create Quarkus project 
       include_tasks: create-project.yml
+      tags: always
 
     - name: AMQ Streams installation
       include_tasks: amq-streams-install.yml

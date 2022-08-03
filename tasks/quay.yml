@@ -27,7 +27,7 @@
     # yamllint disable-line rule:line-length
     quay_csv: "{{ quay_manifest | json_query('resources[*].status.channels[?name==`' + quay_channel +'`].currentCSV') | first | first }}"
   environment:
-    PYTHONPATH: "/usr/lib/python3.6/site-packages"
+    PYTHONPATH: "/usr/lib/python3.6/site-packages/jmespath"
   tags: quay
 
 - name: Create Quay Operator Subscription

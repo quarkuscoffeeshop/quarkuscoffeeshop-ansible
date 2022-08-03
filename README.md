@@ -12,6 +12,14 @@ The QuarkusCoffeeshop Ansbile Role performs a basic installation that includes t
 The QuarkusCoffeeshop Role will deploy an event-driven demo application built with Quarkus, AMQ Streams (Kafka), and MongoDB. The application deploys to OpenShift (Kubernetes.)
 The source code for the  [quarkuscoffeeshop](https://github.com/quarkuscoffeeshop) application support doc can be found  [here](https://github.com/quarkuscoffeeshop/quarkuscoffeeshop-support).
 
+## Podman builds 
+``` 
+podman build -t  quarkuscoffeeshop-ansible:v0.0.1 -f Dockerfile
+```
+
+```
+podman rmi localhost/quarkuscoffeeshop-ansible:v0.0.1 
+```
 
 ## Quick Start 
 **Download the deploy-quarkuscoffeeshop-ansible.sh shell script**

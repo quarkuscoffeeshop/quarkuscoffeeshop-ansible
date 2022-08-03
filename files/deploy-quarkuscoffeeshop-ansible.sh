@@ -81,7 +81,7 @@ function configure-ansible-and-playbooks(){
   
   checkpipmodules
   echo "${USE_SUDO} ansible-playbook  /tmp/deploy-quarkus-cafe.yml -t $(cat /tmp/tags) --extra-vars delete_deployment=${DESTROY} ${DEVMOD}"
-  ${USE_SUDO} ansible-playbook  /tmp/deploy-quarkus-cafe.yml -t $(cat /tmp/tags) --extra-vars delete_deployment=${DESTROY} ${DEVMOD}
+  ${USE_SUDO} ansible-playbook  /tmp/deploy-quarkus-cafe.yml -t $(cat /tmp/tags) --extra-vars delete_deployment=${DESTROY} ${DEVMOD} -e 'ansible_python_interpreter=/usr/bin/python3'
 }
 
 function destory_coffee_shop(){
@@ -90,7 +90,7 @@ function destory_coffee_shop(){
   echo "******************"
   checkpipmodules
   echo "${USE_SUDO} ansible-playbook  /tmp/deploy-quarkus-cafe.yml -t $(cat /tmp/tags) --extra-vars delete_deployment=${DESTROY} ${DEVMOD}"
-  ${USE_SUDO} ansible-playbook  /tmp/deploy-quarkus-cafe.yml -t $(cat /tmp/tags) --extra-vars delete_deployment=${DESTROY} ${DEVMOD}
+  ${USE_SUDO} ansible-playbook  /tmp/deploy-quarkus-cafe.yml -t $(cat /tmp/tags) --extra-vars delete_deployment=${DESTROY} ${DEVMOD} -e 'ansible_python_interpreter=/usr/bin/python3'
 }
 
 function checkpipmodules(){
@@ -209,10 +209,10 @@ else
 
 fi
 
-OC_VERSION=$(oc version  | grep Server | awk '{print $3}' | grep -oE "4.[0-20][0-9]")
+OC_VERSION=$(oc version  | grep Client | awk '{print $3}' | grep -oE "4.[0-20][0-9]")
 if [ -z "${OC_VERSION}" ];
 then
-  OC_VERSION=$(oc version  | grep Server | grep -o  "[4].[*]")
+  OC_VERSION=$(oc version  | grep Client | grep -o  "[4].[*]")
   exit 
 fi
 

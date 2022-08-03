@@ -18,6 +18,14 @@ podman build -t  quarkuscoffeeshop-ansible:v0.0.1 -f Dockerfile
 ```
 
 ```
+ podman run  -it quarkuscoffeeshop-ansible:v0.0.1 bash 
+```
+
+```
+podman rmi  $(podman images   | grep "<none>" | awk '{print $3}')
+```
+
+```
 podman rmi localhost/quarkuscoffeeshop-ansible:v0.0.1 
 ```
 

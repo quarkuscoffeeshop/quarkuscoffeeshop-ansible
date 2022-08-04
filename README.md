@@ -32,6 +32,7 @@ podman rmi localhost/quarkuscoffeeshop-ansible:v0.0.1
 podman rmi localhost/quarkuscoffeeshop-ansible:v0.0.1 
 ```
 
+
 ## Quick Start 
 **Download the deploy-quarkuscoffeeshop-ansible.sh shell script**
 ```

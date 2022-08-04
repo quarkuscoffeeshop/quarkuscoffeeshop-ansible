@@ -12,4 +12,4 @@ RUN mkdir /opt/workspace  && git config --global user.email "demo@quarkus.io" &&
 COPY . /opt/workspace
 COPY files/env.variables /root/
 
-CMD ["/bin/sh" "-c" "files/quickstart.sh"]
+CMD [ "/opt/workspace/files/quickstart.sh"]

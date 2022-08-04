@@ -22,9 +22,10 @@ Requirements
 
 Currently tested on 
 -------------------
-* OpenShift 4.10 
+* OpenShift 4.10.24
 * OpenShift Pipelines: 1.6.3
 * AMQ Streams: 2.1.0-6
+* Postgres: 
 
 
 Quick Start 
@@ -36,6 +37,8 @@ Quick Start
 * quarkus coffeeshop helm deployment
 ```
 $ cat >env.variables<<EOF
+CLUSERTER_DOMAIN_NAME=clustername.example.com
+TOKEN=sha256~XXXXXXXXXXXX
 ACM_WORKLOADS=n
 AMQ_STREAMS=y
 CONFIGURE_POSTGRES=y
@@ -44,7 +47,7 @@ MONGODB=n
 HELM_DEPLOYMENT=y
 DELETE_DEPLOYMENT=false
 EOF
-podman run  -it quarkuscoffeeshop-ansible:v0.0.1 --env-file=source.env
+$ podman run  -it --env-file=./source.env  quay.io/quarkuscoffeeshop/quarkuscoffeeshop-ansible:v4.10.24
 ```
 
 
@@ -59,20 +62,23 @@ podman run  -it quarkuscoffeeshop-ansible:v0.0.1 --env-file=source.env
 * quarkus-coffeeshop Tekton pipelines
 ```
 $ cat >source.env<<EOF
-export CLUSERTER_DOMAIN_NAME="cluster-pswms.pswms.sandbox1124.opentlc.com"  # Example cluster-pswms.pswms.sandbox1124.opentlc.com
-export TOKEN="XxXXXXXXXX"
+CLUSERTER_DOMAIN_NAME=clustername.example.com
+TOKEN=sha256~XXXXXXXXXXXX
 ACM_WORKLOADS=y
 AMQ_STREAMS=y
 CONFIGURE_POSTGRES=y
 HELM_DEPLOYMENT=n
 DELETE_DEPLOYMENT=false
 EOF
+$ podman run  -it --env-file=./source.env  quay.io/quarkuscoffeeshop/quarkuscoffeeshop-ansible:v4.10.24
 ```
 
 **Optional: Change namespace for helm deployments**  
 `default is quarkuscoffeeshop-demo`
 ```
 $ cat >source.env<<EOF
+CLUSERTER_DOMAIN_NAME=clustername.example.com
+TOKEN=sha256~XXXXXXXXXXXX
 ACM_WORKLOADS=n
 AMQ_STREAMS=y
 CONFIGURE_POSTGRES=y
@@ -82,8 +88,7 @@ HELM_DEPLOYMENT=y
 NAMESPACE=changeme
 DELETE_DEPLOYMENT=false
 EOF
-
-podman run  -it quarkuscoffeeshop-ansible:v0.0.1 --env-file=source.env
+$ podman run  -it --env-file=./source.env  quay.io/quarkuscoffeeshop/quarkuscoffeeshop-ansible:v4.10.24
 ```
 
 

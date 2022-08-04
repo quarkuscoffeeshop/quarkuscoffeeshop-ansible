@@ -7,7 +7,7 @@
 
 - name: Get OpenShift storage operator version
   shell: |
-    {{ oc_location }}  describe packagemanifests  ocs-operator -n openshift-marketplace | grep Version: |  grep {{ oc_version }}  | awk '{print $2}' | sort --unique
+    {{ oc_location }}  describe packagemanifests  ocs-operator -n openshift-marketplace | grep Version: |  grep {{ odf_version }}  | awk '{print $2}' | sort --unique
   register: operator_version_check
   become: no
   tags: quay

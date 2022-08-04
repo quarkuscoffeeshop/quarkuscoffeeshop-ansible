@@ -1,7 +1,7 @@
 #!/bin/bash
-#set -e 
+#set -e
 # For development export the enviorment variable below
-#export DEVELOPMENT=false 
+export DEVELOPMENT=true 
 
 
 if [ "$EUID" -ne 0 ]
@@ -37,6 +37,7 @@ function configure-ansible-and-playbooks(){
     ${USE_SUDO} ansible-galaxy collection install community.kubernetes
     ${USE_SUDO} ansible-galaxy collection install kubernetes.core
     ${USE_SUDO} ansible-galaxy collection install cloud.common
+    ${USE_SUDO} ansible-galaxy collection install community.general
     ${USE_SUDO} pip3 install kubernetes || exit $?
     ${USE_SUDO} pip3 install openshift || exit $?
     ${USE_SUDO} pip3 install jmespath || exit $?
@@ -49,6 +50,7 @@ function configure-ansible-and-playbooks(){
     curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
     chmod 700 get_helm.sh
     ${USE_SUDO} ./get_helm.sh
+    ${USE_SUDO} ln /usr/local/bin/helm /bin/helm
   fi 
 
   echo "Check if quarkuscoffeeshop-ansible role exists"
@@ -80,7 +82,7 @@ function configure-ansible-and-playbooks(){
   
   checkpipmodules
   echo "${USE_SUDO} ansible-playbook  /tmp/deploy-quarkus-cafe.yml -t $(cat /tmp/tags) --extra-vars delete_deployment=${DESTROY} ${DEVMOD}"
-  ${USE_SUDO} ansible-playbook  /tmp/deploy-quarkus-cafe.yml -t $(cat /tmp/tags) --extra-vars delete_deployment=${DESTROY} ${DEVMOD}
+  ${USE_SUDO} ansible-playbook  /tmp/deploy-quarkus-cafe.yml -t $(cat /tmp/tags) --extra-vars delete_deployment=${DESTROY} ${DEVMOD} -e 'ansible_python_interpreter=/usr/bin/python3'
 }
 
 function destory_coffee_shop(){
@@ -89,7 +91,7 @@ function destory_coffee_shop(){
   echo "******************"
   checkpipmodules
   echo "${USE_SUDO} ansible-playbook  /tmp/deploy-quarkus-cafe.yml -t $(cat /tmp/tags) --extra-vars delete_deployment=${DESTROY} ${DEVMOD}"
-  ${USE_SUDO} ansible-playbook  /tmp/deploy-quarkus-cafe.yml -t $(cat /tmp/tags) --extra-vars delete_deployment=${DESTROY} ${DEVMOD}
+  ${USE_SUDO} ansible-playbook  /tmp/deploy-quarkus-cafe.yml -t $(cat /tmp/tags) --extra-vars delete_deployment=${DESTROY} ${DEVMOD} -e 'ansible_python_interpreter=/usr/bin/python3'
 }
 
 function checkpipmodules(){
@@ -208,7 +210,13 @@ else
 
 fi
 
-OC_VERSION=$(oc version  | grep Server | grep -o  "[4].[7-9]")
+OC_VERSION=$(oc version  | grep Client | awk '{print $3}' | grep -oE "4.[0-20][0-9]")
+if [ -z "${OC_VERSION}" ];
+then
+  OC_VERSION=$(oc version  | grep Client | grep -o  "[4].[*]")
+  exit 
+fi
+
 if [ $OC_VERSION == '4.8' ];
 then 
   QUAY_URL="quayecosystem-quay-{{ quay_project_name }}.router-default"

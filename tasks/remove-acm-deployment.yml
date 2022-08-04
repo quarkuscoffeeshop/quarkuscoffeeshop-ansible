@@ -24,15 +24,15 @@
   ignore_errors: true
   tags: always
 
-- name: delete openshift-storage.noobaa.io storage class
-  command:  oc delete sc openshift-storage.noobaa.io -n "{{ quay_project_name }}"
-  ignore_errors: true
-  tags: always
+#- name: delete openshift-storage.noobaa.io storage class
+#  command:  oc delete sc openshift-storage.noobaa.io -n "{{ quay_project_name }}"
+#  ignore_errors: true
+#  tags: always
 
-- name: delete  storageclusters.ocs.openshift.io crd 
-  command:  oc delete crd  storageclusters.ocs.openshift.io -n "{{ quay_project_name }}"
-  ignore_errors: true
-  tags: always
+#- name: delete  storageclusters.ocs.openshift.io crd 
+#  command:  oc delete crd  storageclusters.ocs.openshift.io -n "{{ quay_project_name }}"
+#  ignore_errors: true
+#  tags: always
 
 - name: delete Red Hat Integration - AMQ Streams
   command:  oc delete csv "{{ amqstartingCSV }}" -n openshift-operators
@@ -60,10 +60,10 @@
   tags: always
 
 
-- name: delete openshift-storage project
-  command: oc delete project openshift-storage
-  ignore_errors: true
-  tags: always
+#- name: delete openshift-storage project
+#  command: oc delete project openshift-storage
+#  ignore_errors: true
+#  tags: always
 
 - name: delete development project
   command: "oc delete project {{ development_project }}"

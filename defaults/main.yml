@@ -7,9 +7,9 @@ default_group: root
 insecure_skip_tls_verify: true
 project_namespace: quarkuscoffeeshop-demo
 delete_deployment: false
-amqstartingCSV: amqstreams.v2.1.0-4
+amqstartingCSV: amqstreams.v2.1.0-6
 mongodbstartingCSV: mongodb-enterprise.v1.8.1
-crunchystartingCSV: postgresoperator.v5.1.0
+crunchystartingCSV: postgresoperator.v5.1.2
 config_location: "/tmp/"
 kafka_cluster_name: cafe-cluster
 domain: ocp4.example.com
@@ -41,7 +41,8 @@ mongodbops_admin: jane.doe@example.com
 mongodbops_password: Passw0rd.
 mongodb_username: mongodb
 mongodb_password: 7lIHuw&#0KrE
-
+single_mongodb_install: true
+skip_mongodb_operator_install: true 
 # Postgres database information
 postgres_version: postgresql:10-el8
 pgsql_username: coffeshopadmin
@@ -93,12 +94,12 @@ repo_url: https://github.com/quarkuscoffeeshop/tekton-pipelines.git
 acm_repo_url: https://github.com/quarkuscoffeeshop/quarkuscoffeeshop-gitops.git
 
 # OpenShift Storage
-oc_version: 4.8 
+odf_version: "4.10" 
 
 # Quay settings 
 quay_project_name: "quay-enterprise"
-quay_csv:  "red-hat-quay.v3.5.6"
-quay_channel: "quay-v3.5"
+quay_csv:  "red-hat-quay.v3.7.5"
+quay_channel: "stable-3.7"
 quay_urlprefix:  "quayecosystem-quay-{{ quay_project_name }}"
 quay_pull_user: changeme
 quay_pull_password: changeme
@@ -112,7 +113,7 @@ ocp4_installer_root_pipeline_url: "https://mirror.openshift.com/pub/openshift-v4
 pipelines_tkn_version:  0.19.1
 
 # OpenShift GitOps
-gitopsoperatorCSV: openshift-gitops-operator.v1.4.2
+gitopsoperatorCSV: openshift-gitops-operator.v1.6.0
 pipelines_expected_crds:
 - pipelineresources.tekton.dev
 - pipelineruns.tekton.dev

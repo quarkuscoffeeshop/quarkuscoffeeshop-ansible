@@ -12,34 +12,23 @@ The QuarkusCoffeeshop Ansbile Role performs a basic installation that includes t
 The QuarkusCoffeeshop Role will deploy an event-driven demo application built with Quarkus, AMQ Streams (Kafka), and MongoDB. The application deploys to OpenShift (Kubernetes.)
 The source code for the  [quarkuscoffeeshop](https://github.com/quarkuscoffeeshop) application support doc can be found  [here](https://github.com/quarkuscoffeeshop/quarkuscoffeeshop-support).
 
-## Podman builds 
-``` 
-podman build -t  quarkuscoffeeshop-ansible:v0.0.1 -f Dockerfile
-```
-
-```
- podman run  -it quarkuscoffeeshop-ansible:v0.0.1 bash --env-file=
- /opt/workspace/files/deploy-quarkuscoffeeshop-ansible.sh  -d ${CLUSERTER_DOMAIN_NAME} -t  ${TOKEN}  -s ATLANTA
- $ ./deploy-quarkuscoffeeshop-ansible.sh -d ocp4.example.com -t sha-123456789 -p 123456789 -s ATLANTA
-```
-
-```
-podman rmi  $(podman images   | grep "<none>" | awk '{print $3}')
-podman rmi localhost/quarkuscoffeeshop-ansible:v0.0.1
-```
-
-```
-podman rmi localhost/quarkuscoffeeshop-ansible:v0.0.1 
-```
 
 
-## Quick Start 
-**Download the deploy-quarkuscoffeeshop-ansible.sh shell script**
-```
-curl -OL https://raw.githubusercontent.com/quarkuscoffeeshop/quarkuscoffeeshop-ansible/master/files/deploy-quarkuscoffeeshop-ansible.sh
-chmod +x deploy-quarkuscoffeeshop-ansible.sh
-```
+Requirements
+------------
 
+* OpenShift 4.10 an up Cluster installed
+* Docker or podman
+
+Currently tested on 
+-------------------
+* OpenShift 4.10 
+* OpenShift Pipelines: 1.6.3
+* AMQ Streams: 2.1.0-6
+
+
+Quick Start 
+-----------
 **Set Environment variables for standard deployment**
 > This command will deploy the application on a Single cluster with the following services below. 
 * AMQ Streams
@@ -53,30 +42,51 @@ CONFIGURE_POSTGRES=y
 MONGODB_OPERATOR=n
 MONGODB=n
 HELM_DEPLOYMENT=y
+DELETE_DEPLOYMENT=false
 EOF
-$ ./deploy-quarkuscoffeeshop-ansible.sh -d ocp4.example.com -t sha-123456789 -p 123456789 -s ATLANTA
+podman run  -it quarkuscoffeeshop-ansible:v0.0.1 --env-file=source.env
 ```
 
-Requirements
-------------
 
-* OpenShift 4.10 an up Cluster installed
-* Ansible should be installed on machine
-* oc cli must be installed
-* Ansible community.kubernetes module must be installed `ansible-galaxy collection install community.kubernetes`
-* Install [Helm](https://helm.sh/docs/intro/install/) Binary
-* [Postges Operator](https://github.com/tosin2013/postgres-operator) for Quarkus CoffeeShop 5.0.1-SNAPSHOT Deployments
-* pip3 
+**Set Environment variables for ACM WORKLOADS**
+* Gogs server
+* OpenShift Pipelines
+* OpenShift GitOps
+* Quay.io
+* AMQ Streams
+* Postgres Template deployment
+* homeoffice Tekton pipelines
+* quarkus-coffeeshop Tekton pipelines
+```
+$ cat >source.env<<EOF
+export CLUSERTER_DOMAIN_NAME="cluster-pswms.pswms.sandbox1124.opentlc.com"  # Example cluster-pswms.pswms.sandbox1124.opentlc.com
+export TOKEN="XxXXXXXXXX"
+ACM_WORKLOADS=y
+AMQ_STREAMS=y
+CONFIGURE_POSTGRES=y
+HELM_DEPLOYMENT=n
+DELETE_DEPLOYMENT=false
+EOF
+```
 
-Quick Start 
------------
-> IN RHPDS OpenShift 4.10  WorkShop Cluster
+**Optional: Change namespace for helm deployments**  
+`default is quarkuscoffeeshop-demo`
 ```
-dnf install ansible -y
-curl -OL https://raw.githubusercontent.com/quarkuscoffeeshop/quarkuscoffeeshop-ansible/dev/files/deploy-quarkuscoffeeshop-ansible.sh
-chmod +x deploy-quarkuscoffeeshop-ansible.sh
-./deploy-quarkuscoffeeshop-ansible.sh -d ocp4.example.com -t sha-123456789 -s ATLANTA
+$ cat >source.env<<EOF
+ACM_WORKLOADS=n
+AMQ_STREAMS=y
+CONFIGURE_POSTGRES=y
+MONGODB_OPERATOR=n
+MONGODB=n
+HELM_DEPLOYMENT=y
+NAMESPACE=changeme
+DELETE_DEPLOYMENT=false
+EOF
+
+podman run  -it quarkuscoffeeshop-ansible:v0.0.1 --env-file=source.env
 ```
+
+
 
 ScreenShots
 ------------------------------------------------
@@ -127,6 +137,16 @@ curl  --request POST http://${ENDPOINT}/order \
 }'
 ```
 
+## Developer Notes
+> To develop and modifiy code 
+* OpenShift 4.10 an up Cluster installed
+* Ansible should be installed on machine
+* oc cli must be installed
+* Ansible community.kubernetes module must be installed `ansible-galaxy collection install community.kubernetes`
+* Install [Helm](https://helm.sh/docs/intro/install/) Binary
+* [Postges Operator](https://github.com/tosin2013/postgres-operator) for Quarkus CoffeeShop 5.0.1-SNAPSHOT Deployments
+* pip3 
+
 
 Role Variables
 --------------
@@ -160,156 +180,22 @@ storeid | Store id for web frontend | RALEIGH
 quarkus_log_level | Quarkus coffee shop log level |  INFO
 quarkuscoffeeshop_log_level | Microservice log level | DEBUG
 
-
-Dependencies
-------------
-
-* Ansible
-* OpenShift cli
-* helm 
-
-Quarkus CoffeeShop 5.0.3-SNAPSHOT OpenShift Deployment   
------------------------------------------------------------
-
-## Download Script
+**Download the deploy-quarkuscoffeeshop-ansible.sh shell script**
 ```
-curl -OL https://raw.githubusercontent.com/quarkuscoffeeshop/quarkuscoffeeshop-ansible/dev/files/deploy-quarkuscoffeeshop-ansible.sh
-chmod +x deploy-quarkuscoffeeshop-ansible.sh
-```
-
-**Set Environment variables for ACM WORKLOADS**
-* Gogs server
-* OpenShift Pipelines
-* OpenShift GitOps
-* Quay.io
-* AMQ Streams
-* Postgres Template deployment
-* homeoffice Tekton pipelines
-* quarkus-coffeeshop Tekton pipelines
-```
-$ cat >env.variables<<EOF
-ACM_WORKLOADS=y
-AMQ_STREAMS=y
-CONFIGURE_POSTGRES=n
-MONGODB_OPERATOR=n
-MONGODB=n
-HELM_DEPLOYMENT=n
-EOF
-$ ./deploy-quarkuscoffeeshop-ansible.sh -d ocp4.example.com -t sha-123456789 -s ATLANTA
-```
-
-**Set Environment variables for standard deployment**
-* AMQ Streams
-* Postgres Operator configuration 
-* quarkus coffeeshop helm deployment
-```
-$ cat >env.variables<<EOF
-ACM_WORKLOADS=n
-AMQ_STREAMS=y
-CONFIGURE_POSTGRES=y
-MONGODB_OPERATOR=n
-MONGODB=n
-HELM_DEPLOYMENT=y
-EOF
+$ curl -OL https://raw.githubusercontent.com/quarkuscoffeeshop/quarkuscoffeeshop-ansible/master/files/deploy-quarkuscoffeeshop-ansible.sh
+$ chmod +x deploy-quarkuscoffeeshop-ansible.sh
 $ ./deploy-quarkuscoffeeshop-ansible.sh -d ocp4.example.com -t sha-123456789 -p 123456789 -s ATLANTA
 ```
 
-**Optional: Change namespace for helm deployments**  
-`default is quarkuscoffeeshop-demo`
-```
-$ cat >env.variables<<EOF
-ACM_WORKLOADS=n
-AMQ_STREAMS=y
-CONFIGURE_POSTGRES=y
-MONGODB_OPERATOR=n
-MONGODB=n
-HELM_DEPLOYMENT=y
-EOF
-$ NAMESPACE=changeme
-$  sed -i "s/quarkuscoffeeshop-demo/${NAMESPACE}/g" deploy-quarkuscoffeeshop-ansible.sh
+**To Build container image**
+``` 
+podman build -t  quarkuscoffeeshop-ansible:v0.0.1 -f Dockerfile
 ```
 
-
-Quarkus CoffeeShop v3.3.1 and lower dependencies
------------
+**Test Container**
 ```
-ansible-galaxy collection install community.kubernetes
-
-# Install Helm 
-$ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
-$ chmod 700 get_helm.sh
-$ ./get_helm.sh
+podman run  -it quarkuscoffeeshop-ansible:v0.0.1 bash
 ```
-
-Quarkus CoffeeShop v3.3.1 OpenShift Deployment  with MongoDB Operator
------------------------------
-```
-$ ansible-galaxy install tosin2013.quarkus_cafe_demo_role
-$ export DOMAIN=ocp4.example.com
-$ export OCP_TOKEN=123456789
-$ cat >deploy-quarkus-cafe.yml<<YAML
-- hosts: localhost
-  become: yes
-  vars:
-    openshift_token: ${OCP_TOKEN}
-    openshift_url: https://api.${DOMAIN}:6443
-    insecure_skip_tls_verify: true
-    default_owner: ${USER}
-    default_group: ${USER}
-    project_namespace: quarkuscoffeeshop-demo
-    delete_deployment: false
-    skip_amq_install: false
-    skip_configure_postgres: true
-    skip_mongodb_operator_install: false
-    skip_quarkuscoffeeshop_helm_install: false
-    domain: ${DOMAIN}
-    helm_chart_version: 3.3.0
-    version_barista: 3.0.0
-    version_counter: 3.1.0
-    version_customermocker: 3.0.1
-    version_kitchen: 3.1.0
-    version_web: 3.1.0
-  roles:
-    - tosin2013.quarkus_cafe_demo_role
-YAML
-$ ansible-playbook  deploy-quarkus-cafe.yml
-```
-
-Quarkus CoffeeShop v3.3.1 OpenShift Deployment  with single mongoDB instance
------------------------------
-```
-$ ansible-galaxy install tosin2013.quarkus_cafe_demo_role
-$ export DOMAIN=ocp4.example.com
-$ export OCP_TOKEN=123456789
-$ cat >deploy-quarkus-cafe.yml<<YAML
-- hosts: localhost
-  become: yes
-  vars:
-    openshift_token: ${OCP_TOKEN}
-    openshift_url: https://api.${DOMAIN}:6443
-    insecure_skip_tls_verify: true
-    default_owner: ${USER}
-    default_group: ${USER}
-    project_namespace: quarkuscoffeeshop-demo
-    delete_deployment: false
-    skip_amq_install: false
-    skip_configure_postgres: true
-    skip_mongodb_operator_install: true
-    single_mongodb_install: true
-    skip_quarkuscoffeeshop_helm_install: false
-    domain: ${DOMAIN}
-    helm_chart_version: 3.3.0
-    version_barista: 3.0.0
-    version_counter: 3.1.0
-    version_customermocker: 3.0.1
-    version_kitchen: 3.1.0
-    version_web: 3.1.0
-  roles:
-    - tosin2013.quarkus_cafe_demo_role
-YAML
-$ ansible-playbook  deploy-quarkus-cafe.yml
-```
-
 
 Troubleshooting
 ---------------

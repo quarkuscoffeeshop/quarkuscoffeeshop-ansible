@@ -18,7 +18,9 @@ podman build -t  quarkuscoffeeshop-ansible:v0.0.1 -f Dockerfile
 ```
 
 ```
- podman run  -it quarkuscoffeeshop-ansible:v0.0.1 bash 
+ podman run  -it quarkuscoffeeshop-ansible:v0.0.1 bash --env-file=
+ /opt/workspace/files/deploy-quarkuscoffeeshop-ansible.sh  -d ${CLUSERTER_DOMAIN_NAME} -t  ${TOKEN}  -s ATLANTA
+ $ ./deploy-quarkuscoffeeshop-ansible.sh -d ocp4.example.com -t sha-123456789 -p 123456789 -s ATLANTA
 ```
 
 ```

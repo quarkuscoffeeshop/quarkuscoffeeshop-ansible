@@ -99,7 +99,7 @@ odf_version: "4.10"
 # Quay settings 
 quay_project_name: "quay-enterprise"
 quay_csv:  "red-hat-quay.v3.7.5"
-quay_channel: "quay-v3.7"
+quay_channel: "stable-3.7"
 quay_urlprefix:  "quayecosystem-quay-{{ quay_project_name }}"
 quay_pull_user: changeme
 quay_pull_password: changeme
@@ -113,7 +113,7 @@ ocp4_installer_root_pipeline_url: "https://mirror.openshift.com/pub/openshift-v4
 pipelines_tkn_version:  0.19.1
 
 # OpenShift GitOps
-gitopsoperatorCSV: openshift-gitops-operator.v1.4.2
+gitopsoperatorCSV: openshift-gitops-operator.v1.6.0
 pipelines_expected_crds:
 - pipelineresources.tekton.dev
 - pipelineruns.tekton.dev

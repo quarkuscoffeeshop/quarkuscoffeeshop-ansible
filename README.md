@@ -37,7 +37,7 @@ Quick Start
 * Postgres Operator configuration 
 * quarkus coffeeshop helm deployment
 ```
-$ cat >env.variables<<EOF
+$ cat >source.env<<EOF
 CLUSERTER_DOMAIN_NAME=clustername.example.com
 TOKEN=sha256~XXXXXXXXXXXX
 ACM_WORKLOADS=n

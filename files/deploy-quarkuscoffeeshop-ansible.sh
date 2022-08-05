@@ -28,7 +28,7 @@ function usage() {
 # community.kubernetes.helm_repository
 function configure-ansible-and-playbooks(){
   echo "Check if community.kubernetes exists"
-  if [ ! -d ~/.ansible/collections/ansible_collections/community/kubernetes ];
+  if [ ! -d ~/.ansible/collections/ansible_collections/community/kubernetes ] || [ ! -d /root/.ansible/collections/ansible_collections/community/kubernetes ];
   then 
     echo "Installing community.kubernetes ansible role"
     ${USE_SUDO} git clone https://github.com/ansible-collections/kubernetes.core.git
@@ -89,7 +89,9 @@ function destory_coffee_shop(){
   echo "******************"
   echo "Destroy Deployment"
   echo "******************"
+  configure-ansible-and-playbooks
   checkpipmodules
+
   echo "${USE_SUDO} ansible-playbook  /tmp/deploy-quarkus-cafe.yml -t $(cat /tmp/tags) --extra-vars delete_deployment=${DESTROY} ${DEVMOD}"
   ${USE_SUDO} ansible-playbook  /tmp/deploy-quarkus-cafe.yml -t $(cat /tmp/tags) --extra-vars delete_deployment=${DESTROY} ${DEVMOD} -e 'ansible_python_interpreter=/usr/bin/python3'
 }

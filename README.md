@@ -49,7 +49,9 @@ HELM_DEPLOYMENT=y
 DELETE_DEPLOYMENT=false
 EOF
 $ podman run  -it --env-file=./source.env  quay.io/quarkuscoffeeshop/quarkuscoffeeshop-ansible:v4.10.24
+
 ```
+
 
 
 **Set Environment variables for ACM WORKLOADS**
@@ -200,7 +202,8 @@ podman build -t  quarkuscoffeeshop-ansible:v0.0.1 -f Dockerfile
 
 **Test Container**
 ```
-podman run  -it quarkuscoffeeshop-ansible:v0.0.1 bash
+podman run  -it quarkuscoffeeshop-ansible:v0.0.1 bash or 
+podman run  -it --env-file=./source.env   localhost/quarkuscoffeeshop-ansible:v0.0.1
 ```
 
 Troubleshooting

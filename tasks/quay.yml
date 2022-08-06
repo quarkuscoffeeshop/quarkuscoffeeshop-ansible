@@ -101,14 +101,30 @@
   loop: "{{ quay_limit_ranges.resources }}"
   tags: quay
 
+- name: Check redhat pull secret
+  # yamllint disable-line rule:line-length
+  command: "{{ oc_location }} get secret redhat-pull-secret -n {{ quay_project_name }}"
+  register: redhat_pull_secret_check
+  ignore_errors: yes
+  tags: quay
+
 - name: create redhat pull secret
   # yamllint disable-line rule:line-length
-  command: "{{ oc_location }} -n {{ quay_project_name }} create secret docker-registry redhat-pull-secret --docker-server=quay.io  --docker-username='{{ quay_pull_user }}' --docker-password='{{ quay_pull_password }}'"
+  command:  "{{ oc_location }} -n {{ quay_project_name }} create secret docker-registry redhat-pull-secret --docker-server=quay.io  --docker-username='{{ quay_pull_user }}' --docker-password='{{ quay_pull_password }}'"
+  when: redhat_pull_secret_check.rc != 0
+  tags: quay
+
+- name: Check  quay admin password secret
+  # yamllint disable-line rule:line-length
+  command: "{{ oc_location }} get secret  quay-admin-password -n {{ quay_project_name }}"
+  register:  quay_admin_password_check
+  ignore_errors: yes
   tags: quay
 
 - name: create quay admin password secret
   # yamllint disable-line rule:line-length
   command: "{{ oc_location }} -n {{ quay_project_name }} create secret generic quay-admin-password --from-literal=superuser-username={{ quay_admin_user }} --from-literal=superuser-password={{ quay_admin_password }} --from-literal=superuser-email=quay@example.com"
+  when: quay_admin_password_check.rc != 0
   tags: quay
 
 - name: Deploy Quay Operator
@@ -130,9 +146,17 @@
   ignore_errors: true
   tags: quay
 
+- name: Check  quay admin password secret
+  # yamllint disable-line rule:line-length
+  command: "{{ oc_location }} get secret  quay-auth-secret -n {{ development_project }}"
+  register:  quay_auth_secret_check
+  ignore_errors: yes
+  tags: quay
+
 - name: create docker secret for quay
   # yamllint disable-line rule:line-length
   command: "{{ oc_location }} create secret docker-registry quay-auth-secret --docker-server={{ quay_urlprefix }}.apps.{{ domain }} --docker-username={{ quay_admin_user }} --docker-password={{ quay_admin_password }} -n {{ development_project }}"
+  when: quay_auth_secret_check.rc != 0
   tags: quay
 
 - name: link secrets to service accounts

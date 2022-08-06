@@ -1,7 +1,7 @@
 #!/bin/bash
 #set -e
 # For development export the enviorment variable below
-export DEVELOPMENT=true 
+#export DEVELOPMENT=true 
 
 
 if [ "$EUID" -ne 0 ]

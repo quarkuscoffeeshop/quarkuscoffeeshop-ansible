@@ -81,6 +81,7 @@
 - name: Search for all Pods labeled  cafe-cluster-zookeeper
   kubernetes.core.k8s_info:
     kind: Pod
+    namespace:  "{{ project_namespace }}"
     label_selectors:
       - "strimzi.io/name=cafe-cluster-zookeeper"
     field_selectors:
@@ -97,6 +98,7 @@
 - name: Search for all Pods labeled  cafe-cluster-kafka
   kubernetes.core.k8s_info:
     kind: Pod
+    namespace:  "{{ project_namespace }}"
     label_selectors:
       - "strimzi.io/name=cafe-cluster-kafka"
     field_selectors:

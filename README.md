@@ -206,6 +206,11 @@ podman run  -it quarkuscoffeeshop-ansible:v0.0.1 bash or
 podman run  -it --env-file=./source.env   localhost/quarkuscoffeeshop-ansible:v0.0.1
 ```
 
+**Delete old containers**
+```
+ podman rm $(podman ps -a | grep Exited | awk '{print $1}')
+```
+
 Troubleshooting
 ---------------
 Force delete kafka crds after bad install

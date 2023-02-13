@@ -67,7 +67,7 @@ development_project: quarkuscoffeeshop-cicd
 homeoffice_project: quarkuscoffeeshop-homeoffice
 
 # gogs configureation settings 
-gogs_image_version:  0.11.34
+gogs_image_version:  0.12.10
 gogs_database_version: 9.6
 gogs_service_name: gogs
 gogs_urlprefix: "{{ gogs_service_name }}-{{ development_project }}"

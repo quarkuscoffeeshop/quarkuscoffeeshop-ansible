@@ -10,7 +10,7 @@
 
 - name: deploy gogs from template (persistent)
   shell: |
-    {{ oc_location }} new-app -f https://raw.githubusercontent.com/OpenShiftDemos/gogs-openshift-docker/master/openshift/gogs-persistent-template.yaml \
+    {{ oc_location }} new-app -f https://raw.githubusercontent.com/tosin2013/gogs-openshift-docker/master/openshift/gogs-persistent-template.yaml \
         --param=HOSTNAME={{ gogs_urlprefix }}.apps.{{ domain }} \
         --param=GOGS_VERSION={{ gogs_image_version }} \
         --param=DATABASE_VERSION={{ gogs_database_version }} \
@@ -22,7 +22,7 @@
 
 - name: deploy gogs from template (ephemeral)
   shell: |
-    {{ oc_location }} new-app -f https://raw.githubusercontent.com/OpenShiftDemos/gogs-openshift-docker/master/openshift/gogs-template.yaml \
+    {{ oc_location }} new-app -f https://raw.githubusercontent.com/tosin2013/gogs-openshift-docker/master/openshift/gogs-template.yaml \
         --param=HOSTNAME={{ gogs_urlprefix }}.apps.{{ domain }} \
         --param=GOGS_VERSION={{ gogs_image_version }} \
         --param=DATABASE_VERSION={{ gogs_database_version }} \

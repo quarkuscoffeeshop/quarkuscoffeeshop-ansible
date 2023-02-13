@@ -17,16 +17,17 @@ The source code for the  [quarkuscoffeeshop](https://github.com/quarkuscoffeesho
 Requirements
 ------------
 
-* OpenShift 4.10 an up Cluster installed
+* OpenShift 4.12 an up Cluster installed
 * Docker or podman
 
 Currently tested on 
 -------------------
-* OpenShift 4.10.24
-* OpenShift Pipelines: 1.6.3
-* AMQ Streams: 2.1.0-6
-* Postgres Operator: v5.1.2
-* OpenShift Quay: v3.7.5
+* OpenShift 4.12.2
+* OpenShift Pipelines: 1.9.0
+* AMQ Streams: 2.3.0-0odm
+* Postgres Operator: v5.3.0
+* OpenShift Quay: v3.8.1
+* OpenShift GitOps: v1.5.9
 
 
 Quick Start 
@@ -197,13 +198,13 @@ $ ./deploy-quarkuscoffeeshop-ansible.sh -d ocp4.example.com -t sha-123456789 -p 
 
 **To Build container image**
 ``` 
-podman build -t  quarkuscoffeeshop-ansible:v0.0.1 -f Dockerfile
+podman build -t  quarkuscoffeeshop-ansible:v0.0.2 -f Dockerfile
 ```
 
 **Test Container**
 ```
-podman run  -it quarkuscoffeeshop-ansible:v0.0.1 bash or 
-podman run  -it --env-file=./source.env   localhost/quarkuscoffeeshop-ansible:v0.0.1
+podman run  -it quarkuscoffeeshop-ansible:v0.0.2 bash or
+podman run  -it --env-file=./source.env   localhost/quarkuscoffeeshop-ansible:v0.0.2
 ```
 
 **Delete old containers**

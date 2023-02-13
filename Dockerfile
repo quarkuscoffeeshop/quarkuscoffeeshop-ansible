@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 fedora:36
+FROM --platform=linux/amd64 fedora:37
 
 RUN dnf makecache && dnf install -y bind-utils openssl openssh-clients wget  python3-pip git bash-completion python3-jmespath ansible --setopt=install_weak_deps=False  && \
     dnf clean all &&  rm -rf /var/cache/yum 

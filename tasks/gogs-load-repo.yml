@@ -5,6 +5,32 @@
   block:
     - set_fact:
         my_user: "{{ item }}"
+      tags: gogs
+
+    - name: Get Gogs API token
+      uri:
+        url: http://{{ gogs_urlprefix }}.apps.{{ domain }}/api/v1/users/builder/tokens
+        method: GET
+        headers:
+          Content-Type: application/json
+          Authorization: "Basic dXNlcjE6b3BlbnNoaWZ0"
+        body_format: json
+        body:
+          name: user_token
+        status_code: 201,200
+      register: token_response
+      ignore_errors: false
+      tags: gogs
+
+    - name: Print the Token for {{ my_user }}
+      ansible.builtin.debug:
+        msg: Access Token {{ token_response.json }}
+      tags: gogs
+
+    - set_fact:
+        api_token: "{{ token_response.json[0].sha1 }}"
+      ignore_errors: false
+      tags: gogs
 
     - name: loading gogs for {{ my_user }}  Started
       debug:
@@ -23,12 +49,13 @@
 
     - name: create git repository for user "{{ my_user }}"
       uri:
+        headers:
+          Content-Type: application/json
+          Authorization: "token {{ api_token }}"
         url: http://{{ gogs_urlprefix }}.apps.{{ domain }}/api/v1/user/repos
         method: POST
         body: '{"name": "{{ reponame_local }}", "private": false}'
         body_format: json
-        user: "{{ my_user }}"
-        password: "{{ gogs_user_password }}"
         status_code: 200,201
         force_basic_auth: true
       when: repo_result.status != 200

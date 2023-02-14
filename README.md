@@ -206,7 +206,7 @@ podman build -t  quarkuscoffeeshop-ansible:v0.0.2 -f Dockerfile
 
 **Test Container**
 ```
-podman run  -it  --env-file=./source.env  quarkuscoffeeshop-ansible:v0.0.2 bash or
+podman run  -it  quarkuscoffeeshop-ansible:v0.0.2 bash or
 podman run  -it --env-file=./source.env   localhost/quarkuscoffeeshop-ansible:v0.0.2
 ```
 

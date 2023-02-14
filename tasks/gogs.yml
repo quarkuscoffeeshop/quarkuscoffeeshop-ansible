@@ -111,10 +111,32 @@
   when: gogs_generate_user_count|int >= 0
   tags: gogs
 
+- name: Create Gogs API token
+  uri:
+    url: http://{{ gogs_urlprefix }}.apps.{{ domain }}/api/v1/users/builder/tokens
+    method: POST
+    headers:
+      Content-Type: application/json
+    body_format: json
+    user: "{{ gogs_admin_user }}"
+    password: "{{ gogs_admin_password }}"
+    body:
+      name: user_token
+  register: token_response
+  ignore_errors: true
+  with_sequence: start=0 end={{ gogs_generate_user_count }} format="{{ user_format }}"
+  when: gogs_generate_user_count|int >= 0
+  tags: gogs
+
+- set_fact:
+    api_token: "{{ token_response.json.token }}"
+
 - include_tasks: gogs-load-repo.yml
   with_sequence: start={{ gogs_generate_user_count }} end={{ user_count_end }} format={{ user_format }}
+  api_token: "{{ api_token }}"
   tags: gogs
 
 - include_tasks: gogs-load-acm-repo.yml
   with_sequence: start={{ gogs_generate_user_count }} end={{ user_count_end }} format={{ user_format }}
+  api_token: "{{ api_token }}"
   tags: gogs

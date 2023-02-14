@@ -48,6 +48,7 @@ MONGODB_OPERATOR=n
 MONGODB=n
 HELM_DEPLOYMENT=y
 DELETE_DEPLOYMENT=false
+DEBUG=-v
 EOF
 $ podman run  -it --env-file=./source.env  quay.io/quarkuscoffeeshop/quarkuscoffeeshop-ansible:v4.10.24
 
@@ -73,6 +74,7 @@ AMQ_STREAMS=y
 CONFIGURE_POSTGRES=y
 HELM_DEPLOYMENT=n
 DELETE_DEPLOYMENT=false
+DEBUG=-v
 EOF
 $ podman run  -it --env-file=./source.env  quay.io/quarkuscoffeeshop/quarkuscoffeeshop-ansible:v4.10.24
 ```
@@ -91,6 +93,7 @@ MONGODB=n
 HELM_DEPLOYMENT=y
 NAMESPACE=changeme
 DELETE_DEPLOYMENT=false
+DEBUG=-v
 EOF
 $ podman run  -it --env-file=./source.env  quay.io/quarkuscoffeeshop/quarkuscoffeeshop-ansible:v4.10.24
 ```
@@ -203,13 +206,14 @@ podman build -t  quarkuscoffeeshop-ansible:v0.0.2 -f Dockerfile
 
 **Test Container**
 ```
-podman run  -it quarkuscoffeeshop-ansible:v0.0.2 bash or
+podman run  -it  --env-file=./source.env  quarkuscoffeeshop-ansible:v0.0.2 bash or
 podman run  -it --env-file=./source.env   localhost/quarkuscoffeeshop-ansible:v0.0.2
 ```
 
 **Delete old containers**
 ```
- podman rm $(podman ps -a | grep Exited | awk '{print $1}')
+podman rm $(podman ps -a | grep Exited | awk '{print $1}')
+podman rmi localhost/quarkuscoffeeshop-ansible:v0.0.2 
 ```
 
 Troubleshooting

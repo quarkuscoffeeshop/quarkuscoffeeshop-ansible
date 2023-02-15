@@ -108,7 +108,7 @@ quay_admin_password: admin123
 
 # OpenShift Pipelines 
 # Official Mirror
-openshiftpipelinesCSV: redhat-openshift-pipelines.v1.9.0
+openshiftpipelinesCSV: openshift-pipelines-operator-rh.v1.9.0
 ocp4_installer_root_pipeline_url: "https://mirror.openshift.com/pub/openshift-v4/clients/"
 pipelines_tkn_version:  0.19.1
 

@@ -1,7 +1,7 @@
 #!/bin/bash 
 set -xe 
 RANDOM_STRING=$(echo $RANDOM | md5sum | head -c 5; echo;)
-env
+source $(env)
 echo "CLUSTER_DOMAIN_NAME: $CLUSTER_DOMAIN_NAME"
 
 if [ -z  ${CLUSTER_DOMAIN_NAME} ]; then

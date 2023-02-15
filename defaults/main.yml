@@ -113,7 +113,7 @@ ocp4_installer_root_pipeline_url: "https://mirror.openshift.com/pub/openshift-v4
 pipelines_tkn_version:  0.19.1
 
 # OpenShift GitOps
-gitopsoperatorCSV: openshift-gitops-operator.v1.5.9
+gitopsoperatorCSV: openshift-gitops-operator.v1.7.1
 pipelines_expected_crds:
 - pipelineresources.tekton.dev
 - pipelineruns.tekton.dev

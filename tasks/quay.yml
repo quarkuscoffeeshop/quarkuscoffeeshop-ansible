@@ -5,6 +5,7 @@
     name: "{{ quay_project_name }}"
     kind: Project
     api_version: project.openshift.io/v1
+  ignore_errors: true 
   tags: quay
 
 - name: Create Quay Operator OperatorGroup

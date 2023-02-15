@@ -7,7 +7,7 @@ default_group: root
 insecure_skip_tls_verify: true
 project_namespace: quarkuscoffeeshop-demo
 delete_deployment: false
-amqstartingCSV: amqstreams.v2.3.0-0
+amqstartingCSV: amqstreams.v2.3.0-1
 mongodbstartingCSV: mongodb-enterprise.v1.8.1
 crunchystartingCSV: postgresoperator.v5.3.0
 config_location: "/tmp/"

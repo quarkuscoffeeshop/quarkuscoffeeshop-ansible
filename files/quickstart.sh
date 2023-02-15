@@ -1,6 +1,8 @@
 #!/bin/bash 
 set -xe 
 RANDOM_STRING=$(echo $RANDOM | md5sum | head -c 5; echo;)
+env
+echo "CLUSTER_DOMAIN_NAME: $CLUSTER_DOMAIN_NAME"
 
 if [ -z  ${CLUSTER_DOMAIN_NAME} ]; then
     echo "CLUSTER_DOMAIN_NAME is not set"
@@ -23,6 +25,7 @@ echo "MONGODB_OPERATOR=n" >> $HOME/env.variables
 echo "MONGODB=n" >> $HOME/env.variables
 cat $HOME/env.variables
 echo "********************************************************************************"
+sleep 5s
 if [ $DELETE_DEPLOYMENT == "true" ]; then
    echo "Deleting deployment..."
    /opt/workspace/files/deploy-quarkuscoffeeshop-ansible.sh  -d ${CLUSTER_DOMAIN_NAME} -t  ${TOKEN}  -s STORE-${RANDOM_STRING} -u true

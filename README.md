@@ -24,10 +24,10 @@ Currently tested on
 -------------------
 * OpenShift 4.12.2
 * OpenShift Pipelines: 1.9.0
-* AMQ Streams: 2.3.0-0odm
+* AMQ Streams: 2.3.0-1
 * Postgres Operator: v5.3.0
 * OpenShift Quay: v3.8.1
-* OpenShift GitOps: v1.5.9
+* OpenShift GitOps: v1.7.1
 
 
 Quick Start 

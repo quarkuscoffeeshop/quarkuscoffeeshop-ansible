@@ -24,7 +24,7 @@ Currently tested on
 -------------------
 * OpenShift 4.12.2
 * OpenShift Pipelines: 1.9.0
-* AMQ Streams: 2.3.0-1
+* AMQ Streams: 2.3.0-0odm
 * Postgres Operator: v5.3.0
 * OpenShift Quay: v3.8.1
 * OpenShift GitOps: v1.7.1
@@ -50,7 +50,7 @@ HELM_DEPLOYMENT=y
 DELETE_DEPLOYMENT=false
 DEBUG=-v
 EOF
-$ podman run  -it --env-file=./source.env  quay.io/quarkuscoffeeshop/quarkuscoffeeshop-ansible:v4.10.24
+$ podman run  -it --env-file=./source.env  quay.io/quarkuscoffeeshop/quarkuscoffeeshop-ansible:v4.12.1
 
 ```
 
@@ -76,7 +76,7 @@ HELM_DEPLOYMENT=n
 DELETE_DEPLOYMENT=false
 DEBUG=-v
 EOF
-$ podman run  -it --env-file=./source.env  quay.io/quarkuscoffeeshop/quarkuscoffeeshop-ansible:v4.10.24
+$ podman run  -it --env-file=./source.env  quay.io/quarkuscoffeeshop/quarkuscoffeeshop-ansible:v4.12.1
 ```
 
 **Optional: Change namespace for helm deployments**  
@@ -95,7 +95,7 @@ NAMESPACE=changeme
 DELETE_DEPLOYMENT=false
 DEBUG=-v
 EOF
-$ podman run  -it --env-file=./source.env  quay.io/quarkuscoffeeshop/quarkuscoffeeshop-ansible:v4.10.24
+$ podman run  -it --env-file=./source.env  quay.io/quarkuscoffeeshop/quarkuscoffeeshop-ansible:v4.12.1
 ```
 
 
@@ -206,7 +206,7 @@ podman build -t  quarkuscoffeeshop-ansible:v0.0.2 -f Dockerfile
 
 **Test Container**
 ```
-podman run  -it  quarkuscoffeeshop-ansible:v0.0.2 bash or
+podman run  -it   --env-file=./source.env  quarkuscoffeeshop-ansible:v0.0.2 bash or
 podman run  -it --env-file=./source.env   localhost/quarkuscoffeeshop-ansible:v0.0.2
 ```
 

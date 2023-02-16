@@ -94,7 +94,7 @@ repo_url: https://github.com/quarkuscoffeeshop/tekton-pipelines.git
 acm_repo_url: https://github.com/quarkuscoffeeshop/quarkuscoffeeshop-gitops.git
 
 # OpenShift Storage
-odf_version: "4.12" 
+odf_version: "stable-4.12" 
 
 # Quay settings 
 quay_project_name: "quay-enterprise"

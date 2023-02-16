@@ -5,23 +5,13 @@
     dest: "{{ config_location }}"
   tags: quay
 
-- name: Get OpenShift storage operator version
+- name: Deploy the openshift storage operator
   shell: |
-    {{ oc_location }}  describe packagemanifests  ocs-operator -n openshift-marketplace | grep Version: |  grep {{ odf_version }}  | awk '{print $2}' | sort --unique
+    {{ oc_location }} apply -k https://github.com/redhat-cop/gitops-catalog/openshift-data-foundation-operator/operator/overlays/{{ odf_version }}
   register: operator_version_check
   become: no
   tags: quay
 
-- name: setting openshift-storage-operator version
-  set_fact:
-    ocs_starting_csv: "{{ operator_version_check.stdout }}"
-  tags: quay
-
-- name: deploy the openshift storage operator
-  kubernetes.core.k8s:
-    state: present
-    definition: "{{ lookup('template', 'openshift-storage-operator.yaml.j2') }}"
-  tags: quay
 
 - name: Pause for 120 seconds for pods to download 
   pause:

@@ -39,7 +39,7 @@ Quick Start
 * quarkus coffeeshop helm deployment
 ```
 $ cat >source.env<<EOF
-CLUSERTER_DOMAIN_NAME=clustername.example.com
+CLUSTER_DOMAIN_NAME=clustername.example.com
 TOKEN=sha256~XXXXXXXXXXXX
 ACM_WORKLOADS=n
 AMQ_STREAMS=y
@@ -67,7 +67,7 @@ $ podman run  -it --env-file=./source.env  quay.io/quarkuscoffeeshop/quarkuscoff
 * quarkus-coffeeshop Tekton pipelines
 ```
 $ cat >source.env<<EOF
-CLUSERTER_DOMAIN_NAME=clustername.example.com
+CLUSTER_DOMAIN_NAME=clustername.example.com
 TOKEN=sha256~XXXXXXXXXXXX
 ACM_WORKLOADS=y
 AMQ_STREAMS=y
@@ -83,7 +83,7 @@ $ podman run  -it --env-file=./source.env  quay.io/quarkuscoffeeshop/quarkuscoff
 `default is quarkuscoffeeshop-demo`
 ```
 $ cat >source.env<<EOF
-CLUSERTER_DOMAIN_NAME=clustername.example.com
+CLUSTER_DOMAIN_NAME=clustername.example.com
 TOKEN=sha256~XXXXXXXXXXXX
 ACM_WORKLOADS=n
 AMQ_STREAMS=y

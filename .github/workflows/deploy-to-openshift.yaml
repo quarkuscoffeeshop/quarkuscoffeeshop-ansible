@@ -73,7 +73,6 @@ jobs:
 
     - name: Set environment variables
       run: |
-        echo "CLUSTER_DOMAIN_NAME=${{ secrets.CLUSTER_DOMAIN_NAME }}" >> source.env
         echo "TOKEN=${{ secrets.OPENSHIFT_TOKEN }}" >> source.env
         echo "ACM_WORKLOADS=${{ github.event.inputs.ACM_WORKLOADS }}" >> source.env
         echo "AMQ_STREAMS=${{ github.event.inputs.AMQ_STREAMS }}" >> source.env
@@ -89,9 +88,8 @@ jobs:
       run: |
         echo "Deploying Quarkus Coffee Shop application"
         source source.env
-        # ./files/deploy-quarkuscoffeeshop-ansible.sh -d ${{ secrets.OPENSHIFT_SERVER }} -t ${{ secrets.OPENSHIFT_TOKEN }} -p 123456789 -s RALEIGH
+        ./files/deploy-quarkuscoffeeshop-ansible.sh -d ${{ secrets.OPENSHIFT_SERVER }} -t ${{ secrets.OPENSHIFT_TOKEN }} -p 123456789 -s RALEIGH
       env:
-        CLUSTER_DOMAIN_NAME: ${{ secrets.CLUSTER_DOMAIN_NAME }}
         TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
         ACM_WORKLOADS: ${{ github.event.inputs.ACM_WORKLOADS }}
         AMQ_STREAMS: ${{ github.event.inputs.AMQ_STREAMS }}

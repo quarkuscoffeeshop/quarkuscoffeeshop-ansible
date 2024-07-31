@@ -88,6 +88,9 @@ jobs:
       run: |
         # Add your deployment commands here
         # For example, you might run a script or use oc commands to deploy your application
+        echo "Deploying Quarkus Coffee Shop application"
+        echo "Cluster Domain Name: ${{ CLUSTER_DOMAIN_NAME }}"
+        echo "CONFIGURE_POSTGRES: ${{ CONFIGURE_POSTGRES }}"
         ./files/deploy-quarkuscoffeeshop-ansible.sh -d ${{ secrets.OPENSHIFT_SERVER }} -t ${{ secrets.OPENSHIFT_TOKEN }} -p 123456789 -s RALEIGH
       env:
         CLUSTER_DOMAIN_NAME: ${{ env.CLUSTER_DOMAIN_NAME }}

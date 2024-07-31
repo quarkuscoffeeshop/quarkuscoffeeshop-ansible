@@ -42,14 +42,24 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+
+    - name: Install Ansible and dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install ansible
 
     - name: Set up OpenShift CLI
       run: |
-        curl -LO https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz
-        tar -xzf openshift-client-linux.tar.gz
-        sudo mv oc kubectl /usr/local/bin/
-    
+        curl -OL https://raw.githubusercontent.com/tosin2013/openshift-4-deployment-notes/master/pre-steps/configure-openshift-packages.sh
+        chmod +x configure-openshift-packages.sh
+        export VERSION=latest-4.12
+        ./configure-openshift-packages.sh -i
 
     - name: Log in to OpenShift cluster
       run: oc login --token=${{ secrets.OPENSHIFT_TOKEN }} --server=${{ secrets.OPENSHIFT_SERVER }}

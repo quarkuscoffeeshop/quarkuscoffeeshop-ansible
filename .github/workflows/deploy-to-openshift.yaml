@@ -74,7 +74,7 @@ jobs:
     - name: Set environment variables
       run: |
         cat >source.env<<EOF
-CLUSERTER_DOMAIN_NAME=${{ secrets.CLUSTER_DOMAIN_NAME }}
+CLUSTER_DOMAIN_NAME=${{ secrets.CLUSTER_DOMAIN_NAME }}
 TOKEN=${{ secrets.OPENSHIFT_TOKEN }}
 ACM_WORKLOADS=${{ github.event.inputs.ACM_WORKLOADS }}
 AMQ_STREAMS=${{ github.event.inputs.AMQ_STREAMS }}
@@ -88,19 +88,17 @@ EOF
 
     - name: Deploy application
       run: |
-        # Add your deployment commands here
-        # For example, you might run a script or use oc commands to deploy your application
         echo "Deploying Quarkus Coffee Shop application"
-        ls -lath source.env
-        #./files/deploy-quarkuscoffeeshop-ansible.sh -d ${{ secrets.OPENSHIFT_SERVER }} -t ${{ secrets.OPENSHIFT_TOKEN }} -p 123456789 -s RALEIGH
+        source source.env
+        # ./files/deploy-quarkuscoffeeshop-ansible.sh -d ${{ secrets.OPENSHIFT_SERVER }} -t ${{ secrets.OPENSHIFT_TOKEN }} -p 123456789 -s RALEIGH
       env:
-        CLUSTER_DOMAIN_NAME: ${{ env.CLUSTER_DOMAIN_NAME }}
-        TOKEN: ${{ env.TOKEN }}
-        ACM_WORKLOADS: ${{ env.ACM_WORKLOADS }}
-        AMQ_STREAMS: ${{ env.AMQ_STREAMS }}
-        CONFIGURE_POSTGRES: ${{ env.CONFIGURE_POSTGRES }}
-        MONGODB_OPERATOR: ${{ env.MONGODB_OPERATOR }}
-        MONGODB: ${{ env.MONGODB }}
-        HELM_DEPLOYMENT: ${{ env.HELM_DEPLOYMENT }}
-        DELETE_DEPLOYMENT: ${{ env.DELETE_DEPLOYMENT }}
-        DEBUG: ${{ env.DEBUG }}
+        CLUSTER_DOMAIN_NAME: ${{ secrets.CLUSTER_DOMAIN_NAME }}
+        TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
+        ACM_WORKLOADS: ${{ github.event.inputs.ACM_WORKLOADS }}
+        AMQ_STREAMS: ${{ github.event.inputs.AMQ_STREAMS }}
+        CONFIGURE_POSTGRES: ${{ github.event.inputs.CONFIGURE_POSTGRES }}
+        MONGODB_OPERATOR: ${{ github.event.inputs.MONGODB_OPERATOR }}
+        MONGODB: ${{ github.event.inputs.MONGODB }}
+        HELM_DEPLOYMENT: ${{ github.event.inputs.HELM_DEPLOYMENT }}
+        DELETE_DEPLOYMENT: ${{ github.event.inputs.DELETE_DEPLOYMENT }}
+        DEBUG: ${{ github.event.inputs.DEBUG }}

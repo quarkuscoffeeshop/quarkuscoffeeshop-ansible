@@ -3,6 +3,10 @@ name: Deploy to OpenShift
 on:
   workflow_dispatch:
     inputs:
+      SKIP_TLS:
+        description: 'Skip TLS verification'
+        default: 'true'
+        required: false
       ACM_WORKLOADS:
         description: 'Enable ACM Workloads'
         default: 'n'
@@ -62,7 +66,7 @@ jobs:
         ./configure-openshift-packages.sh -i
 
     - name: Log in to OpenShift cluster
-      run: oc login --token=${{ secrets.OPENSHIFT_TOKEN }} --server=${{ secrets.OPENSHIFT_SERVER }}
+      run: oc login --token=${{ secrets.OPENSHIFT_TOKEN }} --server=${{ secrets.OPENSHIFT_SERVER }} --insecure-skip-tls-verify=${{ github.event.inputs.SKIP_TLS }}
       env:
         OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
         OPENSHIFT_SERVER: ${{ secrets.OPENSHIFT_SERVER }}

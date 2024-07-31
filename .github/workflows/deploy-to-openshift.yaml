@@ -73,24 +73,25 @@ jobs:
 
     - name: Set environment variables
       run: |
-        echo "CLUSTER_DOMAIN_NAME=${{ secrets.CLUSTER_DOMAIN_NAME }}" >> $GITHUB_ENV
-        echo "TOKEN=${{ secrets.OPENSHIFT_TOKEN }}" >> $GITHUB_ENV
-        echo "ACM_WORKLOADS=${{ github.event.inputs.ACM_WORKLOADS }}" >> $GITHUB_ENV
-        echo "AMQ_STREAMS=${{ github.event.inputs.AMQ_STREAMS }}" >> $GITHUB_ENV
-        echo "CONFIGURE_POSTGRES=${{ github.event.inputs.CONFIGURE_POSTGRES }}" >> $GITHUB_ENV
-        echo "MONGODB_OPERATOR=${{ github.event.inputs.MONGODB_OPERATOR }}" >> $GITHUB_ENV
-        echo "MONGODB=${{ github.event.inputs.MONGODB }}" >> $GITHUB_ENV
-        echo "HELM_DEPLOYMENT=${{ github.event.inputs.HELM_DEPLOYMENT }}" >> $GITHUB_ENV
-        echo "DELETE_DEPLOYMENT=${{ github.event.inputs.DELETE_DEPLOYMENT }}" >> $GITHUB_ENV
-        echo "DEBUG=${{ github.event.inputs.DEBUG }}" >> $GITHUB_ENV
+      cat >source.env<<EOF
+CLUSERTER_DOMAIN_NAME=${{ secrets.CLUSTER_DOMAIN_NAME }}
+TOKEN=${{ secrets.OPENSHIFT_TOKEN }}
+ACM_WORKLOADS=${{ github.event.inputs.ACM_WORKLOADS }}
+AMQ_STREAMS=${{ github.event.inputs.AMQ_STREAMS }}
+CONFIGURE_POSTGRES=${{ github.event.inputs.CONFIGURE_POSTGRES }}
+HELM_DEPLOYMENT=${{ github.event.inputs.HELM_DEPLOYMENT }}
+DELETE_DEPLOYMENT=${{ github.event.inputs.DELETE_DEPLOYMENT }}
+MONGODB_OPERATOR=${{ github.event.inputs.MONGODB_OPERATOR }}
+MONGODB=${{ github.event.inputs.MONGODB }}
+DEBUG=${{ github.event.inputs.DEBUG }}
+EOF
 
     - name: Deploy application
       run: |
         # Add your deployment commands here
         # For example, you might run a script or use oc commands to deploy your application
         echo "Deploying Quarkus Coffee Shop application"
-        source $GITHUB_ENV
-        echo "CLUSTER_DOMAIN_NAME: $CLUSTER_DOMAIN_NAME"
+        ls -lath source.env
         #./files/deploy-quarkuscoffeeshop-ansible.sh -d ${{ secrets.OPENSHIFT_SERVER }} -t ${{ secrets.OPENSHIFT_TOKEN }} -p 123456789 -s RALEIGH
       env:
         CLUSTER_DOMAIN_NAME: ${{ env.CLUSTER_DOMAIN_NAME }}

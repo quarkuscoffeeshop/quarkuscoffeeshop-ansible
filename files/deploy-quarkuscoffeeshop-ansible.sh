@@ -2,7 +2,8 @@
 #set -e
 # For development export the enviorment variable below
 #export DEVELOPMENT=true 
-
+export PS4='+(${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
+set -x
 
 if [ "$EUID" -ne 0 ]
 then 

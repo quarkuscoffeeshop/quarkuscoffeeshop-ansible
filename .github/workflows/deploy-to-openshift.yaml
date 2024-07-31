@@ -73,7 +73,7 @@ jobs:
 
     - name: Set environment variables
       run: |
-      cat >source.env<<EOF
+        cat >source.env<<EOF
 CLUSERTER_DOMAIN_NAME=${{ secrets.CLUSTER_DOMAIN_NAME }}
 TOKEN=${{ secrets.OPENSHIFT_TOKEN }}
 ACM_WORKLOADS=${{ github.event.inputs.ACM_WORKLOADS }}

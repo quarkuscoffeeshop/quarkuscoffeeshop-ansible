@@ -73,18 +73,17 @@ jobs:
 
     - name: Set environment variables
       run: |
-        cat >source.env<<EOF
-CLUSTER_DOMAIN_NAME=${{ secrets.CLUSTER_DOMAIN_NAME }}
-TOKEN=${{ secrets.OPENSHIFT_TOKEN }}
-ACM_WORKLOADS=${{ github.event.inputs.ACM_WORKLOADS }}
-AMQ_STREAMS=${{ github.event.inputs.AMQ_STREAMS }}
-CONFIGURE_POSTGRES=${{ github.event.inputs.CONFIGURE_POSTGRES }}
-HELM_DEPLOYMENT=${{ github.event.inputs.HELM_DEPLOYMENT }}
-DELETE_DEPLOYMENT=${{ github.event.inputs.DELETE_DEPLOYMENT }}
-MONGODB_OPERATOR=${{ github.event.inputs.MONGODB_OPERATOR }}
-MONGODB=${{ github.event.inputs.MONGODB }}
-DEBUG=${{ github.event.inputs.DEBUG }}
-EOF
+        echo "CLUSTER_DOMAIN_NAME=${{ secrets.CLUSTER_DOMAIN_NAME }}" >> source.env
+        echo "TOKEN=${{ secrets.OPENSHIFT_TOKEN }}" >> source.env
+        echo "ACM_WORKLOADS=${{ github.event.inputs.ACM_WORKLOADS }}" >> source.env
+        echo "AMQ_STREAMS=${{ github.event.inputs.AMQ_STREAMS }}" >> source.env
+        echo "CONFIGURE_POSTGRES=${{ github.event.inputs.CONFIGURE_POSTGRES }}" >> source.env
+        echo "HELM_DEPLOYMENT=${{ github.event.inputs.HELM_DEPLOYMENT }}" >> source.env
+        echo "DELETE_DEPLOYMENT=${{ github.event.inputs.DELETE_DEPLOYMENT }}" >> source.env
+        echo "MONGODB_OPERATOR=${{ github.event.inputs.MONGODB_OPERATOR }}" >> source.env
+        echo "MONGODB=${{ github.event.inputs.MONGODB }}" >> source.env
+        echo "DEBUG=${{ github.event.inputs.DEBUG }}" >> source.env
+  
 
     - name: Deploy application
       run: |

@@ -1,0 +1,88 @@
+name: Deploy to OpenShift
+
+on:
+  workflow_dispatch:
+    inputs:
+      ACM_WORKLOADS:
+        description: 'Enable ACM Workloads'
+        default: 'n'
+        required: false
+      AMQ_STREAMS:
+        description: 'Enable AMQ Streams'
+        default: 'y'
+        required: false
+      CONFIGURE_POSTGRES:
+        description: 'Configure Postgres'
+        default: 'y'
+        required: false
+      MONGODB_OPERATOR:
+        description: 'Enable MongoDB Operator'
+        default: 'n'
+        required: false
+      MONGODB:
+        description: 'Enable MongoDB'
+        default: 'n'
+        required: false
+      HELM_DEPLOYMENT:
+        description: 'Enable Helm Deployment'
+        default: 'y'
+        required: false
+      DELETE_DEPLOYMENT:
+        description: 'Delete Deployment'
+        default: 'false'
+        required: false
+      DEBUG:
+        description: 'Debug Level'
+        default: '-v'
+        required: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up OpenShift CLI
+      run: |
+        curl -LO https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz
+        tar -xzf openshift-client-linux.tar.gz
+        sudo mv oc kubectl /usr/local/bin/
+    
+
+    - name: Log in to OpenShift cluster
+      run: oc login --token=${{ secrets.OPENSHIFT_TOKEN }} --server=${{ secrets.OPENSHIFT_SERVER }}
+      env:
+        OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
+        OPENSHIFT_SERVER: ${{ secrets.OPENSHIFT_SERVER }}
+
+    - name: Set environment variables
+      run: |
+        echo "CLUSTER_DOMAIN_NAME=${{ secrets.CLUSTER_DOMAIN_NAME }}" >> $GITHUB_ENV
+        echo "TOKEN=${{ secrets.OPENSHIFT_TOKEN }}" >> $GITHUB_ENV
+        echo "ACM_WORKLOADS=${{ github.event.inputs.ACM_WORKLOADS }}" >> $GITHUB_ENV
+        echo "AMQ_STREAMS=${{ github.event.inputs.AMQ_STREAMS }}" >> $GITHUB_ENV
+        echo "CONFIGURE_POSTGRES=${{ github.event.inputs.CONFIGURE_POSTGRES }}" >> $GITHUB_ENV
+        echo "MONGODB_OPERATOR=${{ github.event.inputs.MONGODB_OPERATOR }}" >> $GITHUB_ENV
+        echo "MONGODB=${{ github.event.inputs.MONGODB }}" >> $GITHUB_ENV
+        echo "HELM_DEPLOYMENT=${{ github.event.inputs.HELM_DEPLOYMENT }}" >> $GITHUB_ENV
+        echo "DELETE_DEPLOYMENT=${{ github.event.inputs.DELETE_DEPLOYMENT }}" >> $GITHUB_ENV
+        echo "DEBUG=${{ github.event.inputs.DEBUG }}" >> $GITHUB_ENV
+
+    - name: Deploy application
+      run: |
+        # Add your deployment commands here
+        # For example, you might run a script or use oc commands to deploy your application
+        ./files/deploy-quarkuscoffeeshop-ansible.sh -d ${{ secrets.OPENSHIFT_SERVER }} -t ${{ secrets.OPENSHIFT_TOKEN }} -p 123456789 -s RALEIGH
+      env:
+        CLUSTER_DOMAIN_NAME: ${{ env.CLUSTER_DOMAIN_NAME }}
+        TOKEN: ${{ env.TOKEN }}
+        ACM_WORKLOADS: ${{ env.ACM_WORKLOADS }}
+        AMQ_STREAMS: ${{ env.AMQ_STREAMS }}
+        CONFIGURE_POSTGRES: ${{ env.CONFIGURE_POSTGRES }}
+        MONGODB_OPERATOR: ${{ env.MONGODB_OPERATOR }}
+        MONGODB: ${{ env.MONGODB }}
+        HELM_DEPLOYMENT: ${{ env.HELM_DEPLOYMENT }}
+        DELETE_DEPLOYMENT: ${{ env.DELETE_DEPLOYMENT }}
+        DEBUG: ${{ env.DEBUG }}

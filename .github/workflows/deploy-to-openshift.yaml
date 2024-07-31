@@ -91,7 +91,7 @@ jobs:
         echo "Deploying Quarkus Coffee Shop application"
         source $GITHUB_ENV
         echo "CLUSTER_DOMAIN_NAME: $CLUSTER_DOMAIN_NAME"
-        ./files/deploy-quarkuscoffeeshop-ansible.sh -d ${{ secrets.OPENSHIFT_SERVER }} -t ${{ secrets.OPENSHIFT_TOKEN }} -p 123456789 -s RALEIGH
+        #./files/deploy-quarkuscoffeeshop-ansible.sh -d ${{ secrets.OPENSHIFT_SERVER }} -t ${{ secrets.OPENSHIFT_TOKEN }} -p 123456789 -s RALEIGH
       env:
         CLUSTER_DOMAIN_NAME: ${{ env.CLUSTER_DOMAIN_NAME }}
         TOKEN: ${{ env.TOKEN }}

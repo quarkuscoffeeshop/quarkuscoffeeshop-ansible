@@ -178,8 +178,6 @@ function modulecheck(){
   local value=$(eval echo \$${1})
   if [[ $value =~ ^[Yy]$ ]]; then
     run_tags ${1}
-  else
-    echo "Skipping ${1}"
   fi
 }
 
@@ -275,6 +273,23 @@ then
     destory_coffee_shop
   fi
 else 
-  echo "Ansible is not installed"
-  exit 1
+  install_ansible
 fi 
+
+function install_ansible() {
+  echo "Ansible is not installed. Installing Ansible..."
+  if [ "${machine}" == 'Linux' ];
+  then
+    ${USE_SUDO} apt-get update && ${USE_SUDO} apt-get install -y software-properties-common
+    ${USE_SUDO} apt-add-repository --yes --update ppa:ansible/ansible
+    ${USE_SUDO} apt-get install -y ansible
+  elif [ "${machine}" == 'Mac' ];
+  then
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    brew install ansible
+  else
+    echo "Unsupported OS. Please install Ansible manually."
+    exit 1
+  fi
+  echo "Ansible installed successfully."
+}

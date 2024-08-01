@@ -179,7 +179,9 @@ function install_ansible() {
   if [[ "$ID" == "rhel" || "$ID" == "centos" ]]; then
     sudo yum install -y ansible-core
   elif [[ "$ID" == "ubuntu" ]]; then
-    sudo apt-get update && sudo apt-get install -y ansible-core
+    echo "Ansible is not installed. Installing Ansible..."
+    apt-get update && sudo apt-get install -y python3-pip
+    pip3 install ansible
   elif [ "${machine}" == 'Mac' ]; then
     if ! command -v brew &> /dev/null; then
       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -190,6 +192,7 @@ function install_ansible() {
     exit 1
   fi
   echo "Ansible installed successfully."
+  whereis ansible || exit $? 
 }
 
 

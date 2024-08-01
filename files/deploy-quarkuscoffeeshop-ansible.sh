@@ -186,8 +186,8 @@ function install_ansible() {
     sudo pip3 install ansible
     pwd
     git clone https://github.com/ansible-collections/kubernetes.core.git && \
-    mkdir -p /root/.ansible/plugins/modules && \
-    cp kubernetes.core/plugins/action/k8s.py /root/.ansible/plugins/modules/ 
+    mkdir -p /home/runner/work/.ansible/plugins/modules && \
+    cp kubernetes.core/plugins/action/k8s.py /home/runner/work/.ansible/plugins/modules/ 
     ansible-galaxy collection install community.kubernetes
     ansible-galaxy collection install kubernetes.core
     ansible-galaxy collection install cloud.common

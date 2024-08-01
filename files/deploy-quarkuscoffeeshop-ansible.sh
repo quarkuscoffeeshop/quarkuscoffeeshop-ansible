@@ -282,9 +282,10 @@ function install_ansible() {
     sudo yum install -y ansible-core
   elif [[ "$ID" == "ubuntu" ]]; then
     sudo apt-get update && sudo apt-get install -y ansible-core
-  elif [ "${machine}" == 'Mac' ];
-  then
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  elif [ "${machine}" == 'Mac' ]; then
+    if ! command -v brew &> /dev/null; then
+      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    fi
     brew install ansible
   else
     echo "Unsupported OS. Please install Ansible manually."
@@ -293,22 +294,27 @@ function install_ansible() {
   echo "Ansible installed successfully."
 }
 
-if [ "${machine}" == 'Linux' ] && [ -f /bin/ansible ];
-then 
-  if [ "${DESTROY}" == false ];
-  then 
-    configure-ansible-and-playbooks
-  else 
-    destory_coffee_shop
+if [ "${machine}" == 'Linux' ]; then
+  if [ -f /bin/ansible ] || [ -f /usr/bin/ansible ]; then
+    if [ "${DESTROY}" == false ]; then
+      configure-ansible-and-playbooks
+    else
+      destory_coffee_shop
+    fi
+  else
+    install_ansible
   fi
-elif [ "${machine}" == 'Mac' ] && [ -f /usr/local/bin/ansible ];
-then
-  if [ "${DESTROY}" == false ];
-  then 
-    configure-ansible-and-playbooks
-  else 
-    destory_coffee_shop
+elif [ "${machine}" == 'Mac' ]; then
+  if command -v ansible &> /dev/null; then
+    if [ "${DESTROY}" == false ]; then
+      configure-ansible-and-playbooks
+    else
+      destory_coffee_shop
+    fi
+  else
+    install_ansible
   fi
-else 
-  install_ansible
-fi 
+else
+  echo "Unsupported OS. Please install Ansible manually."
+  exit 1
+fi

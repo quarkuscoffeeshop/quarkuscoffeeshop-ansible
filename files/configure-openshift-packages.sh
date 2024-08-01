@@ -29,13 +29,15 @@ function download_binaries(){
       LATEST_INSTALLER=$(curl -sL  https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp-dev-preview/pre-release/  | grep -oE openshift-install-linux-4.[0-9].[0-9]-[0-9].nightly-[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]{6}.tar.gz | head -1)
       LATEST_CLI=$(curl -sL https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp-dev-preview/pre-release/  | grep -oE openshift-client-linux-4.[0-9].[0-9]-[0-9].nightly-[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]{6}.tar.gz | head -1)
     else
-      VERSION="latest-4.12"
+      VERSION="stable-4.12"
       echo "*******************************"
       echo "Installing ${VERSION} binaries" 
       echo "*******************************"
       URL="https://mirror.openshift.com/pub/openshift-v4/clients/ocp/${VERSION}/"
-      LATEST_CLI=$(curl -sL https://mirror.openshift.com/pub/openshift-v4/clients/ocp/${VERSION}/  | grep -o openshift-client-linux-4.[[:digit:]]\+.[[:digit:]]\+.tar.gz | head -1)
-      LATEST_INSTALLER=$(curl -sL https://mirror.openshift.com/pub/openshift-v4/clients/ocp/${VERSION}/  | grep -o openshift-install-linux-4.[[:digit:]]\+.[[:digit:]]\+.tar.gz | head -1)
+      #LATEST_CLI=$(curl -sL https://mirror.openshift.com/pub/openshift-v4/clients/ocp/${VERSION}/  | grep -o openshift-client-linux-4.[[:digit:]]\+.[[:digit:]]\+.tar.gz | head -1)
+      #LATEST_INSTALLER=$(curl -sL https://mirror.openshift.com/pub/openshift-v4/clients/ocp/${VERSION}/  | grep -o openshift-install-linux-4.[[:digit:]]\+.[[:digit:]]\+.tar.gz | head -1)
+      LATEST_CLI=openshift-client-linux.tar.gz
+      LATEST_INSTALLER=openshift-install-linux.tar.gz
     fi
 
 

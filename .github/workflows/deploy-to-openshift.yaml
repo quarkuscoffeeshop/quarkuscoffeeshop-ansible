@@ -73,8 +73,8 @@ jobs:
 
     - name: Set environment variables
       run: |
-        echo "DOMAIN=${{ secrets.CLUSTER_DOMAIN_NAME }}" >> env.variables
-        echo "OCP_TOKEN=${{ secrets.OPENSHIFT_TOKEN }}" >> env.variables
+        echo "DOMAIN=${{ secrets.CLUSTER_DOMAIN_NAME }}" >> $GITHUB_ENV
+        echo "OCP_TOKEN=${{ secrets.OPENSHIFT_TOKEN }}" >> $GITHUB_ENV
         echo "ACM_WORKLOADS=${{ github.event.inputs.ACM_WORKLOADS }}" >> $GITHUB_ENV
         echo "AMQ_STREAMS=${{ github.event.inputs.AMQ_STREAMS }}" >> $GITHUB_ENV
         echo "CONFIGURE_POSTGRES=${{ github.event.inputs.CONFIGURE_POSTGRES }}" >> $GITHUB_ENV
@@ -90,7 +90,7 @@ jobs:
         echo "Deploying Quarkus Coffee Shop application"
         source env.variables
         cat env.variables
-        ./files/deploy-quarkuscoffeeshop-ansible.sh -d ${{ secrets.CLUSTER_DOMAIN_NAME }} -t ${{ secrets.OPENSHIFT_TOKEN }} -s RALEIGH
+        ./files/deploy-quarkuscoffeeshop-ansible.sh -d ${{ secrets.CLUSTER_DOMAIN_NAME }} -t ${{ secrets.OPENSHIFT_TOKEN }} -s RALEIGH -u ${{ github.event.inputs.DELETE_DEPLOYMENT }}
       env:
         CLUSTER_DOMAIN_NAME: ${{ secrets.CLUSTER_DOMAIN_NAME }}
         TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}

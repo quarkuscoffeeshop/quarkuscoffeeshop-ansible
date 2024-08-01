@@ -1,9 +1,6 @@
 #!/bin/bash
 #set -e
 
-
-export  VERSION="stable-4.12"
-
 function checkForProgramAndInstall() {
     command -v $1 > /dev/null 2>&1
     if [[ $? -eq 0 ]]; then
@@ -32,6 +29,7 @@ function download_binaries(){
       LATEST_INSTALLER=$(curl -sL  https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp-dev-preview/pre-release/  | grep -oE openshift-install-linux-4.[0-9].[0-9]-[0-9].nightly-[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]{6}.tar.gz | head -1)
       LATEST_CLI=$(curl -sL https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp-dev-preview/pre-release/  | grep -oE openshift-client-linux-4.[0-9].[0-9]-[0-9].nightly-[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]{6}.tar.gz | head -1)
     else
+      VERSION="stable-4.12"
       echo "*******************************"
       echo "Installing ${VERSION} binaries" 
       echo "*******************************"

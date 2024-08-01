@@ -62,7 +62,8 @@ jobs:
 
     - name: Set up OpenShift CLI
       run: |
-        ./files/configure-openshift-packages.sh
+        ./files/configure-openshift-packages.sh -d
+        ./files/configure-openshift-packages.sh -i
         oc version
 
     - name: Log in to OpenShift cluster

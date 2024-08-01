@@ -278,11 +278,10 @@ fi
 
 function install_ansible() {
   echo "Ansible is not installed. Installing Ansible..."
-  if [ "${machine}" == 'Linux' ];
-  then
-    ${USE_SUDO} apt-get update && ${USE_SUDO} apt-get install -y software-properties-common
-    ${USE_SUDO} apt-add-repository --yes --update ppa:ansible/ansible
-    ${USE_SUDO} apt-get install -y ansible
+  if [[ "$ID" == "rhel" || "$ID" == "centos" ]]; then
+        sudo yum install -y ansible-core
+  elif [[ "$ID" == "ubuntu" ]]; then
+        sudo apt-get update && sudo apt-get install -y ansible-core
   elif [ "${machine}" == 'Mac' ];
   then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"

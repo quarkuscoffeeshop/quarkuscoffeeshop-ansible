@@ -10,7 +10,7 @@ delete_deployment: false
 amqchannel: amq-streams-2.3.x
 amqstartingCSV: amqstreams.v2.3.0-4
 mongodbstartingCSV: mongodb-enterprise.v1.8.1
-crunchystartingCSV: postgresoperator.v5.3.0
+crunchystartingCSV: postgresoperator.v5.6.0
 config_location: "/tmp/"
 kafka_cluster_name: cafe-cluster
 domain: ocp4.example.com

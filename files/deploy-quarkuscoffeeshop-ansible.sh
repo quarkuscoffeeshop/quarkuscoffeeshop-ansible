@@ -184,6 +184,18 @@ function install_ansible() {
     echo "Ansible is not installed. Installing Ansible..."
     sudo apt-get update && sudo apt-get install -y python3-pip
     sudo pip3 install ansible
+    pwd
+    git clone https://github.com/ansible-collections/kubernetes.core.git && \
+    mkdir -p /root/.ansible/plugins/modules && \
+    cp kubernetes.core/plugins/action/k8s.py /root/.ansible/plugins/modules/ 
+    ansible-galaxy collection install community.kubernetes
+    ansible-galaxy collection install kubernetes.core
+    ansible-galaxy collection install cloud.common
+    ansible-galaxy collection install community.general
+    pip3 install kubernetes || exit $?
+    pip3 install openshift || exit $?
+    pip3 install jmespath || exit $?
+
   elif [[ "$ID" == "darwin" ]]; then
     if ! command -v brew &> /dev/null; then
       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"

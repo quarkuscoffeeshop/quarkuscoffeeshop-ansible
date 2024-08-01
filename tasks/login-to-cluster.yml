@@ -24,6 +24,12 @@
   when: ansible_distribution == 'MacOSX'
   tags: always 
 
+- name: set oc location ubuntu 
+  set_fact:
+    oc_location: /usr/bin/oc
+  when: ansible_distribution == 'Ubuntu'
+  tags: always
+
 - name: login as super user with token on OpenShift 4
   command: "{{ oc_location }} login --token={{ openshift_token }}  --server={{ openshift_url }} --insecure-skip-tls-verify={{ insecure_skip_tls_verify }}"
   when:

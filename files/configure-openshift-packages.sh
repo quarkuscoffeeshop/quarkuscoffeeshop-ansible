@@ -8,7 +8,7 @@ function checkForProgramAndInstall() {
     else
         if [[ "$ID" == "rhel" || "$ID" == "centos" ]]; then
             sudo yum install -y $1
-        elif [[ "$ID" == "debian" || "$ID" == "ubuntu" ]]; then
+        elif [[ "$ID" == "ubuntu" ]]; then
             sudo apt-get update && sudo apt-get install -y $1
         else
             echo "Unsupported OS. Cannot install $1."

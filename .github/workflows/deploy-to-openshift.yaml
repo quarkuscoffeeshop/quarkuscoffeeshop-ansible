@@ -73,16 +73,16 @@ jobs:
 
     - name: Set environment variables
       run: |
-        echo "CLUSTER_DOMAIN_NAME=${{ secrets.CLUSTER_DOMAIN_NAME }}" >> env.variables
-        echo "TOKEN=${{ secrets.OPENSHIFT_TOKEN }}" >> env.variables
-        echo "ACM_WORKLOADS=${{ github.event.inputs.ACM_WORKLOADS }}" >> env.variables
-        echo "AMQ_STREAMS=${{ github.event.inputs.AMQ_STREAMS }}" >> env.variables
-        echo "CONFIGURE_POSTGRES=${{ github.event.inputs.CONFIGURE_POSTGRES }}" >> env.variables
-        echo "HELM_DEPLOYMENT=${{ github.event.inputs.HELM_DEPLOYMENT }}" >> env.variables
-        echo "DELETE_DEPLOYMENT=${{ github.event.inputs.DELETE_DEPLOYMENT }}" >> env.variables
-        echo "MONGODB_OPERATOR=${{ github.event.inputs.MONGODB_OPERATOR }}" >> env.variables
-        echo "MONGODB=${{ github.event.inputs.MONGODB }}" >> env.variables
-        echo "DEBUG=${{ github.event.inputs.DEBUG }}" >> env.variables
+        echo "DOMAIN=${{ secrets.CLUSTER_DOMAIN_NAME }}" >> env.variables
+        echo "OCP_TOKEN=${{ secrets.OPENSHIFT_TOKEN }}" >> env.variables
+        echo "ACM_WORKLOADS=${{ github.event.inputs.ACM_WORKLOADS }}" >> $GITHUB_ENV
+        echo "AMQ_STREAMS=${{ github.event.inputs.AMQ_STREAMS }}" >> $GITHUB_ENV
+        echo "CONFIGURE_POSTGRES=${{ github.event.inputs.CONFIGURE_POSTGRES }}" >> $GITHUB_ENV
+        echo "HELM_DEPLOYMENT=${{ github.event.inputs.HELM_DEPLOYMENT }}" >> $GITHUB_ENV
+        echo "DELETE_DEPLOYMENT=${{ github.event.inputs.DELETE_DEPLOYMENT }}" >> $GITHUB_ENV
+        echo "MONGODB_OPERATOR=${{ github.event.inputs.MONGODB_OPERATOR }}" >> $GITHUB_ENV
+        echo "MONGODB=${{ github.event.inputs.MONGODB }}" >> $GITHUB_ENV
+        echo "DEBUG=${{ github.event.inputs.DEBUG }}" >> $GITHUB_ENV
   
 
     - name: Deploy application
@@ -90,7 +90,7 @@ jobs:
         echo "Deploying Quarkus Coffee Shop application"
         source env.variables
         cat env.variables
-        ./files/deploy-quarkuscoffeeshop-ansible.sh -d ${{ secrets.OPENSHIFT_SERVER }} -t ${{ secrets.OPENSHIFT_TOKEN }} -p 123456789 -s RALEIGH
+        ./files/deploy-quarkuscoffeeshop-ansible.sh -d ${{ secrets.CLUSTER_DOMAIN_NAME }} -t ${{ secrets.OPENSHIFT_TOKEN }} -s RALEIGH
       env:
         CLUSTER_DOMAIN_NAME: ${{ secrets.CLUSTER_DOMAIN_NAME }}
         TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}

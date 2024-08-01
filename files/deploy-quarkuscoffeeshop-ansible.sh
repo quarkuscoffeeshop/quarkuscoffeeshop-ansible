@@ -174,6 +174,25 @@ fi
 export GROUP=$(id -gn)
 export USERNAME=$(whoami)
 
+function install_ansible() {
+  echo "Ansible is not installed. Installing Ansible..."
+  if [[ "$ID" == "rhel" || "$ID" == "centos" ]]; then
+    sudo yum install -y ansible-core
+  elif [[ "$ID" == "ubuntu" ]]; then
+    sudo apt-get update && sudo apt-get install -y ansible-core
+  elif [ "${machine}" == 'Mac' ]; then
+    if ! command -v brew &> /dev/null; then
+      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    fi
+    brew install ansible
+  else
+    echo "Unsupported OS. Please install Ansible manually."
+    exit 1
+  fi
+  echo "Ansible installed successfully."
+}
+
+
 function modulecheck(){
   local value=$(eval echo \$${1})
   if [[ $value =~ ^[Yy]$ ]]; then
@@ -276,26 +295,7 @@ else
   install_ansible
 fi 
 
-function install_ansible() {
-  echo "Ansible is not installed. Installing Ansible..."
-  if [[ "$ID" == "rhel" || "$ID" == "centos" ]]; then
-    sudo yum install -y ansible-core
-  elif [[ "$ID" == "ubuntu" ]]; then
-    sudo apt-get update && sudo apt-get install -y ansible-core
-  elif [ "${machine}" == 'Mac' ]; then
-    if ! command -v brew &> /dev/null; then
-      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    fi
-    brew install ansible
-  else
-    echo "Unsupported OS. Please install Ansible manually."
-    exit 1
-  fi
-  echo "Ansible installed successfully."
-}
 
-# Ensure the install_ansible function is defined before it is called
-install_ansible
 
 if [ "${machine}" == 'Linux' ]; then
   if [ -f /bin/ansible ] || [ -f /usr/bin/ansible ]; then

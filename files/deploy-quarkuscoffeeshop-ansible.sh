@@ -279,9 +279,9 @@ fi
 function install_ansible() {
   echo "Ansible is not installed. Installing Ansible..."
   if [[ "$ID" == "rhel" || "$ID" == "centos" ]]; then
-        sudo yum install -y ansible-core
+    sudo yum install -y ansible-core
   elif [[ "$ID" == "ubuntu" ]]; then
-        sudo apt-get update && sudo apt-get install -y ansible-core
+    sudo apt-get update && sudo apt-get install -y ansible-core
   elif [ "${machine}" == 'Mac' ];
   then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -292,3 +292,23 @@ function install_ansible() {
   fi
   echo "Ansible installed successfully."
 }
+
+if [ "${machine}" == 'Linux' ] && [ -f /bin/ansible ];
+then 
+  if [ "${DESTROY}" == false ];
+  then 
+    configure-ansible-and-playbooks
+  else 
+    destory_coffee_shop
+  fi
+elif [ "${machine}" == 'Mac' ] && [ -f /usr/local/bin/ansible ];
+then
+  if [ "${DESTROY}" == false ];
+  then 
+    configure-ansible-and-playbooks
+  else 
+    destory_coffee_shop
+  fi
+else 
+  install_ansible
+fi 

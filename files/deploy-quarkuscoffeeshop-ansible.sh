@@ -175,13 +175,12 @@ export GROUP=$(id -gn)
 export USERNAME=$(whoami)
 
 function modulecheck(){
-  read -p "Do you wish to install ${1} on your cluster? " yn
-  case $yn in
-    [Yy]* ) run_tags ${1};;
-    [Nn]* ) echo "Skipping ${1}";;
-    * ) echo "Please answer yes or no."
-        modulecheck ${1};;
-  esac
+  local value=$(eval echo \$${1})
+  if [[ $value =~ ^[Yy]$ ]]; then
+    run_tags ${1}
+  else
+    echo "Skipping ${1}"
+  fi
 }
 
 echo -e "\n$DOMAIN  $OCP_TOKEN  $STORE_ID\n"

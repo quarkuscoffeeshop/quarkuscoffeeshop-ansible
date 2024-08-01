@@ -294,6 +294,9 @@ function install_ansible() {
   echo "Ansible installed successfully."
 }
 
+# Ensure the install_ansible function is defined before it is called
+install_ansible
+
 if [ "${machine}" == 'Linux' ]; then
   if [ -f /bin/ansible ] || [ -f /usr/bin/ansible ]; then
     if [ "${DESTROY}" == false ]; then

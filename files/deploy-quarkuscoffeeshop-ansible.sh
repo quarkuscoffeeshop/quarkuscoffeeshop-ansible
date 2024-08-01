@@ -176,24 +176,28 @@ export USERNAME=$(whoami)
 
 function install_ansible() {
   echo "Ansible is not installed. Installing Ansible..."
+  source /etc/os-release
+
   if [[ "$ID" == "rhel" || "$ID" == "centos" ]]; then
     sudo yum install -y ansible-core
   elif [[ "$ID" == "ubuntu" ]]; then
     echo "Ansible is not installed. Installing Ansible..."
-    apt-get update && sudo apt-get install -y python3-pip
-    pip3 install ansible
-  elif [ "${machine}" == 'Mac' ]; then
+    sudo apt-get update && sudo apt-get install -y python3-pip
+    sudo pip3 install ansible
+  elif [[ "$ID" == "darwin" ]]; then
     if ! command -v brew &> /dev/null; then
       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     fi
     brew install ansible
   else
-    echo "Unsupported OS. Please install Ansible manually."
+    echo "Unsupported OS: $ID. Please install Ansible manually."
     exit 1
   fi
+
   echo "Ansible installed successfully."
-  whereis ansible || exit $? 
+  whereis ansible || exit $?
 }
+
 
 
 function modulecheck(){

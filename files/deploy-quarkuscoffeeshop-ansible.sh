@@ -195,7 +195,7 @@ function install_ansible() {
   fi
 
   echo "Ansible installed successfully."
-  whereis ansible || exit $?
+  whereis ansible
 }
 
 
@@ -305,7 +305,7 @@ fi
 
 
 if [ "${machine}" == 'Linux' ]; then
-  if [ -f /bin/ansible ] || [ -f /usr/bin/ansible ]; then
+  if [ -f /bin/ansible ] || [ -f /usr/bin/ansible ] || [ -f /usr/local/bin/ansible ]; then
     if [ "${DESTROY}" == false ]; then
       configure-ansible-and-playbooks
     else

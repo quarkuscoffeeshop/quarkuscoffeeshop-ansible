@@ -60,9 +60,7 @@ jobs:
 
     - name: Set up OpenShift CLI
       run: |
-        curl -OL https://raw.githubusercontent.com/tosin2013/openshift-4-deployment-notes/master/pre-steps/configure-openshift-packages.sh
-        chmod +x configure-openshift-packages.sh
-        export VERSION=latest-4.12;./configure-openshift-packages.sh -i
+        ./files/configure-openshift-packages.sh
         oc version
 
     - name: Log in to OpenShift cluster
